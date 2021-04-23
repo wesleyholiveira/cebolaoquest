@@ -1,0 +1,1 @@
+module.exports = (object, callback) => Object.entries(object).map(callback)
