@@ -218,29 +218,40 @@ app.post('/player', async (req, res) => {
 
     if (noblePhantasmsModels.length > 0) {
       const npIds = await npRepository(db).insertAll(noblePhantasmsModels)
-      const models = noblePhantasms.map((np, i) => ({
-        type: npTypeModel({
-          name: np.type.name,
-          np_id: npIds[i]
-        }),
-        specialStrike: npSpecialStrikeModel({
-          name: np.specialStrike.name,
-          np_id: npIds[i]
-        }),
-        effect: np.effects.map(effect => npEffectModel({
-          name: effect.name,
-          valors: effect.valors,
-          np_id: npIds[i]
-        }))
+      const npTypes = noblePhantasms.map(el => el.type)
+      const npSpecialStrikes = noblePhantasms.map(el => el.specialStrike).filter(el => el != undefined)
+      const npEffects = noblePhantasms.flatMap((el, i) => ({
+        effect: el.effects,
+        np_id: npIds[i]
       }))
 
-      const npTypeModels = models.map(m => m.type)
-      const npSpecialStrikeModels = models.map(s => s.specialStrike)
-      const npEffectModels = models.flatMap(m => m.effect)
+      if (npTypes.length > 0) {
+        const npTypeModels = npTypes.map((t, i) => npTypeModel({
+          name: t.name || '',
+          np_id: npIds[i]
+        }))
 
-      await npTypeRepository(db).insertAll(npTypeModels)
-      await npSpecialStrikeRepository(db).insertAll(npSpecialStrikeModels)
-      await npEffectRepository(db).insertAll(npEffectModels)
+        await npTypeRepository(db).insertAll(npTypeModels)
+      }
+
+      if (npSpecialStrikes.length > 0) {
+        const npSpecialStrikeModels = npSpecialStrikes.map((s, i) => npSpecialStrikeModel({
+          name: s || '',
+          np_id: npIds[i]
+        }))
+
+        await npSpecialStrikeRepository(db).insertAll(npSpecialStrikeModels)
+      }
+
+      if (npEffects.length > 0) {
+        const npEffectModels = npEffects.flatMap(e => e.effect.map(ef => npEffectModel({
+          name: ef.name || '',
+          valors: ef.valors,
+          np_id: e.np_id
+        })))
+
+        await npEffectRepository(db).insertAll(npEffectModels)
+      }
     }
     
     return res.json({

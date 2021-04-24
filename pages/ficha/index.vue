@@ -100,7 +100,7 @@
               <h2>Parâmetros</h2>
           </v-col>
           <template v-for="(p, i) in attributes">
-              <v-col :key="i" cols="12" lg="2" md="4" sm="12">
+              <v-col :key="i" cols="12" lg="4" md="6" sm="12">
                 <parameters 
                   :attribute="p"
                   :playerLevel="level"
@@ -180,17 +180,8 @@
               chips
               label="Técnicas Especiais"
               multiple
-            >
-              <template v-slot:selection="{item}">
-                <v-chip 
-                  @click:close="selectedSpecialTechniques = excludeItem(selectedSpecialTechniques, item)"
-                  :color="item.rarity"
-                  close
-                >
-                  <span>{{item.name}}</span>
-                </v-chip>
-              </template>
-            </v-combobox>
+              deletable-chips
+            />
           </v-col>
         </v-row>
         <template v-for="(item, key) in noblePhantasms">
@@ -214,7 +205,7 @@
               right
               absolute
               color="red darken-1"
-              @click="noblePhantasms.pop();valorPoints.pop()"
+              @click="removeNoblePhantasm()"
             >
               <v-icon>mdi-minus-circle</v-icon>
             </v-btn>
@@ -223,12 +214,42 @@
               right
               absolute
               color="green darken-1"
-              @click="noblePhantasms.push({});valorPoints.push(defaultValorPoints)"
+              @click="addNoblePhantasm()"
             >
               <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
           </v-col>
           <v-col cols="12">
+            <v-dialog
+              v-model="meritsDialog"
+              max-width="400"
+            >
+              <v-card>
+                <v-card-title class="headline">
+                  Então você é um ixxxpertinho?!
+                </v-card-title>
+                <v-card-text>
+                  Tentando gastar mais pontos de méritos do que realmente tem? Vai assistir a live do
+                    <a 
+                      href="https://twitch.tv/cebolaolunar"
+                      target="_blank"
+                      style="font-size: 17px"
+                    >
+                      Cebolão Lunar
+                    </a>.
+                      Garanto que é mais produtivo do que tentar burlar o sistema.
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    text
+                    @click="meritsDialog = false"
+                  >
+                    Sair
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
             <v-dialog
               v-model="dialog"
               v-if="hasPointsNotSpent()"
@@ -279,7 +300,6 @@
               color="green darken-1"
               class="mr-4"
               style="margin-bottom: 320px;margin-top: 80px;"
-              @click="$refs.form.reset()"
             >
               Enviar
             </v-btn>
@@ -298,6 +318,7 @@ import dataMartialSkills from '../../mock/martialSkills'
 import dataSpecialTechniques from '../../mock/specialTechniques'
 import dataNegativeTraits from '../../mock/negativeTraits'
 export default {
+
   created() {
     this.merits = this.defaultMerits
     this.valorPoints = []
@@ -310,6 +331,7 @@ export default {
   },
 
   data: (instance) => ({
+    meritsDialog: false,
     dialog: false,
     valid: true,
     isNegative: false,
@@ -397,6 +419,29 @@ export default {
              this.proficiencyPoints > 0
     },
 
+    addNoblePhantasm() {
+      if (this.merits < 1) {
+        this.meritsDialog = true
+        return
+      }
+      
+      this.noblePhantasms.push({})
+      this.valorPoints.push(this.defaultValorPoints)
+      
+      if (this.noblePhantasms.length > 1) {
+        this.merits -= 1
+      }
+    },
+
+    removeNoblePhantasm() {
+      this.noblePhantasms.pop()
+      this.valorPoints.pop()
+
+      if (this.noblePhantasms.length > 0) {
+        this.merits += 1
+      }
+    },
+
     async validate() {
       if (this.$refs.form.validate()) {
         const params = this.parameters
@@ -481,7 +526,9 @@ export default {
     calculateMeritsFromArray: (data) => data.map(el => el.merits).reduce((acc, merit) => acc + merit),
     calculateValorsFromArray: (data) => data.map(el => el).reduce((acc, valor) => acc + valor),
     calculateValorPoints() {
-      return this.calculateValorsFromArray(this.valorPoints)
+      if (this.valorPoints.length > 0) {
+        return this.calculateValorsFromArray(this.valorPoints)
+      }
     },
 
     validateMaxPoints(v, cap) {
@@ -528,14 +575,15 @@ export default {
     },
 
     incrementMerits(removedItem) {
-      if (!removedItem) {
+      if (!removedItem || typeof removedItem !== 'object') {
         return
       }
+
       this.merits += removedItem.merits
     },
 
     decrementMerits(addedItem) {
-      if (!addedItem) {
+      if (!addedItem || typeof addedItem !== 'object') {
         return
       }
       

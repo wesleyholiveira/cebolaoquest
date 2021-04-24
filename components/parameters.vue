@@ -3,6 +3,7 @@
         <v-text-field 
             v-model="parameters[index]"
             :label="attribute"
+            :rules="negativeRules"
             :class="negativeRuleErrorClass"
             disabled
         />
@@ -36,18 +37,19 @@ export default {
 
     data: (instance) => ({
         index: 0,
+        defaultStatusPoints: 0,
         isNegativeData: false,
         negativeRuleErrorClass: '',
         baseParams: ['D', 'C', 'B', 'A', 'S'],
         parameters: [],
-        negativeRules: [
-            v => instance.isNegative || 'Escolha um campo para ser deficiente'
-        ]
+        negativeRules: [],
+        backup: [],
     }),
 
     created: function() {
         this.parameters = [].concat(this.baseParams)
         this.initialProficiencyPoints = this.proficiencyPoints
+        this.defaultStatusPoints = this.statusPoints
     },
 
     computed: {
@@ -55,6 +57,20 @@ export default {
             const result = this.negativeTraits.filter(
                 e => e.name == 'Contra-sinergia'
             ).length > 0
+
+            // if (result) {
+            //     this.negativeData = true
+            //     this.$emit('updateIsNegative', this.isNegativeData)
+            // } else {
+            //     this.negativeData = false
+            //     this.$emit('updateIsNegative', this.isNegativeData)
+            //     this.$emit('updateStatusPoints', this.defaultStatusPoints)
+            //     // if (this.backup.filter(el => el.name == 'Contra-sinergia').length > 0) {
+            //     //     this.baseParams.forEach(param => this.$emit('updateParameters', param))
+            //     // }
+            // }
+
+            // this.backup = this.negativeTraits
 
             return result
         },
@@ -151,7 +167,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .parameters {
     display: flex;
     align-items: center;

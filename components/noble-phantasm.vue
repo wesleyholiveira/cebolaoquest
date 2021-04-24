@@ -82,10 +82,12 @@ export default {
   created() {
     this.valorSkills = this.data.valorSkills
     this.valors = this.valorPoints[this.index]
+    this.valorCapData = this.valorCap
   },
 
   data: (instance) => ({
     dmgDown: 0,
+    valorCapData: 0,
     previouslyMagical: false,
     isOverloaded: false,
     valorSkills: [],
@@ -111,7 +113,7 @@ export default {
           this.calculateValorsFromArray(v) > cap
        ) || points < 0) {
          this.isOverloaded = true
-         this.dmgDown = -10 * this.valors
+         this.dmgDown = Math.abs(10 * this.valors)
        } else {
          this.isOverloaded = false
        }
@@ -136,7 +138,7 @@ export default {
     },
 
     incrementValors(removedItem) {
-      if (!removedItem) {
+      if (!removedItem || typeof removedItem !== 'object') {
         return
       }
     
@@ -144,7 +146,7 @@ export default {
     },
 
     decrementValors(addedItem) {
-      if (!addedItem) {
+      if (!addedItem || typeof addedItem !== 'object') {
         return
       }
       
@@ -154,25 +156,36 @@ export default {
 
   watch: {
     'np.type': function(type) {
-      this.valorSkills = this.data.valorSkills
-      this.valorSkills = this.valorSkills.concat(type.valorSkills.filter(el => el.name != ''))
-      let valorPoints = this.valorPoints
-      const index = this.index
-
-      if (type.name == 'Mágico') {
-        this.valors += 1
-        console.log(this.valors)
-        valorPoints[index] = this.valors
-        this.previouslyMagical = true
-        this.$emit('updateValorPoints', valorPoints)
-        return
-      }
+      if (type) {
+        const typeValors = type.valorSkills
+        this.valorSkills = this.data.valorSkills
       
-      if (this.previouslyMagical) {
-        this.valors -= 1
-        valorPoints[index] = this.valors
-        this.previouslyMagical = false
-        this.$emit('updateValorPoints', valorPoints)
+        let valorPoints = this.valorPoints
+        const index = this.index
+  
+        if (typeValors.length > 0) {
+          const typeValorsWithoutInvalidNames = type.valorSkills.filter(el => el.name != '')
+          this.valorSkills = this.valorSkills.concat(typeValorsWithoutInvalidNames)
+        }
+  
+        if (type.name == 'Mágico') {
+          this.valors += 1
+          this.valorCapData += 1
+  
+          valorPoints[index] = this.valors
+          this.previouslyMagical = true
+          this.$emit('updateValorPoints', valorPoints)
+          return
+        }
+        
+        if (this.previouslyMagical) {
+          this.valors -= 1
+          this.valorCap -= 1
+  
+          valorPoints[index] = this.valors
+          this.previouslyMagical = false
+          this.$emit('updateValorPoints', valorPoints)
+        }
       }
     },
     'np.effects': function(effects) {
