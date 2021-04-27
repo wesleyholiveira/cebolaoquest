@@ -9,7 +9,7 @@
             <v-col cols="12">
                 <v-fab-transition>
                     <v-card max-width="400" class="mx-auto" ref="login" v-show="expandLogin">
-                        <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-form ref="formLogin" v-on:submit.prevent="sendLogin()" v-model="valid" lazy-validation>
                             <v-row class="px-4">
                                 <v-col cols="12">
                                     <v-text-field
@@ -31,7 +31,7 @@
                                 <v-col cols="12">
                                     <v-row class="mb-2">
                                         <v-card-actions>
-                                            <v-btn class="green darken-1" :disabled="!valid" @click="sendLogin()">Enviar</v-btn>
+                                            <v-btn class="green darken-1" :disabled="!valid" type="submit">Enviar</v-btn>
                                             <v-btn class="blue darken-1" @click="expandLogin = false;expandRegister = true">Cadastrar</v-btn>
                                         </v-card-actions>
                                     </v-row>
@@ -42,7 +42,7 @@
                 </v-fab-transition>
                 <v-fab-transition>
                     <v-card max-width="400" class="mx-auto" ref="register" v-show="expandRegister">
-                        <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-form ref="formRegister" @submit.prevent="sendRegister()" v-model="valid" lazy-validation>
                             <v-row class="px-4">
                                 <v-col cols="12">
                                     <v-text-field
@@ -82,7 +82,7 @@
                                 <v-col cols="12">
                                     <v-row class="mb-2">
                                         <v-card-actions>
-                                            <v-btn class="green darken-1" :disabled="!valid" @click="sendRegister()">Enviar</v-btn>
+                                            <v-btn class="green darken-1" :disabled="!valid" type="submit">Enviar</v-btn>
                                             <v-btn class="blue darken-1" @click="expandLogin = true;expandRegister = false">Login</v-btn>
                                         </v-card-actions>
                                     </v-row>
@@ -144,6 +144,8 @@ export default {
             try {
                 const response = await this.$auth.loginWith('local', {data: this.login})
                 const { userId } = response.data
+                
+                this.$refs.formLogin.reset()
                 console.log('RESPONSE LOGIN', response)
                 this.$auth.setUser({
                     id: userId
@@ -160,6 +162,8 @@ export default {
             try {
                 const response = await this.$axios.post('/api/register', {data: this.register})
                 const { data:{message} } = response
+
+                this.$refs.formRegister.reset()
                 this.response.type = 'success'
                 this.response.message = message
                 setTimeout(() => {

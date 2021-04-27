@@ -1,6 +1,7 @@
 require('dotenv-safe').config()
 
 const crypto = require('crypto')
+const formidable = require('formidable')
 
 const jwt = require('jsonwebtoken')
 const express = require('express')
@@ -149,7 +150,8 @@ app.post('/player', async (req, res) => {
     martialSkills,
     specialTechniques,
     noblePhantasms,
-    userId
+    userId,
+    extraInfos
   } = req.body
 
   const playerRepo = playerRepository(db)
@@ -165,6 +167,19 @@ app.post('/player', async (req, res) => {
     principle,
     class: job,
     valorPoints,
+    species: extraInfos.species,
+    sex: extraInfos.sex,
+    height: extraInfos.height ? extraInfos.height.unit : 0,
+    weight: extraInfos.weight ? extraInfos.weight.unit : 0,
+    age: extraInfos.age ? extraInfos.age.unit : 0,
+    locality: extraInfos.locality,
+    bloodType: extraInfos.bloodType,
+    birthday: extraInfos.birthday,
+    selfDenomination: extraInfos.addressSelfAs,
+    talents: extraInfos.talents,
+    likes: extraInfos.likes,
+    dislikes: extraInfos.dislikes,
+    abstract: extraInfos.abstract,
     userId
   })
 

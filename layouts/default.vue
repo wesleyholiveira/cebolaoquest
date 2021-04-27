@@ -56,4 +56,10 @@ html, body {height: 100%; position: relative}
   margin-top: 90px;
   height: 100%;
 }
+.theme--dark.v-stepper {
+  background-color: transparent !important;
+}
+.v-stepper__header {
+  background-color: #303030 !important;
+}
 </style>

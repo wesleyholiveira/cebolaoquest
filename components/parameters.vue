@@ -16,7 +16,6 @@
         <a @click="turnToDeficient()" v-if="isTheCounterSynergy">
             <v-badge content="-" color="red darken-1" class="badge minus"></v-badge>
         </a>
-        {{statusPoints}}
         <v-btn @click="addParameter()" color="transparent" depressed>+</v-btn>
         <v-btn @click="subParameter()" color="transparent" depressed>-</v-btn>
     </div>

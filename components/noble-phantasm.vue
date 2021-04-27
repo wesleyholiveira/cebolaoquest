@@ -1,72 +1,73 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12">
-        <h2>Fantasma Nobre: {{index + 1}}</h2>
-        Valors: {{valorPoints[index]}}
-      </v-col>
-      <v-col cols="12" lg="6" sm="12">
-        <v-text-field
-          v-model="np.name"
-          label="Nome"
-        />
-      </v-col>
-      <v-col cols="12" lg="6" sm="12">
-        <v-combobox
-          v-model="np.type"
-          :items="data.type"
-          item-text="name"
-          label="Tipo"
-          @change="selectedSpecialStrike = null;valorSkills = data.valorSkills"
-        />
-      </v-col>
-      <v-col cols="12" lg="6" sm="12">
-        <v-combobox
-          v-model="selectedSpecialStrike"
-          :items="!!np.type ? np.type.specialStrikes : []"
-          chips
-          item-text="name"
-          label="Golpe Especial"
-          deletable-chips
-        >
-            <template v-slot:no-data>
-                Nenhum tipo de fantasma nobre foi selecionado.
-            </template>
-        </v-combobox>
-      </v-col>
-      <v-col cols="12" lg="6" sm="12" style="text-align: left">
-        <v-combobox
-          v-if="!isOverloaded"
-          v-model="np.effects"
-          :rules="rules.effect"
-          :items="valorSkills"
-          chips
-          item-text="name"
-          label="Efeitos"
-          multiple
-          icon
-          deletable-chips
-        />
-        <v-combobox
-          v-if="isOverloaded"
-          v-model="np.effects"
-          :rules="rules.effect"
-          :items="valorSkills"
-          chips
-          item-text="name"
-          label="Efeitos"
-          multiple
-          icon
-          deletable-chips
-          class="warn"
-        />
+  <v-fade-transition>
+    <v-container>
+      <v-row class="text-center">
+        <v-col cols="12">
+          <h2>Fantasma Nobre: {{index + 1}}</h2>
+        </v-col>
+        <v-col cols="12" lg="6" sm="12">
+          <v-text-field
+            v-model="np.name"
+            label="Nome"
+          />
+        </v-col>
+        <v-col cols="12" lg="6" sm="12">
+          <v-combobox
+            v-model="np.type"
+            :items="data.type"
+            item-text="name"
+            label="Tipo"
+            @change="selectedSpecialStrike = null;valorSkills = data.valorSkills"
+          />
+        </v-col>
+        <v-col cols="12" lg="6" sm="12">
+          <v-combobox
+            v-model="selectedSpecialStrike"
+            :items="!!np.type ? np.type.specialStrikes : []"
+            chips
+            item-text="name"
+            label="Golpe Especial"
+            deletable-chips
+          >
+              <template v-slot:no-data>
+                  Nenhum tipo de fantasma nobre foi selecionado.
+              </template>
+          </v-combobox>
+        </v-col>
+        <v-col cols="12" lg="6" sm="12" style="text-align: left">
+          <v-combobox
+            v-if="!isOverloaded"
+            v-model="np.effects"
+            :rules="rules.effect"
+            :items="valorSkills"
+            chips
+            item-text="name"
+            label="Efeitos"
+            multiple
+            icon
+            deletable-chips
+          />
+          <v-combobox
+            v-if="isOverloaded"
+            v-model="np.effects"
+            :rules="rules.effect"
+            :items="valorSkills"
+            chips
+            item-text="name"
+            label="Efeitos"
+            multiple
+            icon
+            deletable-chips
+            class="warn"
+          />
 
-        <span v-if="isOverloaded" class="warn">
-          Você está sobrecarregado e como consequência seu armamento lendário terá: {{dmgDown}} a menos de dano
-        </span>
-      </v-col>
-    </v-row>
-  </v-container>
+          <span v-if="isOverloaded" class="warn">
+            Você está sobrecarregado e como consequência seu armamento lendário terá: {{dmgDown}} a menos de dano
+          </span>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-fade-transition>
 </template>
 
 <script>
@@ -168,24 +169,30 @@ export default {
           this.valorSkills = this.valorSkills.concat(typeValorsWithoutInvalidNames)
         }
   
-        if (type.name == 'Mágico') {
+        if (type.name == 'Mágico' && !this.previouslyMagical) {
           this.valors += 1
           this.valorCapData += 1
+          console.log(this.valors)
   
           valorPoints[index] = this.valors
-          this.previouslyMagical = true
+          valorPoints = [...valorPoints]
           this.$emit('updateValorPoints', valorPoints)
+          this.$emit('updateValorCap', this.valorCapData)
+          this.previouslyMagical = true
           return
         }
         
         if (this.previouslyMagical) {
           this.valors -= 1
-          this.valorCap -= 1
+          this.valorCapData -= 1
   
           valorPoints[index] = this.valors
-          this.previouslyMagical = false
+          valorPoints = [...valorPoints]
           this.$emit('updateValorPoints', valorPoints)
+          this.$emit('updateValorCap', this.valorCapData)
         }
+
+        this.previouslyMagical = false
       }
     },
     'np.effects': function(effects) {

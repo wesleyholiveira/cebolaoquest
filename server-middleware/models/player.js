@@ -10,5 +10,18 @@ module.exports = (player) => ({
     principle: player.principle,
     class: player.class,
     valorPoints: player.valorPoints,
+    species: player.species,
+    sex: player.sex,
+    height: player.height,
+    weight: player.weight,
+    locality: player.locality,
+    age: player.age,
+    bloodType: player.bloodType,
+    birthday: player.birthday,
+    selfDenomination: player.selfDenomination,
+    talents: player.talents,
+    likes: player.likes,
+    dislikes: player.dislikes,
+    abstract: player.abstract,
     userId: player.userId
 })

@@ -33,6 +33,7 @@ module.exports = (db) => ({
                 if (err) {
                     if (err.sqlState == "23000") return reject('Usuário já cadastrado com este email/ou usuário')
                     if (err) return reject(err)
+                    return
                 }
                 
                 console.log('A new user was inserted successfully')

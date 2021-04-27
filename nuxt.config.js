@@ -3,7 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   server: {
     port: 3000,
-    // host: '10.243.62.152'
+    host: '10.243.62.152'
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -22,7 +22,9 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/tiptap-vuetify.js', mode: 'client' }
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -77,14 +79,16 @@ export default {
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    transpile: ['vuetify/lib', 'tiptap-vuetify']
+  },
 
   axios: {
-    // baseUrl: 'http://10.243.62.152:3000'
+    baseUrl: 'http://10.243.62.152:3000'
   },
 
   auth: {
-    // baseUrl: 'http://10.243.62.152:3000',
+    baseUrl: 'http://10.243.62.152:3000',
     strategies: {
       local: {
         token: {

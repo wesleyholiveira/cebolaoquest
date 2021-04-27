@@ -18,10 +18,23 @@ CREATE TABLE IF NOT EXISTS players (
     meritPoints SMALLINT NOT NULL,
     alignment ENUM('Bom', 'Neutro', 'Maligno') NOT NULL,
     principle ENUM('Leal', 'Neutro', 'Caótico') NOT NULL,
-    class ENUM('Archer', 'Assassin', 'Caster', 'Berserker', 'Foreigner', 'Rider', 'Lancer', 'Avenger', 'Saber', 'Shielder') NOT NULL,
+    class ENUM('Archer', 'Assassin', 'Caster (Criação de Território)', 'Caster (Magia Branca)', 'Berserker', 'Foreigner', 'Rider', 'Lancer', 'Avenger', 'Saber', 'Shielder') NOT NULL,
+    species VARCHAR(40),
+    sex ENUM('Masculino', 'Feminino'),
+    weight DECIMAL(5, 2),
+    height DECIMAL(5, 2),
+    locality VARCHAR(50),
+    age SMALLINT,
+    blood_type CHAR(2),
+    birthday DATE,
+    self_denomination VARCHAR(50),
+    talents TINYTEXT,
+    likes TINYTEXT,
+    dislikes TINYTEXT,
+    abstract MEDIUMTEXT,
     user_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`user_id`) REFERENCES users (`id`)
+    FOREIGN KEY (`user_id`) REFERENCES users (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS player_attributes (
@@ -30,7 +43,7 @@ CREATE TABLE IF NOT EXISTS player_attributes (
     `rank` CHAR(3) NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`player_id`) REFERENCES players (`id`)
+    FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS player_stratagems (
@@ -38,7 +51,7 @@ CREATE TABLE IF NOT EXISTS player_stratagems (
     name VARCHAR(50) NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`player_id`) REFERENCES players (`id`)
+    FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS player_negative_traits (
@@ -46,7 +59,7 @@ CREATE TABLE IF NOT EXISTS player_negative_traits (
     name VARCHAR(50) NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`player_id`) REFERENCES players (`id`)
+    FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS player_martial_skills (
@@ -54,7 +67,7 @@ CREATE TABLE IF NOT EXISTS player_martial_skills (
     name VARCHAR(50) NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`player_id`) REFERENCES players (`id`)
+    FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS player_special_techniques (
@@ -62,7 +75,7 @@ CREATE TABLE IF NOT EXISTS player_special_techniques (
     name VARCHAR(50) NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`player_id`) REFERENCES players (`id`)
+    FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS player_noble_phantasms (
@@ -70,7 +83,7 @@ CREATE TABLE IF NOT EXISTS player_noble_phantasms (
     name VARCHAR(50) NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`player_id`) REFERENCES players (`id`)
+    FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS player_noble_phantasm_types (
@@ -78,7 +91,7 @@ CREATE TABLE IF NOT EXISTS player_noble_phantasm_types (
     name VARCHAR(50) NOT NULL,
     np_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`np_id`) REFERENCES player_noble_phantasms (`id`)
+    FOREIGN KEY (`np_id`) REFERENCES player_noble_phantasms (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS player_noble_phantasm_special_strikes (
@@ -86,7 +99,7 @@ CREATE TABLE IF NOT EXISTS player_noble_phantasm_special_strikes (
     name VARCHAR(50) NOT NULL,
     np_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`np_id`) REFERENCES player_noble_phantasms (`id`)
+    FOREIGN KEY (`np_id`) REFERENCES player_noble_phantasms (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS player_noble_phantasm_effects (
@@ -95,5 +108,12 @@ CREATE TABLE IF NOT EXISTS player_noble_phantasm_effects (
     valors SMALLINT NOT NULL,
     np_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    FOREIGN KEY (`np_id`) REFERENCES player_noble_phantasms (`id`)
+    FOREIGN KEY (`np_id`) REFERENCES player_noble_phantasms (`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS player_images (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    img VARCHAR(255) NOT NULL,
+    player_id INT NOT NULL,
+    FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
