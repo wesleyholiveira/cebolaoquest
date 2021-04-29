@@ -15,6 +15,8 @@ module.exports = (db) => ({
                         npModels[0].player_id
                     ], (err, result) => {
                         if (err) reject(err)
+
+                        console.log('Some news noble phantasms was inserted successfully')
                         return resolve(result.map(el => el.id))
                     })
                 }))

@@ -10,6 +10,7 @@ module.exports = (db) => ({
             db.query(query, (err, result) => {
                 if (err) return reject(err)
 
+                console.log('A new negative trait was inserted successfully')
                 return resolve(negativeTraitsModels)
             })
         })

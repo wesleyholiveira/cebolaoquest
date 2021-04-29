@@ -1,10 +1,11 @@
 require('dotenv-safe').config()
 
+const fs = require('fs')
 const crypto = require('crypto')
-const formidable = require('formidable')
 
 const jwt = require('jsonwebtoken')
 const express = require('express')
+const formidable = require('formidable')
 const app = express()
 
 const map = require('./utils/mapModel')
@@ -32,6 +33,11 @@ const npTypeRepository = require('./repositories/npTypeRepository')
 const npSpecialStrikeRepository = require('./repositories/npSpecialStrikeRepository')
 const npEffectRepository = require('./repositories/npEffectRepository')
 const userRepository = require('./repositories/userRepository')
+const image = require('./models/image')
+const imageRepository = require('./repositories/imageRepository')
+const category = require('./models/category')
+const categoryRepository = require('./repositories/categoryRepository')
+const e = require('express')
 
 app.use(express.json())
 app.use(function (req, res, next) {
@@ -78,6 +84,169 @@ app.get('/user', async (req, res) => {
       token
     }
   }).end()
+})
+
+app.get('/player/:playerId/user/:userId', async (req, res) => {
+
+  try {
+    let totalMerits = 0
+    const results = await playerRepository(db).getByPlayerAndUserID(req.params)
+    const player = results[0]
+    const stratagems = []
+    const negativeTraits = []
+    const martialSkills = []
+    const specialTechniques = []
+    const referenceImages = []
+
+    results.forEach(el => {
+      let stratMerits = 0
+      let negativeMerits = 0
+      let martialMerits = 0
+      let specialMerits = 0
+
+      if (el.stratagems_merits != null) {
+        stratMerits = el.stratagems_merits
+        stratagems.push({
+          id: el.stratagems_id,
+          name: el.stratagems_name,
+          merits: stratMerits,
+          player_id: el.stratagems_player_id
+        })
+      }
+
+      if (el.negative_traits_merits != null) {
+        negativeMerits = el.negative_traits_merits
+        negativeTraits.push({
+          id: el.negativeTraits_id,
+          name: el.negative_traits_name,
+          merits: negativeMerits
+        })
+      }
+
+      if (el.martial_skills_merits != null) {
+        martialMerits = el.martial_skills_merits
+        martialSkills.push({
+          id: el.martial_skills_id,
+          name: el.martial_skills_name,
+          merits: martialMerits
+        })
+      }
+
+      if (el.special_techniques_merits != null) {
+        specialMerits = el.special_techniques_merits
+        specialTechniques.push({
+          id: el.special_techniques_id,
+          name: el.special_techniques_name,
+          merits: specialMerits
+        })
+      }
+
+      if (el.img_name != null) {
+        referenceImages.push({
+          id: el.img_id,
+          img: el.img_name,
+          player_id: el.img_
+        })
+      }
+
+      totalMerits += (
+          stratMerits +
+          martialMerits +
+          specialMerits
+      ) - negativeMerits
+    })
+
+    const {
+      id,
+      name,
+      principle,
+      alignment,
+      level,
+      exp,
+      funds,
+      proficiencyPoints,
+      statusPoints,
+      species,
+      sex,
+      age,
+      height,
+      weight,
+      birthday,
+      locality,
+      blood_type,
+      self_denomination,
+      likes,
+      dislikes,
+      abstract,
+      talents,
+      // meritPoints
+    } = player
+
+    const currentClass = player['class']
+    const user = {
+      id,
+      name,
+      principle,
+      alignment,
+      level,
+      exp,
+      funds,
+      meritPoints: totalMerits,
+      statusPoints,
+      parameter: {},
+      valorPoints: [],
+      noblePhantasms: [],
+      proficiencyPoints,
+      currentClass,
+      stratagems,
+      negativeTraits,
+      martialSkills,
+      specialTechniques,
+      extraInfos: {
+        species,
+        sex,
+        age: {
+          formattedUnit: `${age} anos`,
+          unit: player.age
+        },
+        height: {
+          formattedUnit: `${height.toFixed(2).replace('.', ',')} m`,
+          unit: player.height
+        },
+        weight: {
+          formattedWeight: `${weight} kg`,
+          unit: player.weight
+        },
+        birthday,
+        locality,
+        bloodType: blood_type,
+        addressSelfAs: self_denomination,
+        likes,
+        dislikes,
+        abstract,
+        talents,
+        stories: [
+          {
+            category: '',
+            content: '',
+            subcategory: false,
+            children: [],
+          },
+        ],
+        referenceImages: []
+      }
+    }
+
+    console.log(user)
+    
+    return res.json({
+      user
+    }).end()
+  
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({err}).end()
+  }
 })
 
 app.post('/register', async (req, res) => {
@@ -133,6 +302,7 @@ app.post('/login', async (req, res) => {
 
 app.post('/player', async (req, res) => {
   const { 
+    id,
     name,
     level,
     exp,
@@ -156,6 +326,7 @@ app.post('/player', async (req, res) => {
 
   const playerRepo = playerRepository(db)
   const player = playerModel({
+    id,
     name,
     level,
     exp,
@@ -194,92 +365,200 @@ app.post('/player', async (req, res) => {
       }
     )
 
-    const attributeModels = attributes.flatMap(attribute => map(
-      attribute,
-      ([key, value]) =>
-        attributeModel({
-          name: key,
-          rank: value,
-          player_id: playerId
+    if (attributes) {
+      const attributeModels = attributes.flatMap(attribute => map(
+        attribute,
+        ([key, value]) =>
+          attributeModel({
+            id: null,
+            name: key,
+            rank: value,
+            player_id: playerId
+          }
+        )
+      ))
+      
+      if (attributeModels.length > 0) {
+        await attributeRepository(db).insertAll(attributeModels)
+      }
+    }
+
+    if (stratagems) {
+      const stratagemsModels = map(stratagems, createModel(stratagemModel))
+      if (stratagemsModels.length > 0) {
+        await stratagemRepository(db).insertAll(stratagemsModels)
+      }
+    }
+
+    if (negativeTraits) {
+      const negativeTraitModels = map(negativeTraits, createModel(negativeTraitModel))
+      if (negativeTraitModels.length > 0) {
+        await negativeTraitsRepository(db).insertAll(negativeTraitModels)
+      }
+    }
+
+    if (martialSkills) {
+      const martialSkillModels = map(martialSkills, createModel(martialSkillModel))
+      if (martialSkillModels.length > 0) {
+        await martialSkillRepository(db).insertAll(martialSkillModels)
+      }
+    }
+
+    if (specialTechniques) {
+      const specialTechniqueModels = map(specialTechniques, createModel(specialTechniqueModel))
+      if (specialTechniqueModels.length > 0) {
+        await specialTechniqueRepository(db).insertAll(specialTechniqueModels)
+      }
+    }
+
+    if (noblePhantasms) {
+      const noblePhantasmsModels = map(noblePhantasms, createModel(npModel))
+      if (noblePhantasmsModels.length > 0) {
+        const npIds = await npRepository(db).insertAll(noblePhantasmsModels)
+        const npTypes = noblePhantasms.map(el => el.type)
+        const npSpecialStrikes = noblePhantasms.map(el => el.specialStrike).filter(el => el != undefined)
+        const npEffects = noblePhantasms.flatMap((el, i) => ({
+          id: null,
+          effect: el.effects,
+          np_id: npIds[i]
+        }))
+  
+        if (npTypes.length > 0) {
+          const npTypeModels = npTypes.map((t, i) => npTypeModel({
+            id: null,
+            name: t.name || '',
+            np_id: npIds[i]
+          }))
+  
+          await npTypeRepository(db).insertAll(npTypeModels)
         }
-      )
-    ))
-
-    const stratagemsModels = map(stratagems, createModel(stratagemModel))
-    const negativeTraitModels = map(negativeTraits, createModel(negativeTraitModel))
-    const martialSkillModels = map(martialSkills, createModel(martialSkillModel))
-    const specialTechniqueModels = map(specialTechniques, createModel(specialTechniqueModel))
-    const noblePhantasmsModels = map(noblePhantasms, createModel(npModel))
-
-    if (attributeModels.length > 0) {
-      await attributeRepository(db).insertAll(attributeModels)
+  
+        if (npSpecialStrikes.length > 0) {
+          const npSpecialStrikeModels = npSpecialStrikes.map((s, i) => npSpecialStrikeModel({
+            id: null,
+            name: s || '',
+            np_id: npIds[i]
+          }))
+  
+          await npSpecialStrikeRepository(db).insertAll(npSpecialStrikeModels)
+        }
+  
+        if (npEffects.length > 0) {
+          const npEffectModels = npEffects.flatMap(e => e.effect.map(ef => npEffectModel({
+            id: null,
+            name: ef.name || '',
+            valors: ef.valors,
+            np_id: e.np_id
+          })))
+  
+          await npEffectRepository(db).insertAll(npEffectModels)
+        }
+      }
     }
 
-    if (stratagemsModels.length > 0) {
-      await stratagemRepository(db).insertAll(stratagemsModels)
-    }
-
-    if (negativeTraitModels.length > 0) {
-      await negativeTraitsRepository(db).insertAll(negativeTraitModels)
-    }
-
-    if (martialSkillModels.length > 0) {
-      await martialSkillRepository(db).insertAll(martialSkillModels)
-    }
-
-    if (specialTechniqueModels.length > 0) {
-      await specialTechniqueRepository(db).insertAll(specialTechniqueModels)
-    }
-
-    if (noblePhantasmsModels.length > 0) {
-      const npIds = await npRepository(db).insertAll(noblePhantasmsModels)
-      const npTypes = noblePhantasms.map(el => el.type)
-      const npSpecialStrikes = noblePhantasms.map(el => el.specialStrike).filter(el => el != undefined)
-      const npEffects = noblePhantasms.flatMap((el, i) => ({
-        effect: el.effects,
-        np_id: npIds[i]
+    if (extraInfos.stories) {
+      const categoryModels = extraInfos.stories.flatMap(el => category({
+        id: null,
+        name: el.category,
+        content: el.content,
+        categoriesJson: el,
+        player_id: playerId
       }))
-
-      if (npTypes.length > 0) {
-        const npTypeModels = npTypes.map((t, i) => npTypeModel({
-          name: t.name || '',
-          np_id: npIds[i]
-        }))
-
-        await npTypeRepository(db).insertAll(npTypeModels)
-      }
-
-      if (npSpecialStrikes.length > 0) {
-        const npSpecialStrikeModels = npSpecialStrikes.map((s, i) => npSpecialStrikeModel({
-          name: s || '',
-          np_id: npIds[i]
-        }))
-
-        await npSpecialStrikeRepository(db).insertAll(npSpecialStrikeModels)
-      }
-
-      if (npEffects.length > 0) {
-        const npEffectModels = npEffects.flatMap(e => e.effect.map(ef => npEffectModel({
-          name: ef.name || '',
-          valors: ef.valors,
-          np_id: e.np_id
-        })))
-
-        await npEffectRepository(db).insertAll(npEffectModels)
+  
+      if (categoryModels.filter(cat => cat.name != '').length > 0) {
+        await categoryRepository(db).insertAll(categoryModels)
       }
     }
     
     return res.json({
       statusMessage: 'success',
-      data: 'Uma nova ficha foi cadastrada com sucesso'
+      data: 'Uma nova ficha foi cadastrada com sucesso',
+      playerId
     }).end()
 
   }).catch(error => {
-    return res.json({
+    console.log(error)
+    return res.status(500).json({
       statusMessage: 'error',
       data: `Ocorreu um problema ao tentar cadastrar uma nova ficha: ${error}`
     }).end()
   })
+})
+
+app.post('/upload/:playerId', async (req, res) => {
+    let playerId = null
+    const form = new formidable.IncomingForm({multiples: true})
+
+    if ({playerId} = req.params) {
+      const result = await playerRepository(db).getById(playerId)
+
+      if (result.length < 1) {
+        return res.status(400).json({
+          data: {
+            message: 'ID do usuário inválido',
+            statusMessage: 'error'
+          }
+        }).end()
+      }
+
+      const uploadPromise = () => new Promise((resolve, reject) => {
+        form.parse(req, async (err, fields, files) => {
+          if (err) return reject(err)
+
+          if (files.referenceImages) {
+            if (!files.referenceImages.length) {
+              files.referenceImages = [files.referenceImages]
+            }
+        
+            return resolve(files.referenceImages.map(f => {
+              const oldPath = f.path
+              const newPath = `./uploads/${f.name}`
+        
+              fs.rename(oldPath, newPath, (err) => {
+                if (err) throw err
+              })
+  
+              return image({
+                id: null,
+                img: f.name,
+                player_id: playerId
+              })
+            }))
+          } else {
+            return res.end()
+          }
+        })
+      })
+
+    try {
+      const imgModels = await uploadPromise()
+      await imageRepository(db).insertAll(imgModels)
+
+      return res.json({
+        data: {
+          message: 'Upload de imagens efetuado com sucesso',
+          statusMessage: 'success'
+        }
+      })
+    } catch (err) {
+      console.log(err)
+      return res.status(400).json({
+        data: {
+          message: err,
+          statusMessage: 'error'
+        }
+      }).end()
+    } finally {
+      return res.end()
+    }
+  }
+
+  return res.status(400).json({
+    data: {
+      message: 'ID do usuário inválido',
+      statusMessage: 'error'
+    }
+  }).end()
 })
 
 module.exports = app

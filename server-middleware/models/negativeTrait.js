@@ -1,4 +1,6 @@
-module.exports = (negativeTraits) => ({
-    name: negativeTraits.name,
-    player_id: negativeTraits.player_id
+module.exports = (negativeTrait) => ({
+    id: negativeTrait.id,
+    name: negativeTrait.name,
+    merits: negativeTrait.merits,
+    player_id: negativeTrait.player_id
 })

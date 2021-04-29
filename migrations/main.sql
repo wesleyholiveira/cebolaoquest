@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS player_attributes (
 CREATE TABLE IF NOT EXISTS player_stratagems (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
+    merits SMALLINT NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
@@ -57,6 +58,7 @@ CREATE TABLE IF NOT EXISTS player_stratagems (
 CREATE TABLE IF NOT EXISTS player_negative_traits (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
+    merits SMALLINT NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
@@ -65,6 +67,7 @@ CREATE TABLE IF NOT EXISTS player_negative_traits (
 CREATE TABLE IF NOT EXISTS player_martial_skills (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
+    merits SMALLINT NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
@@ -73,6 +76,7 @@ CREATE TABLE IF NOT EXISTS player_martial_skills (
 CREATE TABLE IF NOT EXISTS player_special_techniques (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
+    merits SMALLINT NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
@@ -82,6 +86,7 @@ CREATE TABLE IF NOT EXISTS player_noble_phantasms (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     player_id INT NOT NULL,
+    merits SMALLINT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
@@ -114,6 +119,15 @@ CREATE TABLE IF NOT EXISTS player_noble_phantasm_effects (
 CREATE TABLE IF NOT EXISTS player_images (
     id INT PRIMARY KEY AUTO_INCREMENT,
     img VARCHAR(255) NOT NULL,
+    player_id INT NOT NULL,
+    FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS player_categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL,
+    content TEXT NOT NULL,
+    categories_json JSON NOT NULL,
     player_id INT NOT NULL,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );

@@ -10,6 +10,7 @@ module.exports = (db) => ({
             db.query(query, (err, result) => {
                 if (err) return reject(err)
 
+                console.log('Some news martial skills were inserted successfully')
                 return resolve(martialSkillModels)
             })
         })

@@ -10,6 +10,7 @@ module.exports = (db) => ({
             db.query(query, (err, result) => {
                 if (err) return reject(err)
 
+                console.log('Some news special techiniques were inserted successfully')
                 return resolve(specialTechniqueModels)
             })
         })

@@ -17,7 +17,7 @@
             :items="data.type"
             item-text="name"
             label="Tipo"
-            @change="selectedSpecialStrike = null;valorSkills = data.valorSkills"
+            @change="selectedSpecialStrike = null;valorSkills = data.valorSkills;updateValorAndValorCap($event)"
           />
         </v-col>
         <v-col cols="12" lg="6" sm="12">
@@ -106,7 +106,7 @@ export default {
 
   methods: {
 
-    calculateValorsFromArray: (data) => data.map(el => el.valors).reduce((acc, merit) => acc + merit),
+    calculateValorsFromArray: (data) => data.map(el => el.valors).reduce((acc, valor) => acc + valor),
 
     validateMaxPoints(v, points, cap) {
       if ((
@@ -139,19 +139,61 @@ export default {
     },
 
     incrementValors(removedItem) {
+      let valorPoints = this.valorPoints
       if (!removedItem || typeof removedItem !== 'object') {
         return
       }
-    
+
+          
       this.valors += removedItem.valors
+      valorPoints[this.index] = this.valors
+      valorPoints = [...valorPoints]
+
+      this.$emit('updateValorPoints', valorPoints)
+      this.$emit('updateValorCap', this.valorCapData)
     },
 
     decrementValors(addedItem) {
+      let valorPoints = this.valorPoints
       if (!addedItem || typeof addedItem !== 'object') {
         return
       }
       
       this.valors -= addedItem.valors
+      valorPoints[this.index] = this.valors
+      valorPoints = [...valorPoints]
+
+      this.$emit('updateValorPoints', valorPoints)
+      this.$emit('updateValorCap', this.valorCapData)
+    },
+
+    updateValorAndValorCap(type) {
+      let valorPoints = this.valorPoints
+      const index = this.index
+
+      if (type.name == 'Mágico' && !this.previouslyMagical) {
+        this.valors += 1
+        this.valorCapData += 1
+
+        valorPoints[index] = this.valors
+        valorPoints = [...valorPoints]
+        this.$emit('updateValorPoints', valorPoints)
+        this.$emit('updateValorCap', this.valorCapData)
+        this.previouslyMagical = true
+        return
+      }
+
+      if (this.previouslyMagical) {
+        this.valors -= 1
+        this.valorCapData -= 1
+
+        valorPoints[index] = this.valors
+        valorPoints = [...valorPoints]
+
+        this.$emit('updateValorPoints', valorPoints)
+        this.$emit('updateValorCap', this.valorCapData)
+      }
+      this.previouslyMagical = false
     }
   },
 
@@ -160,50 +202,20 @@ export default {
       if (type) {
         const typeValors = type.valorSkills
         this.valorSkills = this.data.valorSkills
-      
-        let valorPoints = this.valorPoints
-        const index = this.index
   
-        if (typeValors.length > 0) {
-          const typeValorsWithoutInvalidNames = type.valorSkills.filter(el => el.name != '')
-          this.valorSkills = this.valorSkills.concat(typeValorsWithoutInvalidNames)
+        if (typeValors) {
+          if (typeValors.length > 0) {
+            const typeValorsWithoutInvalidNames = type.valorSkills.filter(el => el.name != '')
+            this.valorSkills = this.valorSkills.concat(typeValorsWithoutInvalidNames)
+          }
         }
-  
-        if (type.name == 'Mágico' && !this.previouslyMagical) {
-          this.valors += 1
-          this.valorCapData += 1
-          console.log(this.valors)
-  
-          valorPoints[index] = this.valors
-          valorPoints = [...valorPoints]
-          this.$emit('updateValorPoints', valorPoints)
-          this.$emit('updateValorCap', this.valorCapData)
-          this.previouslyMagical = true
-          return
-        }
-        
-        if (this.previouslyMagical) {
-          this.valors -= 1
-          this.valorCapData -= 1
-  
-          valorPoints[index] = this.valors
-          valorPoints = [...valorPoints]
-          this.$emit('updateValorPoints', valorPoints)
-          this.$emit('updateValorCap', this.valorCapData)
-        }
-
-        this.previouslyMagical = false
       }
     },
     'np.effects': function(effects) {
-      const valorPoints = this.valorPoints
       this.backupEffects = this.decideValorsOperation(
         effects,
         this.backupEffects
       )
-
-      valorPoints[this.index] = this.valors
-      this.$emit('updateValorPoints', valorPoints)
     },
     selectedSpecialStrike(specialStrike) {
       this.$emit('updateSpecialStrike', specialStrike)

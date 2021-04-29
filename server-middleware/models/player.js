@@ -1,4 +1,5 @@
 module.exports = (player) => ({
+    id: player.id,
     name: player.name,
     level: player.level,
     exp: player.exp,

@@ -53,7 +53,7 @@ export default {
 
     computed: {
         isTheCounterSynergy() {
-            const result = this.negativeTraits.filter(
+            const result = (this.negativeTraits) && this.negativeTraits.filter(
                 e => e.name == 'Contra-sinergia'
             ).length > 0
 
@@ -140,8 +140,6 @@ export default {
 
                 this.parameters[i] = newParam
                 this.parameters = [...p]
-
-                console.log(this.parameters, newParam)
 
                 this.$emit('updateParameters', newParam)
                 this.$emit('updateProficiencyPoints', proficiencyPoints)

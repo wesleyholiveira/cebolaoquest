@@ -11,6 +11,7 @@ module.exports = (db) => ({
             db.query(query, (err, result) => {
                 if (err) return reject(err)
 
+                console.log('A new noble phantasm effect was inserted successfully')
                 return resolve(npEffectModels)
             })
         })

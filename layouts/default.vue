@@ -25,7 +25,7 @@
               <v-list-item-title>Cadastrar</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item href="/">
+          <v-list-item href="/ficha/listar">
             <v-list-item-icon>
               <v-icon>mdi-clipboard-outline</v-icon>
             </v-list-item-icon>

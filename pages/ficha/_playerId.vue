@@ -1,7 +1,6 @@
 <template>
   <ficha
     :data="data"
-    :editable="false"
   />
 </template>
 
@@ -22,11 +21,7 @@ export default {
       proficiencyPoints: 1,
       parameters: {},
       valorPoints: [],
-      stratagems: [],
       noblePhantasms: [],
-      specialTechniques: [],
-      martialSkills: [],
-      negativeTraits: [],
       extraInfos: {
         stories: [
           {
@@ -39,6 +34,25 @@ export default {
         referenceImages: []
       }
     },
-  })
+  }),
+  async fetch() {
+    const { playerId } = this.$route.params
+    const { id, token } = this.$auth.user
+
+    const url = `/api/player/${playerId}/user/${id}`
+    const { data } = await this.$axios.get(url, {
+      headers: {
+        Authorization: token
+      }
+    })
+    
+    if (data) {
+      
+      this.data = {
+        ...data.user
+      }
+    }
+  },
+  fetchOnServer: false,
 }
 </script>
