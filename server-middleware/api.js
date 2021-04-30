@@ -92,6 +92,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
     let totalMerits = 0
     const results = await playerRepository(db).getByPlayerAndUserID(req.params)
     const player = results[0]
+    const parameters = {}
     const stratagems = []
     const negativeTraits = []
     const martialSkills = []
@@ -103,6 +104,12 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       let negativeMerits = 0
       let martialMerits = 0
       let specialMerits = 0
+
+      if (el.attribute_name != null) {
+        const name = el.attribute_name
+        const rank = el.attribute_rank
+        parameters[name] = rank
+      } 
 
       if (el.stratagems_merits != null) {
         stratMerits = el.stratagems_merits
@@ -117,9 +124,10 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       if (el.negative_traits_merits != null) {
         negativeMerits = el.negative_traits_merits
         negativeTraits.push({
-          id: el.negativeTraits_id,
+          id: el.negative_traits_id,
           name: el.negative_traits_name,
-          merits: negativeMerits
+          merits: negativeMerits,
+          player_id: el.negative_traits_player_id
         })
       }
 
@@ -128,7 +136,8 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
         martialSkills.push({
           id: el.martial_skills_id,
           name: el.martial_skills_name,
-          merits: martialMerits
+          merits: martialMerits,
+          player_id: el.martial_skills_player_id
         })
       }
 
@@ -137,15 +146,16 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
         specialTechniques.push({
           id: el.special_techniques_id,
           name: el.special_techniques_name,
-          merits: specialMerits
+          merits: specialMerits,
+          player_id: special_techniques_player_id
         })
       }
 
       if (el.img_name != null) {
         referenceImages.push({
           id: el.img_id,
-          img: el.img_name,
-          player_id: el.img_
+          img: el.img_img,
+          player_id: el.img_player_id
         })
       }
 
@@ -193,7 +203,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       funds,
       meritPoints: totalMerits,
       statusPoints,
-      parameter: {},
+      parameters,
       valorPoints: [],
       noblePhantasms: [],
       proficiencyPoints,

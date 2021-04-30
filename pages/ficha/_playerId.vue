@@ -47,9 +47,9 @@ export default {
     })
     
     if (data) {
-      
       this.data = {
-        ...data.user
+        ...data.user,
+        id: playerId
       }
     }
   },

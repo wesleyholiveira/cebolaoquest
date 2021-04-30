@@ -13,10 +13,14 @@ module.exports = (db) => ({
         const query = `
             SELECT players.*,
                 DATE_FORMAT(birthday, '%Y-%m-%d') as birthday,
+                attributes.id as attribute_id,
+                attributes.name as attribute_name,
+                attributes.rank as attribute_rank,
+                attributes.player_id as attribute_player_id,
                 stratagems.id as stratagems_id,
                 stratagems.name as stratagems_name,
                 stratagems.merits as stratagems_merits,
-                stratagems.player_id as stratagems_merits_player_id,
+                stratagems.player_id as stratagems_player_id,
                 negative_traits.id as negative_traits_id,
                 negative_traits.name as negative_traits_name,
                 negative_traits.merits as negative_traits_merits,
@@ -29,12 +33,15 @@ module.exports = (db) => ({
                 special_techniques.name as special_techniques_name,
                 special_techniques.merits as special_techniques_merits,
                 special_techniques.player_id as special_techniques_player_id,
-                img.id,
-                img.name,
-                img.img,
-                img.player_id
+                img.id as img_id,
+                img.img as img_img,
+                img.player_id as img_player_id
             FROM
                 players
+            LEFT JOIN
+                player_attributes attributes
+            ON
+                players.id = attributes.player_id
             LEFT JOIN
                 player_stratagems stratagems
             ON
@@ -54,7 +61,7 @@ module.exports = (db) => ({
             LEFT JOIN
                 player_images img
             ON
-                players.id = img.id
+                players.id = img.player_id
             WHERE
                 players.id = ?
             AND
@@ -126,8 +133,8 @@ module.exports = (db) => ({
                 ?,
                 ?,
                 ?
-            ) ON DUPLICATE KEY
-                UPDATE id = VALUES(id),
+            ) ON DUPLICATE KEY UPDATE
+                id = VALUES(id),
                 name = VALUES(name),
                 level = VALUES(level),
                 exp = VALUES(exp),
@@ -190,6 +197,8 @@ module.exports = (db) => ({
                 console.log('A new player was inserted successfully')
                 return resolve(result.insertId)
             })
+
+            console.log(q.sql)
         })
 
     }
