@@ -146,10 +146,7 @@ export default {
                 const { userId } = response.data
                 
                 this.$refs.formLogin.reset()
-                console.log('RESPONSE LOGIN', response)
-                this.$auth.setUser({
-                    id: userId
-                })
+                this.$auth.setUser({id: userId})
             } catch (err) {
                 console.log(err)
                 const { data:{message} } = err.response

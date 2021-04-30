@@ -20,7 +20,37 @@ export default {
       meritPoints: 4,
       statusPoints: 1,
       proficiencyPoints: 1,
-      parameters: {},
+      parameters: [{
+        id: null,
+        name: 'STR',
+        rank: 'D',
+        player_id: null,
+      }, {
+        id: null,
+        name: 'AGI',
+        rank: 'D',
+        player_id: null,
+      }, {
+        id: null,
+        name: 'END',
+        rank: 'D',
+        player_id: null,
+      }, {
+        id: null,
+        name: 'LUK',
+        rank: 'D',
+        player_id: null,
+      }, {
+        id: null,
+        name: 'NP',
+        rank: 'D',
+        player_id: null,
+      }, {
+        id: null,
+        name: 'LUK',
+        rank: 'D',
+        player_id: null,
+      }],
       valorPoints: [],
       stratagems: [],
       noblePhantasms: [],
@@ -30,7 +60,8 @@ export default {
       extraInfos: {
         stories: [
           {
-            category: '',
+            id: null,
+            name: '',
             content: '',
             subcategory: false,
             children: [],

@@ -9,63 +9,40 @@ module.exports = (db) => ({
             })
         })
     },
-    getByPlayerAndUserID: async ({ userId, playerId }) => {
+
+    getNameByUserId: async (id) => {
+        const query = `SELECT id, name FROM players WHERE user_id = ?`;
+        return new Promise((resolve, reject) => {
+            db.query(query, [id], (err, result) => {
+                if (err) return reject(err)
+
+                return resolve(result)
+            })
+        })
+    },
+
+    deleteById: async (id) => {
+        console.log(`Removing (IF EXISTS) the player_id = ${id}`)
+        const query = 'DELETE FROM players WHERE id = ?'
+        return new Promise((resolve, reject) => {
+            db.query(query, [id], (err, results) => {
+                if (err) return reject(err)
+
+                return resolve(results)
+            })
+        })
+    },
+
+    getAllByPlayerAndUserID: async ({ userId, playerId }) => {
         const query = `
-            SELECT players.*,
-                DATE_FORMAT(birthday, '%Y-%m-%d') as birthday,
-                attributes.id as attribute_id,
-                attributes.name as attribute_name,
-                attributes.rank as attribute_rank,
-                attributes.player_id as attribute_player_id,
-                stratagems.id as stratagems_id,
-                stratagems.name as stratagems_name,
-                stratagems.merits as stratagems_merits,
-                stratagems.player_id as stratagems_player_id,
-                negative_traits.id as negative_traits_id,
-                negative_traits.name as negative_traits_name,
-                negative_traits.merits as negative_traits_merits,
-                negative_traits.player_id as negative_traits_player_id,
-                martial_skills.id as martial_skills_id,
-                martial_skills.name as martial_skills_name,
-                martial_skills.merits as martial_skills_merits,
-                martial_skills.player_id as martial_skills_player_id,
-                special_techniques.id as special_techniques_id,
-                special_techniques.name as special_techniques_name,
-                special_techniques.merits as special_techniques_merits,
-                special_techniques.player_id as special_techniques_player_id,
-                img.id as img_id,
-                img.img as img_img,
-                img.player_id as img_player_id
+            SELECT players.*, DATE_FORMAT(birthday, '%Y-%m-%d') as birthday
             FROM
                 players
-            LEFT JOIN
-                player_attributes attributes
-            ON
-                players.id = attributes.player_id
-            LEFT JOIN
-                player_stratagems stratagems
-            ON
-                players.id = stratagems.player_id
-            LEFT JOIN
-                player_negative_traits negative_traits
-            ON
-                players.id = negative_traits.id
-            LEFT JOIN
-                player_martial_skills martial_skills
-            ON
-                players.id = martial_skills.id
-            LEFT JOIN
-                player_special_techniques special_techniques
-            ON
-                players.id = special_techniques.id
-            LEFT JOIN
-                player_images img
-            ON
-                players.id = img.player_id
             WHERE
                 players.id = ?
             AND
-                players.user_id = ?`;
+                players.user_id = ?
+            LIMIT 1`;
         return new Promise((resolve, reject) => {
             db.query(query, [playerId, userId], (err, results) => {
                 if (err) return reject(err)
@@ -195,7 +172,7 @@ module.exports = (db) => ({
                 if (err) return reject(err)
     
                 console.log('A new player was inserted successfully')
-                return resolve(result.insertId)
+                return resolve(result.insertId == 0 ? playerModel.id : result.insertId)
             })
 
             console.log(q.sql)

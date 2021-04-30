@@ -1,6 +1,17 @@
 const insertMultiValuesQuery = require("../utils/insertMultiValuesQuery")
 
 module.exports = (db) => ({
+    getNoblePhantasmsByPlayerId: async (id) => {
+        const query = `SELECT * FROM player_noble_phantasms WHERE player_id = ?`;
+        return new Promise((resolve, reject) => {
+            db.query(query, [id], (err, results) => {
+                if (err) return reject(err)
+
+                return resolve(results)
+            })
+        })
+    },
+    
     insertAll: async(npModels) => {
         console.log(`Inserting on player_noble_phantasms:`)
         console.log(npModels)

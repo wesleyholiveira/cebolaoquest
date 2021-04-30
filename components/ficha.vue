@@ -88,22 +88,20 @@
                 <v-col cols="12">
                   <h2 class="text-center">Parâmetros</h2>
                 </v-col>
-                <template v-for="(p, i) in attributes">
+                <template v-for="(attribute, i) in data.parameters">
                   <v-col :key="i" cols="12" lg="4" md="6" sm="12">
                     <parameters
-                      :attribute="p"
+                      :attribute="attribute"
                       :playerLevel="data.level"
                       :statusPoints="data.statusPoints"
                       :negativeTraits="data.negativeTraits"
                       :proficiencyPoints="data.proficiencyPoints"
                       :defaultProficiencyPoints="defaultProficiencyPoints"
-                      :isNegative="isNegative"
-                      v-on:updateParameters="data.parameters[p] = $event"
+                      v-on:updateParameters="data.parameters[i] = $event"
                       v-on:updateStatusPoints="data.statusPoints = $event"
                       v-on:updateProficiencyPoints="
                         data.proficiencyPoints = $event
                       "
-                      v-on:updateIsNegative="isNegative = $event"
                     ></parameters>
                   </v-col>
                 </template>
@@ -532,6 +530,7 @@ export default {
       'O+',
       'O-',
     ],
+    firstTimeValors: true,
     firstTimeStratagems: true,
     firstTimeMartialSkills: true,
     firstTimeSpecialTechs: true,
@@ -689,7 +688,7 @@ export default {
       }
 
       this.data.noblePhantasms.push({
-        merits: 1
+        merits: 1,
       })
       this.data.valorPoints.push(this.defaultValorPoints)
 
@@ -710,20 +709,6 @@ export default {
     async validate() {
       if (this.$refs.form.validate()) {
         const params = this.data.parameters || []
-        const attrs = Object.keys(params)
-        let fullAttributes = this.attributes
-          .filter((attr) => !attrs.includes(attr))
-          .map((attr) => ({
-            [attr]: 'D',
-          }))
-
-        if (attrs.length > 0) {
-          fullAttributes = fullAttributes.concat(
-            Object.entries(params).map(([key, value]) => ({
-              [key]: value,
-            }))
-          )
-        }
 
         const valorPoints = this.calculateValorPoints()
         const formData = new FormData()
@@ -750,7 +735,7 @@ export default {
             proficiencyPoints: 0,
             alignment: this.data.alignment,
             principle: this.data.principle,
-            attributes: fullAttributes,
+            attributes: params,
             stratagems: this.data.stratagems,
             negativeTraits: this.data.negativeTraits,
             martialSkills: this.data.martialSkills,
@@ -853,7 +838,8 @@ export default {
     decideMeritsOperation(data, backup) {
       if (backup.length > data.length) {
         const tmpData = data.map((el) => el.name)
-        const diff = backup.filter((el) => !tmpData.includes(el.name))
+        let diff = backup.filter((el) => !tmpData.includes(el.name))
+
         this.incrementMerits(diff[0])
         return data
       }
@@ -867,9 +853,9 @@ export default {
     decideMeritsOperationNegativeTraits(data, backup) {
       if (backup.length > data.length) {
         const tmpData = data.map((el) => el.name)
-        const diff = backup.filter((el) => !tmpData.includes(el.name))
-        this.decrementMerits(diff[0])
+        let diff = backup.filter((el) => !tmpData.includes(el.name))
 
+        this.decrementMerits(diff[0])
         return data
       }
 
@@ -903,6 +889,17 @@ export default {
     menu(val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
     },
+    'data.valorPoints'(valors) {
+      if (this.firstTimeValors) {
+        this.data.noblePhantasms.forEach((np, i) =>
+          np.effects.forEach(e => {
+            this.data.valorPoints[i] -= e.valors
+          })
+        )
+
+        this.firstTimeValors = false
+      }
+    },
     'data.stratagems'(stratagems) {
       if (this.firstTimeStratagems) {
         if (stratagems.length > 0) {
@@ -921,7 +918,7 @@ export default {
       }
     },
     'data.martialSkills'(martialSkills) {
-       if (this.firstTimeMartialSkills) {
+      if (this.firstTimeMartialSkills) {
         if (martialSkills.length > 0) {
           martialSkills.forEach(el => this.decrementMerits(el))
         }
@@ -939,7 +936,7 @@ export default {
       }
     },
     'data.specialTechniques'(specialTechniques) {
-       if (this.firstTimeSpecialTechs) {
+      if (this.firstTimeSpecialTechs) {
         if (specialTechniques.length > 0) {
           specialTechniques.forEach(el => this.decrementMerits(el))
         }

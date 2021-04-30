@@ -1,10 +1,8 @@
 <template>
     <div class="parameters">
-        <v-text-field 
-            v-model="parameters[index]"
-            :label="attribute"
-            :rules="negativeRules"
-            :class="negativeRuleErrorClass"
+        <v-text-field
+            v-model="attribute.rank"
+            :label="attribute.name"
             disabled
         />
         <a @click="turnToProficient()">
@@ -16,8 +14,8 @@
         <a @click="turnToDeficient()" v-if="isTheCounterSynergy">
             <v-badge content="-" color="red darken-1" class="badge minus"></v-badge>
         </a>
-        <v-btn @click="addParameter()" color="transparent" depressed>+</v-btn>
-        <v-btn @click="subParameter()" color="transparent" depressed>-</v-btn>
+        <v-btn @click="addAttribute()" color="transparent" depressed>+</v-btn>
+        <v-btn @click="subAttribute()" color="transparent" depressed>-</v-btn>
     </div>
 </template>
 
@@ -25,28 +23,56 @@
 export default {
 
     props: {
-        attribute: String,
+        attribute: Object,
         defaultProficiencyPoints: Number,
         proficiencyPoints: Number,
         statusPoints: Number,
         playerLevel: Number,
         negativeTraits: Array,
-        isNegative: Boolean,
     },
 
     data: (instance) => ({
         index: 0,
         defaultStatusPoints: 0,
-        isNegativeData: false,
         negativeRuleErrorClass: '',
         baseParams: ['D', 'C', 'B', 'A', 'S'],
-        parameters: [],
+        parameters: {
+            STR: {
+                id: null,
+                name: 'STR',
+                rank: 'D',
+            },
+            AGI: {
+                id: null,
+                name: 'AGI',
+                rank: 'D',
+            },
+            END: {
+                id: null,
+                name: 'END',
+                rank: 'D',
+            },
+            MAN: {
+                id: null,
+                name: 'MAN',
+                rank: 'D',
+            },
+            NP: {
+                id: null,
+                name: 'NP',
+                rank: 'D',
+            },
+            LUK: {
+                id: null,
+                name: 'LUK',
+                rank: 'D',
+            }
+        },
         negativeRules: [],
         backup: [],
     }),
 
     created: function() {
-        this.parameters = [].concat(this.baseParams)
         this.initialProficiencyPoints = this.proficiencyPoints
         this.defaultStatusPoints = this.statusPoints
     },
@@ -79,38 +105,40 @@ export default {
 
         resetAttrModifiers() {
             const proficiencyPoints = this.initialProficiencyPoints
-            this.parameters = [].concat(this.baseParams)
-            this.parameters[this.index] = this.baseParams[this.index]
-            this.isNegativeData = false
+            this.parameters = {
+                ...this.attribute,
+                rank: this.baseParams[0],
+            }
 
-            this.$emit('updateParameters', this.parameters[this.index])
+            this.$emit('updateParameters', this.parameters)
             this.$emit('updateProficiencyPoints', proficiencyPoints)
-            this.$emit('updateIsNegative', this.isNegativeData)
         },
 
-        addParameter() {
-            const p = this.parameters
+        addAttribute() {
+            let p = this.baseParams
             let i = this.index
-
             let statusPoints = this.statusPoints
+
             if (statusPoints > 0) {
                 if (i >= p.length - 1) {
                     return
                 }
-                
+
                 i += 1
                 statusPoints -= 1
-               
-                this.index = i
-                this.parameters[i] = p[i]
 
-                this.$emit('updateParameters', p[i])
+                this.index = i
+                this.parameters = {
+                    ...this.attribute,
+                    rank: this.baseParams[i],
+                }
+
+                this.$emit('updateParameters', this.parameters)
                 this.$emit('updateStatusPoints', statusPoints)
             }
         },
 
-        subParameter() {
-            const p = this.parameters
+        subAttribute() {
             let i = this.index
 
             let statusPoints = this.statusPoints
@@ -119,9 +147,12 @@ export default {
                 statusPoints += 1
 
                 this.index = i
-                this.parameters[i] = p[i]
+                this.parameters = {
+                    ...this.attribute,
+                    rank: this.baseParams[i],
+                }
 
-                this.$emit('updateParameters', p[i])
+                this.$emit('updateParameters', this.parameters)
                 this.$emit('updateStatusPoints', statusPoints)
                 return
             }
@@ -129,7 +160,7 @@ export default {
         },
 
         turnToProficient() {
-            const p = this.parameters
+            const p = this.baseParams
             const i = this.index
 
             let proficiencyPoints = this.proficiencyPoints
@@ -138,10 +169,12 @@ export default {
 
                 proficiencyPoints -= 1
 
-                this.parameters[i] = newParam
-                this.parameters = [...p]
+                this.parameters = {
+                    ...this.attribute,
+                    rank: newParam
+                }
 
-                this.$emit('updateParameters', newParam)
+                this.$emit('updateParameters', this.parameters)
                 this.$emit('updateProficiencyPoints', proficiencyPoints)
             }
         },
@@ -150,15 +183,12 @@ export default {
             const p = this.parameters
             const i = this.index
 
-            if (!this.isNegative) {
-                const newParam = `${p[i]}-`
-    
-                this.parameters[i] = newParam
-                this.parameters = [...p]
-                this.isNegativeData = true
-                this.$emit('updateParameters', newParam)
-                this.$emit('updateIsNegative', this.isNegativeData)
-            }
+            const newParam = `${p[i]}-`
+
+            this.parameters[i] = newParam
+            this.parameters = [...p]
+            this.$emit('updateParameters', newParam)
+            // this.$emit('updateIsNegative', this.isNegativeData)
         }
     },
 }

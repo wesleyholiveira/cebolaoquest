@@ -1,7 +1,5 @@
 <template>
-  <ficha
-    :data="data"
-  />
+  <ficha :data="data" />
 </template>
 
 <script>
@@ -19,7 +17,7 @@ export default {
       meritPoints: 4,
       statusPoints: 1,
       proficiencyPoints: 1,
-      parameters: {},
+      parameters: [],
       valorPoints: [],
       noblePhantasms: [],
       extraInfos: {
@@ -31,28 +29,52 @@ export default {
             children: [],
           },
         ],
-        referenceImages: []
-      }
+        referenceImages: [],
+      },
     },
   }),
   async fetch() {
     const { playerId } = this.$route.params
     const { id, token } = this.$auth.user
 
-    const url = `/api/player/${playerId}/user/${id}`
-    const { data } = await this.$axios.get(url, {
-      headers: {
-        Authorization: token
-      }
-    })
-    
-    if (data) {
-      this.data = {
-        ...data.user,
-        id: playerId
+    if (id && token) {
+      const url = `/api/player/${playerId}/user/${id}`
+      const { data } = await this.$axios.get(url, {
+        headers: {
+          Authorization: token,
+        },
+      })
+  
+      const user = data.user
+      const referenceImages = user.extraInfos.referenceImages.map((img) => {
+        const file = new File(
+          [
+            new Blob([''], {
+              type: 'text/plain',
+            }),
+          ],
+          img.img,
+          {
+            type: 'application/octet-binary',
+          }
+        )
+  
+        return file
+      })
+  
+      if (data) {
+        this.data = {
+          ...user,
+          extraInfos: {
+            ...user.extraInfos,
+            referenceImages,
+          },
+          id: playerId,
+        }
       }
     }
+
   },
-  fetchOnServer: false,
+  fetchOnServer: true
 }
 </script>

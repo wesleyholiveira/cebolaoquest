@@ -2,7 +2,7 @@
     <v-fade-transition>
         <v-row :class="classCss" style="position: relative;clear: right">
             <v-col cols="12">
-                <v-text-field v-model="extraInfos.category" label="Categoria" class="noPaddingTop" />
+                <v-text-field v-model="extraInfos.name" label="Categoria" class="noPaddingTop" />
                 <tiptap-vuetify v-model="extraInfos.content" :extensions="extensions" min-height="250" placeholder="Digite o conteúdo dessa categoria" />
                 <v-switch
                     v-model="extraInfos.subcategory"
@@ -109,7 +109,7 @@ export default {
             const extraInfos = this.extraInfos
             if (event) {
                 extraInfos.children.push({
-                    category: '',
+                    name: '',
                     content: '',
                     subcategory: false,
                     children: []
@@ -123,7 +123,7 @@ export default {
             let stories = this.stories
 
             stories.push({
-                category: '',
+                name: '',
                 content: '',
                 subcategory: false,
                 children: []

@@ -37,24 +37,23 @@ const image = require('./models/image')
 const imageRepository = require('./repositories/imageRepository')
 const category = require('./models/category')
 const categoryRepository = require('./repositories/categoryRepository')
-const e = require('express')
 
 app.use(express.json())
 app.use(function (req, res, next) {
   let token = req.headers['authorization']
 
   if (req.path == '/login' || req.path == '/register' || req.path == '/logout') {
-    return next()  
+    return next()
   }
-  
+
   try {
-    
+
     if (!token) {
-        return res.status(401).json({
-            message: 'O token não foi fornecido'
-        }).end()
+      return res.status(401).json({
+        message: 'O token não foi fornecido'
+      }).end()
     }
-  
+
     try {
       token = token.split(' ')[1]
       const jwtDecoded = jwt.verify(token, process.env.SECRET)
@@ -62,7 +61,7 @@ app.use(function (req, res, next) {
     } catch (err) {
       console.log(err)
       return res.status(401).json({
-          message: 'Token inválido'
+        message: 'Token inválido'
       }).end()
     }
   } catch {
@@ -86,86 +85,54 @@ app.get('/user', async (req, res) => {
   }).end()
 })
 
+app.get('/player/name/user/:userId', async (req, res) => {
+  const { userId } = req.params
+  try {
+    const results = await playerRepository(db).getNameByUserId(userId)
+    return res.json({data: results}).end()
+  } catch (err) {
+    return res.status(500).json({err})
+  }
+})
+
+app.delete('/player/:userId', async (req, res) => {
+  const { userId } = req.params
+  try {
+    await playerRepository(db).deleteById(userId)
+    return res.json({
+      message: 'Usuário excluido com sucesso',
+      statusMessage: 'success'
+    }).end()
+  } catch (err) {
+    return res.status(500).json({
+      message: err,
+      statusMessage: 'error'
+    })
+  }
+})
+
 app.get('/player/:playerId/user/:userId', async (req, res) => {
 
   try {
-    let totalMerits = 0
-    const results = await playerRepository(db).getByPlayerAndUserID(req.params)
+    const { playerId, userId } = req.params
+
+    if (!playerId || !userId) {
+      return res.status(400).json({
+        message: 'Usuário não encontrado',
+        statusMessage: 'error'
+      }).end()
+    }
+
+    const results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId })
+
+    if (results.length < 1) {
+      return res.status(400).json({
+        message: 'Usuário não encontrado',
+        statusMessage: 'error'
+      }).end()
+    }
+
     const player = results[0]
-    const parameters = {}
-    const stratagems = []
-    const negativeTraits = []
-    const martialSkills = []
-    const specialTechniques = []
-    const referenceImages = []
-
-    results.forEach(el => {
-      let stratMerits = 0
-      let negativeMerits = 0
-      let martialMerits = 0
-      let specialMerits = 0
-
-      if (el.attribute_name != null) {
-        const name = el.attribute_name
-        const rank = el.attribute_rank
-        parameters[name] = rank
-      } 
-
-      if (el.stratagems_merits != null) {
-        stratMerits = el.stratagems_merits
-        stratagems.push({
-          id: el.stratagems_id,
-          name: el.stratagems_name,
-          merits: stratMerits,
-          player_id: el.stratagems_player_id
-        })
-      }
-
-      if (el.negative_traits_merits != null) {
-        negativeMerits = el.negative_traits_merits
-        negativeTraits.push({
-          id: el.negative_traits_id,
-          name: el.negative_traits_name,
-          merits: negativeMerits,
-          player_id: el.negative_traits_player_id
-        })
-      }
-
-      if (el.martial_skills_merits != null) {
-        martialMerits = el.martial_skills_merits
-        martialSkills.push({
-          id: el.martial_skills_id,
-          name: el.martial_skills_name,
-          merits: martialMerits,
-          player_id: el.martial_skills_player_id
-        })
-      }
-
-      if (el.special_techniques_merits != null) {
-        specialMerits = el.special_techniques_merits
-        specialTechniques.push({
-          id: el.special_techniques_id,
-          name: el.special_techniques_name,
-          merits: specialMerits,
-          player_id: special_techniques_player_id
-        })
-      }
-
-      if (el.img_name != null) {
-        referenceImages.push({
-          id: el.img_id,
-          img: el.img_img,
-          player_id: el.img_player_id
-        })
-      }
-
-      totalMerits += (
-          stratMerits +
-          martialMerits +
-          specialMerits
-      ) - negativeMerits
-    })
-
     const {
       id,
       name,
@@ -192,6 +159,63 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       // meritPoints
     } = player
 
+    const parameters = await attributeRepository(db).getParametersByPlayerId(id)
+    const stratagems = await stratagemRepository(db).getStratagemsByPlayerId(id)
+    const negativeTraits = await negativeTraitsRepository(db).getNegativeTraitsByPlayerId(id)
+    const martialSkills = await martialSkillRepository(db).getMartialSKillsByPlayerId(id)
+    const specialTechniques = await specialTechniqueRepository(db).getSpecialTechniquesByPlayerId(id)
+    const noblePhantasms = await npRepository(db).getNoblePhantasmsByPlayerId(id)
+    const referenceImages = await imageRepository(db).getImagesByPlayerId(id)
+    const npTypeRepo = npTypeRepository(db)
+    const npSpecialSkRepo = npSpecialStrikeRepository(db)
+    const npEffectsRepo = npEffectRepository(db)
+    const categories = await categoryRepository(db).getCategoriesByPlayerId(id)
+    let unitAge = 'anos'
+    let valorPoints = []
+
+    if (age == 1) {
+      unitAge = 'ano'
+    }
+
+    let stories = [{
+      name: '',
+      content: '',
+      subcategory: false,
+      children: [],
+    }]
+
+    if (categories.length > 0) {
+      stories = categories.flatMap(cat => ({
+        ...cat,
+        children: JSON.parse(cat.children)
+      }))
+    }
+
+    const negativeTraitsSum = negativeTraits.map(trait => trait.merits).reduce((acc, merit) => acc + merit)
+
+    const totalMerits =
+      stratagems
+        .concat(martialSkills)
+        .concat(specialTechniques)
+        .concat(noblePhantasms.length > 1 ? noblePhantasms : [])
+        .map(el => el.merits)
+        .reduce((acc, merit) => acc + merit) - (negativeTraitsSum + noblePhantasms.length)
+
+    const npStructure = await noblePhantasms.map(async np => ({
+      ...np,
+      type: await npTypeRepo.getNoblePhantasmTypeByNpId(np.id),
+      specialStrike: await npSpecialSkRepo.getNoblePhantasmSpecialStrikesByNpId(np.id),
+      effects: await npEffectsRepo.getNoblePhantasmEffectsByNpId(np.id)
+    }))
+
+    const npResults = await Promise.all(npStructure)
+    npResults.forEach(np => 
+      valorPoints.push(
+        np.effects.map(e => e.valors)
+        .reduce((acc, valor) => acc + valor)
+      )
+    )
+    
     const currentClass = player['class']
     const user = {
       id,
@@ -204,8 +228,8 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       meritPoints: totalMerits,
       statusPoints,
       parameters,
-      valorPoints: [],
-      noblePhantasms: [],
+      valorPoints,
+      noblePhantasms: npResults,
       proficiencyPoints,
       currentClass,
       stratagems,
@@ -216,7 +240,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
         species,
         sex,
         age: {
-          formattedUnit: `${age} anos`,
+          formattedUnit: `${age} ${unitAge}`,
           unit: player.age
         },
         height: {
@@ -235,27 +259,16 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
         dislikes,
         abstract,
         talents,
-        stories: [
-          {
-            category: '',
-            content: '',
-            subcategory: false,
-            children: [],
-          },
-        ],
-        referenceImages: []
+        stories,
+        referenceImages
       }
     }
 
-    console.log(user)
-    
-    return res.json({
-      user
-    }).end()
-  
+    return res.json({user}).end()
+
   } catch (err) {
     console.log(err)
-    return res.status(500).json({err}).end()
+    return res.status(500).json({ message: err, statusMessage: 'error' }).end()
   }
 })
 
@@ -277,11 +290,11 @@ app.post('/register', async (req, res) => {
   })
 
   return userRepository(db).insert(user).then(() => res.json({
-      message: 'Usuário criado com sucesso'
-    }).end()
+    message: 'Usuário criado com sucesso'
+  }).end()
   ).catch((err) => res.status(400).json({
-      message: err
-    }).end()
+    message: err
+  }).end()
   )
 })
 
@@ -303,15 +316,15 @@ app.post('/login', async (req, res) => {
     }, secret, {
       expiresIn: '1h'
     })
-  
-    return res.json({token}).end()
+
+    return res.json({ token }).end()
   }
 
-  return res.status(401).json({message: 'Usuário e/ou senha inválidos'}).end()
+  return res.status(401).json({ message: 'Usuário e/ou senha inválidos' }).end()
 })
 
 app.post('/player', async (req, res) => {
-  const { 
+  const {
     id,
     name,
     level,
@@ -364,60 +377,64 @@ app.post('/player', async (req, res) => {
     userId
   })
 
+  const attributeRepo = attributeRepository(db)
+  const stratagemRepo = stratagemRepository(db)
+  const negativeTraitRepo = negativeTraitsRepository(db)
+  const martialSkillRepo = martialSkillRepository(db)
+  const specialTechRepo = specialTechniqueRepository(db)
+
   const playerPromise = playerRepo.insert(player)
   return playerPromise.then(async data => {
+    console.log(data)
     const playerId = data
 
     const createModel = (model) => ([key, value]) =>
       model({
         ...value,
         player_id: playerId
-      }
-    )
+      })
 
     if (attributes) {
-      const attributeModels = attributes.flatMap(attribute => map(
-        attribute,
-        ([key, value]) =>
-          attributeModel({
-            id: null,
-            name: key,
-            rank: value,
-            player_id: playerId
-          }
-        )
-      ))
-      
+      const attributeModels = map(attributes, createModel(attributeModel))
+
       if (attributeModels.length > 0) {
-        await attributeRepository(db).insertAll(attributeModels)
+        await attributeRepo.insertAll(attributeModels)
       }
     }
 
     if (stratagems) {
       const stratagemsModels = map(stratagems, createModel(stratagemModel))
       if (stratagemsModels.length > 0) {
-        await stratagemRepository(db).insertAll(stratagemsModels)
+        stratagemRepo.deleteByPlayerId(playerId).then(
+          async () => await stratagemRepo.insertAll(stratagemsModels)
+        )
       }
     }
 
     if (negativeTraits) {
       const negativeTraitModels = map(negativeTraits, createModel(negativeTraitModel))
       if (negativeTraitModels.length > 0) {
-        await negativeTraitsRepository(db).insertAll(negativeTraitModels)
+        negativeTraitRepo.deleteByPlayerId(playerId).then(
+          async () => await negativeTraitRepo.insertAll(negativeTraitModels)
+        )
       }
     }
 
     if (martialSkills) {
       const martialSkillModels = map(martialSkills, createModel(martialSkillModel))
       if (martialSkillModels.length > 0) {
-        await martialSkillRepository(db).insertAll(martialSkillModels)
+        martialSkillRepo.deleteByPlayerId(playerId).then(
+          async () => await martialSkillRepo.insertAll(martialSkillModels)
+        )
       }
     }
 
     if (specialTechniques) {
       const specialTechniqueModels = map(specialTechniques, createModel(specialTechniqueModel))
       if (specialTechniqueModels.length > 0) {
-        await specialTechniqueRepository(db).insertAll(specialTechniqueModels)
+        specialTechRepo.deleteByPlayerId(playerId).then(
+          async () => await specialTechRepo.insertAll(specialTechniqueModels)
+        )
       }
     }
 
@@ -428,58 +445,61 @@ app.post('/player', async (req, res) => {
         const npTypes = noblePhantasms.map(el => el.type)
         const npSpecialStrikes = noblePhantasms.map(el => el.specialStrike).filter(el => el != undefined)
         const npEffects = noblePhantasms.flatMap((el, i) => ({
-          id: null,
+          id: el.id || null,
           effect: el.effects,
           np_id: npIds[i]
         }))
-  
+
         if (npTypes.length > 0) {
           const npTypeModels = npTypes.map((t, i) => npTypeModel({
-            id: null,
+            id: t.id || null,
             name: t.name || '',
             np_id: npIds[i]
           }))
-  
+
           await npTypeRepository(db).insertAll(npTypeModels)
         }
-  
+
         if (npSpecialStrikes.length > 0) {
           const npSpecialStrikeModels = npSpecialStrikes.map((s, i) => npSpecialStrikeModel({
             id: null,
             name: s || '',
             np_id: npIds[i]
           }))
-  
+
           await npSpecialStrikeRepository(db).insertAll(npSpecialStrikeModels)
         }
-  
+
         if (npEffects.length > 0) {
           const npEffectModels = npEffects.flatMap(e => e.effect.map(ef => npEffectModel({
-            id: null,
+            id: ef.id || null,
             name: ef.name || '',
             valors: ef.valors,
             np_id: e.np_id
           })))
-  
-          await npEffectRepository(db).insertAll(npEffectModels)
+
+          specialTechRepo.deleteByPlayerId(playerId).then(
+            async () => await npEffectRepository(db).insertAll(npEffectModels)
+          )
         }
       }
     }
 
     if (extraInfos.stories) {
       const categoryModels = extraInfos.stories.flatMap(el => category({
-        id: null,
-        name: el.category,
+        id: el.id || null,
+        name: el.name,
         content: el.content,
-        categoriesJson: el,
+        subcategory: el.subcategory,
+        children: el.children,
         player_id: playerId
       }))
-  
+
       if (categoryModels.filter(cat => cat.name != '').length > 0) {
         await categoryRepository(db).insertAll(categoryModels)
       }
     }
-    
+
     return res.json({
       statusMessage: 'success',
       data: 'Uma nova ficha foi cadastrada com sucesso',
@@ -496,60 +516,73 @@ app.post('/player', async (req, res) => {
 })
 
 app.post('/upload/:playerId', async (req, res) => {
-    let playerId = null
-    const form = new formidable.IncomingForm({multiples: true})
+  let playerId = null
+  const form = new formidable.IncomingForm({ multiples: true })
+  const imageRepo = imageRepository(db)
 
-    if ({playerId} = req.params) {
-      const result = await playerRepository(db).getById(playerId)
+  if ({ playerId } = req.params) {
+    const result = await playerRepository(db).getById(playerId)
 
-      if (result.length < 1) {
-        return res.status(400).json({
-          data: {
-            message: 'ID do usuário inválido',
-            statusMessage: 'error'
+    if (result.length < 1) {
+      return res.status(400).json({
+        data: {
+          message: 'ID do usuário inválido',
+          statusMessage: 'error'
+        }
+      }).end()
+    }
+
+    const uploadPromise = () => new Promise((resolve, reject) => {
+      form.parse(req, async (err, fields, files) => {
+        if (err) return reject(err)
+
+        if (files.referenceImages) {
+          if (!files.referenceImages.length) {
+            files.referenceImages = [files.referenceImages]
           }
-        }).end()
-      }
 
-      const uploadPromise = () => new Promise((resolve, reject) => {
-        form.parse(req, async (err, fields, files) => {
-          if (err) return reject(err)
+          return resolve(files.referenceImages.map(f => {
+            const oldPath = f.path
+            const newPath = `./uploads/${f.name}`
 
-          if (files.referenceImages) {
-            if (!files.referenceImages.length) {
-              files.referenceImages = [files.referenceImages]
-            }
-        
-            return resolve(files.referenceImages.map(f => {
-              const oldPath = f.path
-              const newPath = `./uploads/${f.name}`
-        
-              fs.rename(oldPath, newPath, (err) => {
-                if (err) throw err
-              })
-  
-              return image({
-                id: null,
-                img: f.name,
-                player_id: playerId
-              })
-            }))
-          } else {
-            return res.end()
-          }
-        })
+            fs.rename(oldPath, newPath, (err) => {
+              if (err) throw err
+            })
+
+            return image({
+              id: null,
+              img: f.name,
+              player_id: playerId
+            })
+          }))
+        } else {
+          return res.end()
+        }
       })
+    })
+
+    const removeImages = () => new Promise((resolve, reject) => 
+      imageRepo.getImagesByPlayerId(playerId).then(img => {
+        resolve(imageRepo.deleteAllByPlayerId(playerId).then(() =>
+          fs.unlink(`./uploads/${img.img}}`, (err) => {
+            if (err) return reject(err)
+          })
+        ))
+      })
+    )
 
     try {
+      await removeImages()
+
       const imgModels = await uploadPromise()
-      await imageRepository(db).insertAll(imgModels)
+      await imageRepo.insertAll(imgModels)
 
       return res.json({
         data: {
           message: 'Upload de imagens efetuado com sucesso',
           statusMessage: 'success'
         }
-      })
+      }).end()
     } catch (err) {
       console.log(err)
       return res.status(400).json({
@@ -558,8 +591,6 @@ app.post('/upload/:playerId', async (req, res) => {
           statusMessage: 'error'
         }
       }).end()
-    } finally {
-      return res.end()
     }
   }
 

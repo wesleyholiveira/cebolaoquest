@@ -127,7 +127,8 @@ CREATE TABLE IF NOT EXISTS player_categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
     content TEXT NOT NULL,
-    categories_json JSON NOT NULL,
+    subcategory TINYINT NOT NULL DEFAULT '0',
+    children JSON NOT NULL,
     player_id INT NOT NULL,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );

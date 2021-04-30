@@ -3,13 +3,10 @@
     <v-container>
       <v-row class="text-center">
         <v-col cols="12">
-          <h2>Fantasma Nobre: {{index + 1}}</h2>
+          <h2>Fantasma Nobre: {{ index + 1 }}</h2>
         </v-col>
         <v-col cols="12" lg="6" sm="12">
-          <v-text-field
-            v-model="np.name"
-            label="Nome"
-          />
+          <v-text-field v-model="np.name" label="Nome" />
         </v-col>
         <v-col cols="12" lg="6" sm="12">
           <v-combobox
@@ -17,7 +14,10 @@
             :items="data.type"
             item-text="name"
             label="Tipo"
-            @change="selectedSpecialStrike = null;valorSkills = data.valorSkills;updateValorAndValorCap($event)"
+            @change="
+              selectedSpecialStrike = null
+              valorSkills = data.valorSkills
+            "
           />
         </v-col>
         <v-col cols="12" lg="6" sm="12">
@@ -29,9 +29,9 @@
             label="Golpe Especial"
             deletable-chips
           >
-              <template v-slot:no-data>
-                  Nenhum tipo de fantasma nobre foi selecionado.
-              </template>
+            <template v-slot:no-data>
+              Nenhum tipo de fantasma nobre foi selecionado.
+            </template>
           </v-combobox>
         </v-col>
         <v-col cols="12" lg="6" sm="12" style="text-align: left">
@@ -62,7 +62,8 @@
           />
 
           <span v-if="isOverloaded" class="warn">
-            Você está sobrecarregado e como consequência seu armamento lendário terá: {{dmgDown}} a menos de dano
+            Você está sobrecarregado e como consequência seu armamento lendário
+            terá: {{ dmgDown }} a menos de dano
           </span>
         </v-col>
       </v-row>
@@ -77,7 +78,7 @@ export default {
     np: Object,
     index: Number,
     valorPoints: Array,
-    valorCap: Number
+    valorCap: Number,
   },
 
   created() {
@@ -87,6 +88,7 @@ export default {
   },
 
   data: (instance) => ({
+    firstTime: true,
     dmgDown: 0,
     valorCapData: 0,
     previouslyMagical: false,
@@ -98,44 +100,52 @@ export default {
     valors: 0,
     rules: {
       effect: [
-          v => v.filter(el => !el.name).length < 1 || 'Há pelo menos um efeito inválido',
-          v => instance.validateMaxPoints(v, instance.valors, instance.valorCap)
-      ]
+        (v) =>
+          v.filter((el) => !el.name).length < 1 ||
+          'Há pelo menos um efeito inválido',
+        (v) =>
+          instance.validateMaxPoints(v, instance.valors, instance.valorCap),
+      ],
     },
   }),
 
   methods: {
-
-    calculateValorsFromArray: (data) => data.map(el => el.valors).reduce((acc, valor) => acc + valor),
+    calculateValorsFromArray: (data) =>
+      data.map((el) => el.valors).reduce((acc, valor) => acc + valor),
 
     validateMaxPoints(v, points, cap) {
-      if ((
-          v.length > 0 && 
-          this.calculateValorsFromArray(v) > cap
-       ) || points < 0) {
-         this.isOverloaded = true
-         this.dmgDown = Math.abs(10 * this.valors)
-       } else {
-         this.isOverloaded = false
-       }
-       return true
+      if (
+        (v.length > 0 && this.calculateValorsFromArray(v) > cap) ||
+        points < 0
+      ) {
+        this.isOverloaded = true
+        this.dmgDown = Math.abs(10 * this.valors)
+      } else {
+        this.isOverloaded = false
+      }
+      return true
     },
 
     decideValorsOperation(data, backup) {
-        let elements = data
-        let backupElements = backup
+      let elements = data
+      let backupElements = backup
 
-        if (backupElements.length > elements.length) {
-            const tmpData = data.map(el => el.name)
-            const diff = backupElements.filter(el => !tmpData.includes(el.name))
-            this.incrementValors(diff[0])
-            return data
+      if (backupElements.length >= elements.length) {
+        const tmpData = data.map((el) => el.name)
+        let diff = backupElements.filter((el) => !tmpData.includes(el.name))
+
+        if (diff.length == 0) {
+          diff = [elements[0]]
         }
 
-        const tmpData = backupElements.map(el => el.name)
-        const diff = data.filter(el => !tmpData.includes(el.name))
-        this.decrementValors(diff[0])
+        this.incrementValors(diff[0])
         return data
+      }
+
+      const tmpData = backupElements.map((el) => el.name)
+      const diff = data.filter((el) => !tmpData.includes(el.name))
+      this.decrementValors(diff[0])
+      return data
     },
 
     incrementValors(removedItem) {
@@ -144,7 +154,6 @@ export default {
         return
       }
 
-          
       this.valors += removedItem.valors
       valorPoints[this.index] = this.valors
       valorPoints = [...valorPoints]
@@ -158,7 +167,7 @@ export default {
       if (!addedItem || typeof addedItem !== 'object') {
         return
       }
-      
+
       this.valors -= addedItem.valors
       valorPoints[this.index] = this.valors
       valorPoints = [...valorPoints]
@@ -166,52 +175,60 @@ export default {
       this.$emit('updateValorPoints', valorPoints)
       this.$emit('updateValorCap', this.valorCapData)
     },
-
-    updateValorAndValorCap(type) {
-      let valorPoints = this.valorPoints
-      const index = this.index
-
-      if (type.name == 'Mágico' && !this.previouslyMagical) {
-        this.valors += 1
-        this.valorCapData += 1
-
-        valorPoints[index] = this.valors
-        valorPoints = [...valorPoints]
-        this.$emit('updateValorPoints', valorPoints)
-        this.$emit('updateValorCap', this.valorCapData)
-        this.previouslyMagical = true
-        return
-      }
-
-      if (this.previouslyMagical) {
-        this.valors -= 1
-        this.valorCapData -= 1
-
-        valorPoints[index] = this.valors
-        valorPoints = [...valorPoints]
-
-        this.$emit('updateValorPoints', valorPoints)
-        this.$emit('updateValorCap', this.valorCapData)
-      }
-      this.previouslyMagical = false
-    }
   },
 
   watch: {
-    'np.type': function(type) {
+    'np.type': function (type) {
       if (type) {
         const typeValors = type.valorSkills
         this.valorSkills = this.data.valorSkills
-  
+
+        let valorPoints = this.valorPoints
+        const index = this.index
+
         if (typeValors) {
           if (typeValors.length > 0) {
-            const typeValorsWithoutInvalidNames = type.valorSkills.filter(el => el.name != '')
-            this.valorSkills = this.valorSkills.concat(typeValorsWithoutInvalidNames)
+            const typeValorsWithoutInvalidNames = type.valorSkills.filter(
+              (el) => el.name != ''
+            )
+            this.valorSkills = this.valorSkills.concat(
+              typeValorsWithoutInvalidNames
+            )
           }
+
+          if (type.name == 'Mágico' && !this.previouslyMagical) {
+            this.valors += 1
+            this.valorCapData += 1
+
+            valorPoints[index] = this.valors
+            valorPoints = [...valorPoints]
+            this.$emit('updateValorPoints', valorPoints)
+            this.$emit('updateValorCap', this.valorCapData)
+            this.previouslyMagical = true
+            return
+          }
+
+          if (this.previouslyMagical || this.firstTime) {
+            this.valors -= 1
+            this.valorCapData -= 1
+
+            valorPoints[index] = this.valors
+            valorPoints = [...valorPoints]
+
+            this.$emit('updateValorPoints', valorPoints)
+            this.$emit('updateValorCap', this.valorCapData)
+          }
+          this.previouslyMagical = false
+          this.firstTime = false
         }
       }
     },
-    'np.effects': function(effects) {
+    'np.effects': function (effects) {
+      if (this.firstTime) {
+        this.backupEffects = effects
+        this.firstTime = false
+      }
+
       this.backupEffects = this.decideValorsOperation(
         effects,
         this.backupEffects
@@ -219,17 +236,20 @@ export default {
     },
     selectedSpecialStrike(specialStrike) {
       this.$emit('updateSpecialStrike', specialStrike)
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style>
 .warn {
-    font-size: .85rem;
+  font-size: 0.85rem;
 }
-.warn *, .warn, .warn *::after, .warn *::before {
+.warn *,
+.warn,
+.warn *::after,
+.warn *::before {
   color: #ffc107 !important;
-  border-color:#ffc107 !important;
+  border-color: #ffc107 !important;
 }
 </style>
