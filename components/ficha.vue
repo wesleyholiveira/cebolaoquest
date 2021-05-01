@@ -684,7 +684,8 @@ export default {
     },
 
     addNoblePhantasm() {
-      if (this.data.meritPoints < 1 || this.data.noblePhantasms.length >= 1) {
+      const { meritPoints, noblePhantasms } = this.data
+      if (meritPoints < 1) {
         this.meritsDialog = true
         return
       }
@@ -692,7 +693,7 @@ export default {
       this.data.noblePhantasms.push({merits: 1})
       this.data.valorPoints.push(this.defaultValorPoints)
 
-      if (this.data.noblePhantasms.length > 1) {
+      if (noblePhantasms.length > 1) {
         this.data.meritPoints -= 1
       }
     },
@@ -891,13 +892,15 @@ export default {
     },
     'data.valorPoints'(valors) {
       if (this.firstTimeValors) {
-        this.data.noblePhantasms.forEach((np, i) =>
-          np.effects.forEach(e => {
-            this.data.valorPoints[i] -= e.valors
-          })
-        )
-
-        this.firstTimeValors = false
+        const { noblePhantasms } = this.data.noblePhantasms
+        if (noblePhantasms) {
+          noblePhantasms.forEach((np, i) =>
+            np.effects.forEach(e => {
+              this.data.valorPoints[i] -= e.valors
+            })
+          )
+          this.firstTimeValors = false
+        }
       }
     },
     'data.stratagems'(stratagems) {

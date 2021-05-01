@@ -77,8 +77,6 @@ export default {
         }
       }
     }
-
-  },
-  fetchOnServer: true
+  }
 }
 </script>

@@ -1,44 +1,46 @@
 require('dotenv-safe').config()
 
-const fs = require('fs')
-const crypto = require('crypto')
+import { rename, unlink } from 'fs'
+import { createHash } from 'crypto'
 
-const jwt = require('jsonwebtoken')
-const express = require('express')
-const formidable = require('formidable')
+import { verify, decode, sign } from 'jsonwebtoken'
+import express, { json } from 'express'
+import { IncomingForm } from 'formidable'
 const app = express()
 
-const map = require('./utils/mapModel')
-const db = require('./config/mysql')
-const attributeModel = require('./models/attribute')
-const playerModel = require('./models/player')
-const negativeTraitModel = require('./models/negativeTrait')
-const specialTechniqueModel = require('./models/specialTechnique')
-const martialSkillModel = require('./models/martialSkill')
-const stratagemModel = require('./models/stratagem')
-const npModel = require('./models/np')
-const npTypeModel = require('./models/np_type')
-const npSpecialStrikeModel = require('./models/np_special_strike')
-const npEffectModel = require('./models/np_effect')
-const userModel = require('./models/user')
+import map from './utils/mapModel'
+import db from './config/mysql'
+import attributeModel from './models/attribute'
+import playerModel from './models/player'
+import negativeTraitModel from './models/negativeTrait'
+import specialTechniqueModel from './models/specialTechnique'
+import martialSkillModel from './models/martialSkill'
+import stratagemModel from './models/stratagem'
+import npModel from './models/np'
+import npTypeModel from './models/np_type'
+import npSpecialStrikeModel from './models/np_special_strike'
+import npEffectModel from './models/np_effect'
+import userModel from './models/user'
 
-const attributeRepository = require('./repositories/attributeRepository')
-const playerRepository = require('./repositories/playerRepository')
-const negativeTraitsRepository = require('./repositories/negativeTraitsRepository')
-const specialTechniqueRepository = require('./repositories/specialTechniqueRepository')
-const martialSkillRepository = require('./repositories/martialSkillRepository')
-const stratagemRepository = require('./repositories/stratagemRepository')
-const npRepository = require('./repositories/npRepository')
-const npTypeRepository = require('./repositories/npTypeRepository')
-const npSpecialStrikeRepository = require('./repositories/npSpecialStrikeRepository')
-const npEffectRepository = require('./repositories/npEffectRepository')
-const userRepository = require('./repositories/userRepository')
-const image = require('./models/image')
-const imageRepository = require('./repositories/imageRepository')
-const category = require('./models/category')
-const categoryRepository = require('./repositories/categoryRepository')
+import attributeRepository from './repositories/attributeRepository'
+import playerRepository from './repositories/playerRepository'
+import negativeTraitsRepository from './repositories/negativeTraitsRepository'
+import specialTechniqueRepository from './repositories/specialTechniqueRepository'
+import martialSkillRepository from './repositories/martialSkillRepository'
+import stratagemRepository from './repositories/stratagemRepository'
+import npRepository from './repositories/npRepository'
+import npTypeRepository from './repositories/npTypeRepository'
+import npSpecialStrikeRepository from './repositories/npSpecialStrikeRepository'
+import npEffectRepository from './repositories/npEffectRepository'
+import userRepository from './repositories/userRepository'
+import image from './models/image'
+import imageRepository from './repositories/imageRepository'
+import category from './models/category'
+import categoryRepository from './repositories/categoryRepository'
 
-app.use(express.json())
+const tokenBlacklist = []
+
+app.use(json())
 app.use(function (req, res, next) {
   let token = req.headers['authorization']
 
@@ -50,24 +52,32 @@ app.use(function (req, res, next) {
 
     if (!token) {
       return res.status(401).json({
-        message: 'O token não foi fornecido'
-      }).end()
+        message: 'O token não foi fornecido',
+        statusMessage: 'error'
+      })
+    }
+
+    if (tokenBlacklist.includes(token)) {
+      return res.status(500).json({
+        message: 'Token indisponível para futuros usos',
+        statusMessage: 'error'
+      })
     }
 
     try {
       token = token.split(' ')[1]
-      const jwtDecoded = jwt.verify(token, process.env.SECRET)
+      const jwtDecoded = verify(token, process.env.SECRET)
       console.log(jwtDecoded)
     } catch (err) {
       console.log(err)
       return res.status(401).json({
         message: 'Token inválido'
-      }).end()
+      })
     }
   } catch {
     return res.status(401).json({
       message: 'Token inválido'
-    }).end()
+    })
   }
 
   return next()
@@ -75,23 +85,23 @@ app.use(function (req, res, next) {
 
 app.get('/user', async (req, res) => {
   const token = req.headers['authorization'].split(' ')[1]
-  const { userId } = jwt.decode(token)
+  const { userId } = decode(token)
 
   return res.json({
     user: {
       id: userId,
       token
     }
-  }).end()
+  })
 })
 
 app.get('/player/name/user/:userId', async (req, res) => {
   const { userId } = req.params
   try {
     const results = await playerRepository(db).getNameByUserId(userId)
-    return res.json({data: results}).end()
+    return res.json({ data: results })
   } catch (err) {
-    return res.status(500).json({err})
+    return res.status(500).json({ err })
   }
 })
 
@@ -102,7 +112,7 @@ app.delete('/player/:userId', async (req, res) => {
     return res.json({
       message: 'Usuário excluido com sucesso',
       statusMessage: 'success'
-    }).end()
+    })
   } catch (err) {
     return res.status(500).json({
       message: err,
@@ -120,7 +130,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       return res.status(400).json({
         message: 'Usuário não encontrado',
         statusMessage: 'error'
-      }).end()
+      })
     }
 
     const results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId })
@@ -129,7 +139,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       return res.status(400).json({
         message: 'Usuário não encontrado',
         statusMessage: 'error'
-      }).end()
+      })
     }
 
     const player = results[0]
@@ -196,13 +206,14 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       negativeTraitsSum = negativeTraits.map(trait => trait.merits).reduce((acc, merit) => acc + merit)
     }
 
-    const totalMerits =
-      stratagems
-        .concat(martialSkills)
+    const meritsList =
+      stratagems.concat(martialSkills)
         .concat(specialTechniques)
         .concat(noblePhantasms.length > 1 ? noblePhantasms : [])
         .map(el => el.merits)
-        .reduce((acc, merit) => acc + merit) - (negativeTraitsSum + noblePhantasms.length)
+    const totalMerits =
+      meritsList.length < 1 ? 0 :
+        meritsList.reduce((acc, merit) => acc + merit) - (negativeTraitsSum + noblePhantasms.length)
 
     const npStructure = await noblePhantasms.map(async np => ({
       ...np,
@@ -212,13 +223,13 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
     }))
 
     const npResults = await Promise.all(npStructure)
-    npResults.forEach(np => 
+    npResults.forEach(np =>
       valorPoints.push(
         np.effects.map(e => e.valors)
-        .reduce((acc, valor) => acc + valor)
+          .reduce((acc, valor) => acc + valor)
       )
     )
-    
+
     const currentClass = player['class']
     const user = {
       id,
@@ -267,11 +278,11 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       }
     }
 
-    return res.json({user}).end()
+    return res.json({ user })
 
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ message: err, statusMessage: 'error' }).end()
+    return res.status(500).json({ message: err, statusMessage: 'error' })
   }
 })
 
@@ -285,7 +296,7 @@ app.post('/register', async (req, res) => {
   } = req.body
 
   const secret = process.env.SECRET
-  const encryptedPwd = crypto.createHash('sha512').update(password + secret).digest('hex')
+  const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
   const user = userModel({
     username,
     password: encryptedPwd,
@@ -294,11 +305,38 @@ app.post('/register', async (req, res) => {
 
   return userRepository(db).insert(user).then(() => res.json({
     message: 'Usuário criado com sucesso'
-  }).end()
+  })
   ).catch((err) => res.status(400).json({
     message: err
-  }).end()
+  })
   )
+})
+
+app.post('/logout', async (req, res) => {
+  let token = req.headers['authorization']
+  if (!token) {
+    return res.status(401).json({
+      message: 'O token não foi fornecido'
+    })
+  }
+
+  try {
+    token = token.split(' ')[1]
+    const jwtDecoded = verify(token, process.env.SECRET)
+    if (jwtDecoded) {
+      tokenBlacklist.push(token)
+      return res.json({
+        message: 'Você saiu do sistema',
+        statusMessage: 'success'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(401).json({
+      message: 'Token inválido',
+      statusMessage: 'error'
+    })
+  }
 })
 
 app.post('/login', async (req, res) => {
@@ -308,18 +346,18 @@ app.post('/login', async (req, res) => {
   } = req.body
 
   const secret = process.env.SECRET
-  const encryptedPwd = crypto.createHash('sha512').update(password + secret).digest('hex')
+  const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
   const users = await userRepository(db).getUserByUsernameAndPassword(username, encryptedPwd)
   let userId = 0
 
   if (users.length > 0) {
     userId = users.flatMap(el => el.id)[0]
-    const token = jwt.sign({userId,}, secret, {expiresIn: '1h'})
+    const token = sign({ userId, }, secret, { expiresIn: '1h' })
 
-    return res.json({ userId, token }).end()
+    return res.json({ userId, token })
   }
 
-  return res.status(401).json({ message: 'Usuário e/ou senha inválidos' }).end()
+  return res.status(401).json({ message: 'Usuário e/ou senha inválidos' })
 })
 
 app.post('/player', async (req, res) => {
@@ -381,6 +419,8 @@ app.post('/player', async (req, res) => {
   const negativeTraitRepo = negativeTraitsRepository(db)
   const martialSkillRepo = martialSkillRepository(db)
   const specialTechRepo = specialTechniqueRepository(db)
+  const npEffectsRepo = npEffectRepository(db)
+  const categoriesRepo = categoryRepository(db)
 
   const playerPromise = playerRepo.insert(player)
   return playerPromise.then(async data => {
@@ -397,44 +437,48 @@ app.post('/player', async (req, res) => {
       const attributeModels = map(attributes, createModel(attributeModel))
 
       if (attributeModels.length > 0) {
-        await attributeRepo.insertAll(attributeModels)
+        attributeRepo.insertAll(attributeModels)
       }
     }
 
     if (stratagems) {
       const stratagemsModels = map(stratagems, createModel(stratagemModel))
-      if (stratagemsModels.length > 0) {
-        stratagemRepo.deleteByPlayerId(playerId).then(
-          async () => await stratagemRepo.insertAll(stratagemsModels)
-        )
-      }
+      const stratsLength = stratagemsModels.length
+      stratagemRepo.deleteByPlayerId(playerId).then(() => {
+        if (stratsLength > 0) {
+          return stratagemRepo.insertAll(stratagemsModels)
+        }
+      })
     }
 
     if (negativeTraits) {
       const negativeTraitModels = map(negativeTraits, createModel(negativeTraitModel))
-      if (negativeTraitModels.length > 0) {
-        negativeTraitRepo.deleteByPlayerId(playerId).then(
-          async () => await negativeTraitRepo.insertAll(negativeTraitModels)
-        )
-      }
+      const negativeLength = negativeTraitModels.length
+      negativeTraitRepo.deleteByPlayerId(playerId).then(() => {
+        if (negativeLength > 0) {
+          return negativeTraitRepo.insertAll(negativeTraitModels)
+        }
+      })
     }
 
     if (martialSkills) {
       const martialSkillModels = map(martialSkills, createModel(martialSkillModel))
-      if (martialSkillModels.length > 0) {
-        martialSkillRepo.deleteByPlayerId(playerId).then(
-          async () => await martialSkillRepo.insertAll(martialSkillModels)
-        )
-      }
+      const martialsLength = martialSkillModels.length
+      martialSkillRepo.deleteByPlayerId(playerId).then(() => {
+        if (martialsLength > 0) {
+          return martialSkillRepo.insertAll(martialSkillModels)
+        }
+      })
     }
 
     if (specialTechniques) {
       const specialTechniqueModels = map(specialTechniques, createModel(specialTechniqueModel))
-      if (specialTechniqueModels.length > 0) {
-        specialTechRepo.deleteByPlayerId(playerId).then(
-          async () => await specialTechRepo.insertAll(specialTechniqueModels)
-        )
-      }
+      const specialLength = specialTechniqueModels.length
+      specialTechRepo.deleteByPlayerId(playerId).then(() => {
+        if (specialLength > 0) {
+          return specialTechRepo.insertAll(specialTechniqueModels)
+        }
+      })
     }
 
     if (noblePhantasms) {
@@ -456,7 +500,7 @@ app.post('/player', async (req, res) => {
             np_id: npIds[i]
           }))
 
-          await npTypeRepository(db).insertAll(npTypeModels)
+          npTypeRepository(db).insertAll(npTypeModels)
         }
 
         if (npSpecialStrikes.length > 0) {
@@ -466,57 +510,67 @@ app.post('/player', async (req, res) => {
             np_id: npIds[i]
           }))
 
-          await npSpecialStrikeRepository(db).insertAll(npSpecialStrikeModels)
+          npSpecialStrikeRepository(db).insertAll(npSpecialStrikeModels)
         }
 
-        if (npEffects.length > 0) {
-          const npEffectModels = npEffects.flatMap(e => e.effect.map(ef => npEffectModel({
-            id: ef.id || null,
-            name: ef.name || '',
-            valors: ef.valors,
-            np_id: e.np_id
-          })))
+        const npEffectModels = npEffects.flatMap(e => e.effect.map(ef => npEffectModel({
+          id: ef.id || null,
+          name: ef.name || '',
+          valors: ef.valors,
+          np_id: e.np_id
+        })))
 
-          specialTechRepo.deleteByPlayerId(playerId).then(
-            async () => await npEffectRepository(db).insertAll(npEffectModels)
-          )
-        }
+        const npeLength = npEffectModels.length
+        noblePhantasms.forEach(np =>
+          npEffectsRepo.deleteById(np.id).then(() => {
+            if (npeLength > 0) {
+              return npEffectRepository(db).insertAll(npEffectModels)
+            }
+          })
+        )
       }
     }
 
+    let categoriesLength = 0
+    let categoryModels = []
     if (extraInfos.stories) {
-      const categoryModels = extraInfos.stories.flatMap(el => category({
+      categoryModels = extraInfos.stories.flatMap(el => category({
         id: el.id || null,
         name: el.name,
         content: el.content,
         subcategory: el.subcategory,
         children: el.children,
         player_id: playerId
-      }))
+      })).filter(cat => cat.name != '')
 
-      if (categoryModels.filter(cat => cat.name != '').length > 0) {
-        await categoryRepository(db).insertAll(categoryModels)
-      }
+      categoriesLength = categoryModels.length
     }
+
+
+    categoriesRepo.deleteAllByPlayerId(playerId).then(() => {
+      if (categoriesLength > 0) {
+        return categoriesRepo.insertAll(categoryModels)
+      }
+    })
 
     return res.json({
       statusMessage: 'success',
       data: 'Uma nova ficha foi cadastrada com sucesso',
       playerId
-    }).end()
+    })
 
   }).catch(error => {
     console.log(error)
     return res.status(500).json({
       statusMessage: 'error',
       data: `Ocorreu um problema ao tentar cadastrar uma nova ficha: ${error}`
-    }).end()
+    })
   })
 })
 
 app.post('/upload/:playerId', async (req, res) => {
   let playerId = null
-  const form = new formidable.IncomingForm({ multiples: true })
+  const form = new IncomingForm({ multiples: true })
   const imageRepo = imageRepository(db)
 
   if ({ playerId } = req.params) {
@@ -528,7 +582,7 @@ app.post('/upload/:playerId', async (req, res) => {
           message: 'ID do usuário inválido',
           statusMessage: 'error'
         }
-      }).end()
+      })
     }
 
     const uploadPromise = () => new Promise((resolve, reject) => {
@@ -544,7 +598,7 @@ app.post('/upload/:playerId', async (req, res) => {
             const oldPath = f.path
             const newPath = `./uploads/${f.name}`
 
-            fs.rename(oldPath, newPath, (err) => {
+            rename(oldPath, newPath, (err) => {
               if (err) throw err
             })
 
@@ -560,10 +614,10 @@ app.post('/upload/:playerId', async (req, res) => {
       })
     })
 
-    const removeImages = () => new Promise((resolve, reject) => 
+    const removeImages = () => new Promise((resolve, reject) =>
       imageRepo.getImagesByPlayerId(playerId).then(img => {
         resolve(imageRepo.deleteAllByPlayerId(playerId).then(() =>
-          fs.unlink(`./uploads/${img.img}}`, (err) => {
+          unlink(`./uploads/${img.img}}`, (err) => {
             if (err) return reject(err)
           })
         ))
@@ -581,7 +635,7 @@ app.post('/upload/:playerId', async (req, res) => {
           message: 'Upload de imagens efetuado com sucesso',
           statusMessage: 'success'
         }
-      }).end()
+      })
     } catch (err) {
       console.log(err)
       return res.status(400).json({
@@ -589,7 +643,7 @@ app.post('/upload/:playerId', async (req, res) => {
           message: err,
           statusMessage: 'error'
         }
-      }).end()
+      })
     }
   }
 
@@ -598,7 +652,7 @@ app.post('/upload/:playerId', async (req, res) => {
       message: 'ID do usuário inválido',
       statusMessage: 'error'
     }
-  }).end()
+  })
 })
 
-module.exports = app
+export default app

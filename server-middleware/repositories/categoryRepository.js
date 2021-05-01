@@ -12,6 +12,18 @@ module.exports = (db) => ({
         })
     },
 
+    deleteAllByPlayerId: async (id) => {
+        console.log(`Removing (IF EXISTS) all categories by player_id = ${id}`)
+        const query = 'DELETE FROM player_categories WHERE player_id = ?'
+        return new Promise((resolve, reject) => {
+            db.query(query, [id], (err, results) => {
+                if (err) return reject(err)
+
+                return resolve(results)
+            })
+        })
+    },
+
     insertAll: async(categoryModels) => {
         console.log(`Inserting on player_categories:`)
         console.log(categoryModels)

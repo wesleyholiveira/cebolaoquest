@@ -12,8 +12,9 @@
             </v-card-title>
 
             <v-card-text>
-              Essa ação é
-              <strong>IRREVERSÍVEL</strong>.
+              Esta ação é
+              <strong>IRREVERSÍVEL</strong>. Tenha isso em mente se realmente
+              deseja prosseguir.
             </v-card-text>
 
             <v-card-actions>
@@ -64,11 +65,10 @@
                       @click="
                         disabled = true
                         dialog = true
+                        playerId = player.id
                       "
                     >
-                      <v-icon style="color: red" @click="playerId = player.id"
-                        >mdi-delete</v-icon
-                      >
+                      <v-icon style="color: red">mdi-delete</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -125,8 +125,6 @@ export default {
       this.players = data
     }
   },
-
-  fetchOnServer: true,
 
   methods: {
     async removePlayer(id) {

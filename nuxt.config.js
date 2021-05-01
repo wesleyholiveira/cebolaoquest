@@ -96,12 +96,13 @@ export default {
           required: true,
           type: 'Bearer'
         },
+        user: {
+          autoFetch: false,
+        },
         endpoints: {
-          user: {
-            autoFetch: false,
-          },
           user: { url: '/api/user' },
-          login: { url: '/api/login', method: 'post' }
+          login: { url: '/api/login', method: 'post' },
+          logout: { url: '/api/logout', method: 'post' }
         }
       }
     }

@@ -102,7 +102,7 @@ export default {
         valid: true,
         expandLogin: true,
         expandRegister: false,
-        usernameMinChars: 6,
+        usernameMinChars: 4,
         usernameMaxChars: 40,
         usernameRules: [
             v => !!v || 'Este campo é obrigatório',

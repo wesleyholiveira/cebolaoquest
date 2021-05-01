@@ -12,7 +12,7 @@
           <v-virtual-scroll height="450" item-height="30" :items="items">
             <template v-slot:default="{ item }">
               <v-list-item :key="item">
-                <v-list-item-action-text><strong>{{ item }}</strong></v-list-item-action-text>
+                <v-list-item-action-text>{{ item }}</v-list-item-action-text>
               </v-list-item>
             </template>
           </v-virtual-scroll>
@@ -36,7 +36,25 @@
 <script>
 export default {
   data: () => ({
-    items: ['Teste','Teste']
+    items: [
+      'Corrigido botão de "-" no módulo de edição',
+      'Corrigido botão de reset dos parâmetros',
+      'Adicionado botão e funcionalidade de logout',
+      'Corrigido edição das categorias',
+      'Corrigido cálculo da somatória dos pontos gastos (API)',
+      'Adicionado sistema de listagem de fichas',
+      'Adicionado sistema de edição de fichas',
+      'Adicionado sistema de exclusão de fichas',
+      'Corrigido bug ao adicionar fantasma nobre',
+      'Adicionado feature para decrementar os pontos (Méritos, Proficiência, Valors e Parâmetros) quando o componente Ficha (Edição) é carregado',
+      'Correção no componente de fantasma nobre (Edição)',
+      'Corrigido bug que impedia alteração de parâmetros (Edição)',
+      'Corrigido bug que impedia a pessoa desselecionar uma opção e persistir no banco a opção desselecionada',
+      'Corrigido evento de click no botão de exclusão (Listagem)',
+      'Corrigido bug no login, onde o USERID e o TOKEN não eram retornados do endpoint',
+      'Corrigido problema de upload de fotos na edição',
+      'Corrigido bug envolvendo a sobrecarga de Valors'
+    ]
   })
 }
 </script>
