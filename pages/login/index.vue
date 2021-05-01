@@ -143,10 +143,10 @@ export default {
         async sendLogin() {
             try {
                 const response = await this.$auth.loginWith('local', {data: this.login})
-                const { userId } = response.data
-                
+                const { userId, token } = response.data
+
                 this.$refs.formLogin.reset()
-                this.$auth.setUser({id: userId})
+                this.$auth.setUser({id: userId, token})
             } catch (err) {
                 console.log(err)
                 const { data:{message} } = err.response

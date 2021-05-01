@@ -31,7 +31,7 @@ export default {
         negativeTraits: Array,
     },
 
-    data: (instance) => ({
+    data: () => ({
         index: 0,
         defaultStatusPoints: 0,
         negativeRuleErrorClass: '',
@@ -73,6 +73,7 @@ export default {
     }),
 
     created: function() {
+        this.index = this.baseParams.indexOf(this.attribute.rank)
         this.initialProficiencyPoints = this.proficiencyPoints
         this.defaultStatusPoints = this.statusPoints
     },

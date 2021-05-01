@@ -191,7 +191,10 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       }))
     }
 
-    const negativeTraitsSum = negativeTraits.map(trait => trait.merits).reduce((acc, merit) => acc + merit)
+    let negativeTraitsSum = 0
+    if (negativeTraits.length > 0) {
+      negativeTraitsSum = negativeTraits.map(trait => trait.merits).reduce((acc, merit) => acc + merit)
+    }
 
     const totalMerits =
       stratagems
@@ -311,13 +314,9 @@ app.post('/login', async (req, res) => {
 
   if (users.length > 0) {
     userId = users.flatMap(el => el.id)[0]
-    const token = jwt.sign({
-      userId,
-    }, secret, {
-      expiresIn: '1h'
-    })
+    const token = jwt.sign({userId,}, secret, {expiresIn: '1h'})
 
-    return res.json({ token }).end()
+    return res.json({ userId, token }).end()
   }
 
   return res.status(401).json({ message: 'Usuário e/ou senha inválidos' }).end()

@@ -46,21 +46,25 @@ export default {
       })
   
       const user = data.user
-      const referenceImages = user.extraInfos.referenceImages.map((img) => {
-        const file = new File(
-          [
-            new Blob([''], {
-              type: 'text/plain',
-            }),
-          ],
-          img.img,
-          {
-            type: 'application/octet-binary',
-          }
-        )
-  
-        return file
-      })
+      let referenceImages = []
+      
+      if (user.extraInfos.referenceImages) {
+        referenceImages = user.extraInfos.referenceImages.map((img) => {
+          const file = new File(
+            [
+              new Blob([''], {
+                type: 'text/plain',
+              }),
+            ],
+            img.img,
+            {
+              type: 'application/octet-binary',
+            }
+          )
+    
+          return file
+        })
+      }
   
       if (data) {
         this.data = {
