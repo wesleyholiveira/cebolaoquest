@@ -21,6 +21,13 @@ export default {
       valorPoints: [],
       noblePhantasms: [],
       extraInfos: {
+        species: '',
+        addressSelfAs: '',
+        likes: '',
+        dislikes: '',
+        abstract: '',
+        talents: '',
+        locality: '',
         stories: [
           {
             category: '',

@@ -286,6 +286,7 @@
                           <v-text-field
                             v-model="data.extraInfos.species"
                             :counter="maxCharsSpecies"
+                            :rules="speciesRules"
                             label="Espécie"
                             class="noPaddingTop"
                           />
@@ -319,6 +320,8 @@
                         <v-col cols="12" lg="3" sm="12">
                           <v-text-field
                             v-model="data.extraInfos.locality"
+                            :counter="maxCharsLocality"
+                            :rules="localityRules"
                             label="Local de origem"
                           />
                         </v-col>
@@ -370,6 +373,7 @@
                           <v-text-field
                             v-model="data.extraInfos.addressSelfAs"
                             :counter="maxCharsSelfDenomination"
+                            :rules="selfDenominationRules"
                             label="Autodenominação"
                             class="noPaddingTop"
                           />
@@ -378,6 +382,7 @@
                           <v-text-field
                             v-model="data.extraInfos.talents"
                             :counter="maxCharsTalents"
+                            :rules="talentsRules"
                             label="Talentos"
                             class="noPaddingTop"
                           />
@@ -386,6 +391,7 @@
                           <v-text-field
                             v-model="data.extraInfos.likes"
                             :counter="maxCharsLikes"
+                            :rules="likesOfRules"
                             label="Gosta de"
                             placeholder="Insira brevemente o que seu personagem gosta"
                           />
@@ -394,6 +400,7 @@
                           <v-text-field
                             v-model="data.extraInfos.dislikes"
                             :counter="maxCharsDislikes"
+                            :rules="dislikesOfRules"
                             label="Não gosta de"
                             placeholder="Insira brevemente o que seu personagem NÃO gosta"
                           />
@@ -405,6 +412,7 @@
                           <v-textarea
                             v-model="data.extraInfos.abstract"
                             :counter="maxCharsAbstract"
+                            :rules="abstractRules"
                             label="Resumo"
                             outlined
                             placeholder="Insira brevemente um resumo da história do personagem"
@@ -505,7 +513,6 @@ import dataStratagems from '../mock/stratagems'
 import dataMartialSkills from '../mock/martialSkills'
 import dataSpecialTechniques from '../mock/specialTechniques'
 import dataNegativeTraits from '../mock/negativeTraits'
-import noblePhantasmVue from './noble-phantasm.vue'
 export default {
   props: {
     data: {
@@ -555,6 +562,7 @@ export default {
     maxCharsLikes: 100,
     maxCharsDislikes: 100,
     maxCharsAbstract: 500,
+    maxCharsLocality: 50,
     firstTimeValors: true,
     firstTimeStratagems: true,
     firstTimeMartialSkills: true,
@@ -596,7 +604,12 @@ export default {
       'Saber',
       'Shielder',
     ].sort(),
-    nameRules: [(v) => !!v || 'Este campo é obrigatório'],
+    nameRules: [
+      (v) => !!v || 'Este campo é obrigatório',
+      (v) =>
+        v.length <= instance.maxCharsName ||
+        `Este campo excedeu o limite máximo de: ${instance.maxCharsName} caracteres`,
+    ],
     classRules: [
       (v) => !!v || 'Este campo é obrigatório',
       (v) => instance.classes.includes(v) || 'Esta classe não existe',
@@ -632,6 +645,41 @@ export default {
         v.filter((el) => !el.name).length < 1 ||
         'Há pelo menos uma técnica especial inválida',
       (v) => instance.validateMaxPoints(0, instance.data.meritPoints),
+    ],
+    speciesRules: [
+      (v) =>
+        v.length <= instance.maxCharsSpecies ||
+        `Este campo excedeu o limite máximo de: ${instance.maxCharsSpecies} caracteres`,
+    ],
+    selfDenominationRules: [
+      (v) =>
+        v.length <= instance.maxCharsSelfDenomination ||
+        `Este campo excedeu o limite máximo de: ${instance.maxCharsSelfDenomination} caracteres`,
+    ],
+    likesOfRules: [
+      (v) =>
+        v.length <= instance.maxCharsLikes ||
+        `Este campo excedeu o limite máximo de: ${instance.maxCharsLikes} caracteres`,
+    ],
+    dislikesOfRules: [
+      (v) =>
+        v.length <= instance.maxCharsDislikes ||
+        `Este campo excedeu o limite máximo de: ${instance.maxCharsDislikes} caracteres`,
+    ],
+    localityRules: [
+      (v) =>
+        v.length <= instance.maxCharsLocality ||
+        `Este campo excedeu o limite máximo de: ${instance.maxCharsLocality} caracteres`,
+    ],
+    talentsRules: [
+      (v) =>
+        v.length <= instance.maxCharsTalents ||
+        `Este campo excedeu o limite máximo de: ${instance.maxCharsTalents} caracteres`,
+    ],
+    abstractRules: [
+      (v) =>
+        v.length <= instance.maxCharsAbstract ||
+        `Este campo excedeu o limite máximo de: ${instance.maxCharsAbstract} caracteres`,
     ],
     dataNoblePhantasms: dataNP,
     stratagems: dataStratagems,
@@ -918,7 +966,7 @@ export default {
     'data.valorPoints'(valors) {
       if (this.firstTimeValors) {
         const { noblePhantasms } = this.data
-        if (noblePhantasms && noblePhantasms.length > 1) {
+        if (noblePhantasms) {
           noblePhantasms.forEach((np, i) => {
             if (np.effects && np.effects.length > 0) {
               np.effects.forEach((e) => {

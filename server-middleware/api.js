@@ -224,12 +224,14 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
     }))
 
     const npResults = await Promise.all(npStructure)
-    npResults.forEach(np =>
-      valorPoints.push(
-        np.effects.map(e => e.valors)
-          .reduce((acc, valor) => acc + valor)
-      )
-    )
+    npResults.forEach(np => {
+      const npeLength = np.effects.length
+
+      if (npeLength > 0) {
+        valorPoints.push(np.effects.map(e => e.valors)
+          .reduce((acc, valor) => acc + valor))
+      }
+    })
 
     const currentClass = player['class']
     const user = {
@@ -252,7 +254,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       martialSkills,
       specialTechniques,
       extraInfos: {
-        species,
+        species: species || '',
         sex,
         age: {
           formattedUnit: `${age} ${unitAge}`,
@@ -267,13 +269,13 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
           unit: player.weight
         },
         birthday,
-        locality,
+        locality: locality || '',
         bloodType: blood_type,
-        addressSelfAs: self_denomination,
-        likes,
-        dislikes,
-        abstract,
-        talents,
+        addressSelfAs: self_denomination || '',
+        likes: likes || '',
+        dislikes: dislikes || '',
+        abstract: abstract || '',
+        talents: talents || '',
         stories,
         referenceImages
       }
@@ -487,7 +489,7 @@ app.post('/player', async (req, res) => {
       if (noblePhantasmsModels.length > 0) {
         const npIds = await npRepository(db).insertAll(noblePhantasmsModels)
         const npTypes = noblePhantasms.map(el => el.type)
-        const npSpecialStrikes = noblePhantasms.map(el => el.specialStrike).filter(el => el != undefined)
+        const npSpecialStrikes = noblePhantasms.map(el => el.specialStrike)
         const npEffects = noblePhantasms.flatMap((el, i) => ({
           id: el.id || null,
           effect: el.effects,
@@ -589,6 +591,17 @@ app.post('/upload/:playerId', async (req, res) => {
       })
     }
 
+    const removeImages = () => new Promise((resolve, reject) =>
+      imageRepo.getImagesByPlayerId(playerId).then(imgs => {
+        resolve(imageRepo.deleteAllByPlayerId(playerId).then(() =>
+          imgs.forEach(i => unlink(`./uploads/${i.img}`, (err) => {
+            if (err) return reject(err)
+            console.log(`Removed the image: ${i.img}`)
+          }))
+        ))
+      })
+    )
+    await removeImages()
     const uploadPromise = () => new Promise((resolve, reject) => {
       form.parse(req, async (err, fields, files) => {
         if (err) return reject(err)
@@ -602,9 +615,11 @@ app.post('/upload/:playerId', async (req, res) => {
             const oldPath = f.path
             const newPath = `./uploads/${f.name}`
 
-            rename(oldPath, newPath, (err) => {
-              if (err) throw err
-            })
+            if (f.size > 0) {
+              rename(oldPath, newPath, (err) => {
+                if (err) throw err
+              })
+            }
 
             return image({
               id: null,
@@ -618,19 +633,7 @@ app.post('/upload/:playerId', async (req, res) => {
       })
     })
 
-    const removeImages = () => new Promise((resolve, reject) =>
-      imageRepo.getImagesByPlayerId(playerId).then(img => {
-        resolve(imageRepo.deleteAllByPlayerId(playerId).then(() =>
-          unlink(`./uploads/${img.img}}`, (err) => {
-            if (err) return reject(err)
-          })
-        ))
-      })
-    )
-
     try {
-      await removeImages()
-
       const imgModels = await uploadPromise()
       await imageRepo.insertAll(imgModels)
 

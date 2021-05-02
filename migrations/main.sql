@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS player_noble_phantasm_types (
 
 CREATE TABLE IF NOT EXISTS player_noble_phantasm_special_strikes (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(50),
     np_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (`np_id`) REFERENCES player_noble_phantasms (`id`) ON DELETE CASCADE
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS player_noble_phantasm_special_strikes (
 
 CREATE TABLE IF NOT EXISTS player_noble_phantasm_effects (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(50),
     valors SMALLINT NOT NULL,
     np_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,

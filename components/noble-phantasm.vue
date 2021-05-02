@@ -16,7 +16,6 @@
             label="Tipo"
             @change="
               np.specialStrike = null
-              valorSkills = data.valorSkills
             "
           />
         </v-col>
@@ -28,7 +27,6 @@
             item-text="name"
             label="Golpe Especial"
             deletable-chips
-            @change="np.specialStrike = {...backupSpecialStrike, name: np.specialStrike.name}"
           >
             <template v-slot:no-data>
               Nenhum tipo de fantasma nobre foi selecionado.
@@ -40,19 +38,22 @@
             v-if="!isOverloaded"
             v-model="np.effects"
             :rules="rules.effect"
-            :items="valorSkills"
+            :items="dataValorSkills"
             chips
             item-text="name"
             label="Efeitos"
             multiple
             icon
             deletable-chips
+            @change="
+              backupEffects = decideValorsOperation(np.effects, backupEffects)
+            "
           />
           <v-combobox
             v-if="isOverloaded"
             v-model="np.effects"
             :rules="rules.effect"
-            :items="valorSkills"
+            :items="dataValorSkills"
             chips
             item-text="name"
             label="Efeitos"
@@ -87,7 +88,7 @@ export default {
     this.valorSkills = this.data.valorSkills
     this.valors = this.valorPoints[this.index]
     this.valorCapData = this.valorCap
-    this.backupSpecialStrike = this.np.specialStrike
+    this.backupEffects = this.np.effects
   },
 
   data: (instance) => ({
@@ -97,7 +98,6 @@ export default {
     previouslyMagical: false,
     isOverloaded: false,
     valorSkills: [],
-    backupSpecialStrike: {},
     backupEffects: [],
     valorEffects: 0,
     valors: 0,
@@ -113,16 +113,30 @@ export default {
   }),
 
   computed: {
+    dataValorSkills() {
+      const valorSkills = this.data.valorSkills
+      if (this.np.type) {
+        const type = this.data.type.filter((el) => el.name == this.np.type.name)
+        const typeValors = type[0].valorSkills
+        if (typeValors) {
+          return valorSkills.concat(typeValors.slice(0, typeValors.length - 2))
+        }
+      }
+      return valorSkills
+    },
+
     dataSpecialStrike() {
       if (this.np.type) {
-        const typeSpecialStrikes = this.data.type.filter(el => el.name == this.np.type.name)
+        const typeSpecialStrikes = this.data.type.filter(
+          (el) => el.name == this.np.type.name
+        )
         if (typeSpecialStrikes.length > 0) {
           return typeSpecialStrikes[0].specialStrikes
         }
         return this.np.type.specialStrikes
       }
       return []
-    }
+    },
   },
 
   methods: {
@@ -130,12 +144,14 @@ export default {
       data.map((el) => el.valors).reduce((acc, valor) => acc + valor),
 
     validateMaxPoints(v, points, cap) {
-      if (
-        (v.length > 0 && this.calculateValorsFromArray(v) > cap) ||
-        points < 0
-      ) {
+      let result = 0
+      if (v.length > 0) {
+        result = this.calculateValorsFromArray(v)
+      }
+
+      if ((v.length > 0 && result > cap) || points < 0) {
         this.isOverloaded = true
-        this.dmgDown = Math.abs(10 * this.valors)
+        this.dmgDown = Math.abs(10 * (result - cap))
       } else {
         this.isOverloaded = false
       }
@@ -143,8 +159,8 @@ export default {
     },
 
     decideValorsOperation(data, backup) {
-      let elements = data
-      let backupElements = backup
+      let elements = data || []
+      let backupElements = backup || []
 
       if (backupElements.length >= elements.length) {
         const tmpData = data.map((el) => el.name)
@@ -203,14 +219,14 @@ export default {
         const index = this.index
 
         if (typeValors) {
-          if (typeValors.length > 0) {
-            const typeValorsWithoutInvalidNames = type.valorSkills.filter(
-              (el) => el.name != ''
-            )
-            this.valorSkills = this.valorSkills.concat(
-              typeValorsWithoutInvalidNames
-            )
-          }
+          // if (typeValors.length > 0) {
+          //   const typeValorsWithoutInvalidNames = type.valorSkills.filter(
+          //     (el) => el.name != ''
+          //   )
+          //   this.valorSkills = this.valorSkills.concat(
+          //     typeValorsWithoutInvalidNames
+          //   )
+          // }
 
           if (type.name == 'Mágico' && !this.previouslyMagical) {
             this.valors += 1
@@ -237,17 +253,6 @@ export default {
           this.previouslyMagical = false
         }
       }
-    },
-    'np.effects': function (effects) {
-      if (this.firstTime && this.playerId) {
-        this.backupEffects = effects
-        this.firstTime = false
-      }
-
-      this.backupEffects = this.decideValorsOperation(
-        effects,
-        this.backupEffects
-      )
     },
   },
 }

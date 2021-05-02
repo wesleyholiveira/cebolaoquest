@@ -12,6 +12,18 @@ module.exports = (db) => ({
         })
     },
 
+    deleteById: async (id) => {
+        console.log(`Removing (IF EXISTS) all images by id = ${id}`)
+        const query = 'DELETE FROM player_images WHERE id = ?'
+        return new Promise((resolve, reject) => {
+            db.query(query, [id], (err, results) => {
+                if (err) return reject(err)
+
+                return resolve(results)
+            })
+        })
+    },
+
     deleteAllByPlayerId: async (id) => {
         console.log(`Removing (IF EXISTS) all images by player_id = ${id}`)
         const query = 'DELETE FROM player_images WHERE player_id = ?'

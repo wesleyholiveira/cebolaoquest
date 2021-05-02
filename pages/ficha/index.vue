@@ -58,6 +58,13 @@ export default {
       martialSkills: [],
       negativeTraits: [],
       extraInfos: {
+        species: '',
+        addressSelfAs: '',
+        likes: '',
+        dislikes: '',
+        abstract: '',
+        talents: '',
+        locality: '',
         stories: [
           {
             id: null,
