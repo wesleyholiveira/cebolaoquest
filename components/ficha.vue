@@ -9,7 +9,11 @@
       <v-col cols="12">
         <v-stepper v-model="step">
           <v-stepper-header>
-            <v-stepper-step step="1" :complete="step > 1" :rules="[() => valid]">
+            <v-stepper-step
+              step="1"
+              :complete="step > 1"
+              :rules="[() => valid]"
+            >
               Cadastro da Ficha
             </v-stepper-step>
             <v-divider></v-divider>
@@ -37,6 +41,7 @@
                   <v-col cols="12" lg="6" sm="12">
                     <v-text-field
                       v-model="data.name"
+                      :counter="maxCharsName"
                       :rules="nameRules"
                       label="Nome *"
                     />
@@ -169,7 +174,7 @@
                     :key="key"
                     :valorPoints="data.valorPoints"
                     :valorCap="capValorPoints"
-                    v-on:updateSpecialStrike="item.specialStrike = $event"
+                    :playerId="data.id"
                     v-on:updateValorPoints="data.valorPoints = $event"
                     v-on:updateValorCap="capValorPoints = $event"
                   ></noble-phantasm>
@@ -182,8 +187,8 @@
                           Então você é um ixxxpertinho?!
                         </v-card-title>
                         <v-card-text>
-                          Tentando gastar mais pontos de méritos do que realmente
-                          tem? Vai assistir a live do
+                          Tentando gastar mais pontos de méritos do que
+                          realmente tem? Vai assistir a live do
                           <a
                             href="https://twitch.tv/cebolaolunar"
                             target="_blank"
@@ -195,7 +200,9 @@
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn text @click="meritsDialog = false"> Sair </v-btn>
+                          <v-btn text @click="meritsDialog = false">
+                            Sair
+                          </v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -278,6 +285,7 @@
                         <v-col cols="12" lg="6" sm="12">
                           <v-text-field
                             v-model="data.extraInfos.species"
+                            :counter="maxCharsSpecies"
                             label="Espécie"
                             class="noPaddingTop"
                           />
@@ -361,6 +369,7 @@
                         <v-col cols="12" lg="6" sm="12">
                           <v-text-field
                             v-model="data.extraInfos.addressSelfAs"
+                            :counter="maxCharsSelfDenomination"
                             label="Autodenominação"
                             class="noPaddingTop"
                           />
@@ -368,6 +377,7 @@
                         <v-col cols="12" lg="6" sm="12">
                           <v-text-field
                             v-model="data.extraInfos.talents"
+                            :counter="maxCharsTalents"
                             label="Talentos"
                             class="noPaddingTop"
                           />
@@ -375,6 +385,7 @@
                         <v-col cols="12" lg="6" sm="12">
                           <v-text-field
                             v-model="data.extraInfos.likes"
+                            :counter="maxCharsLikes"
                             label="Gosta de"
                             placeholder="Insira brevemente o que seu personagem gosta"
                           />
@@ -382,6 +393,7 @@
                         <v-col cols="12" lg="6" sm="12">
                           <v-text-field
                             v-model="data.extraInfos.dislikes"
+                            :counter="maxCharsDislikes"
                             label="Não gosta de"
                             placeholder="Insira brevemente o que seu personagem NÃO gosta"
                           />
@@ -392,6 +404,7 @@
                         <v-col cols="12">
                           <v-textarea
                             v-model="data.extraInfos.abstract"
+                            :counter="maxCharsAbstract"
                             label="Resumo"
                             outlined
                             placeholder="Insira brevemente um resumo da história do personagem"
@@ -404,7 +417,9 @@
                             :extraInfos="item"
                             :key="i"
                             :stories="data.extraInfos.stories"
-                            v-on:updateStories="data.extraInfos.stories = $event"
+                            v-on:updateStories="
+                              data.extraInfos.stories = $event
+                            "
                           >
                           </historia-ficha>
                         </v-col>
@@ -490,6 +505,7 @@ import dataStratagems from '../mock/stratagems'
 import dataMartialSkills from '../mock/martialSkills'
 import dataSpecialTechniques from '../mock/specialTechniques'
 import dataNegativeTraits from '../mock/negativeTraits'
+import noblePhantasmVue from './noble-phantasm.vue'
 export default {
   props: {
     data: {
@@ -532,6 +548,13 @@ export default {
       'O+',
       'O-',
     ],
+    maxCharsName: 45,
+    maxCharsSpecies: 40,
+    maxCharsSelfDenomination: 100,
+    maxCharsTalents: 100,
+    maxCharsLikes: 100,
+    maxCharsDislikes: 100,
+    maxCharsAbstract: 500,
     firstTimeValors: true,
     firstTimeStratagems: true,
     firstTimeMartialSkills: true,
@@ -685,12 +708,14 @@ export default {
 
     addNoblePhantasm() {
       const { meritPoints, noblePhantasms } = this.data
-      if (meritPoints < 1) {
-        this.meritsDialog = true
-        return
+      if (noblePhantasms.length >= 1) {
+        if (meritPoints < 1) {
+          this.meritsDialog = true
+          return
+        }
       }
 
-      this.data.noblePhantasms.push({merits: 1})
+      this.data.noblePhantasms.push({ merits: 1 })
       this.data.valorPoints.push(this.defaultValorPoints)
 
       if (noblePhantasms.length > 1) {
@@ -893,13 +918,14 @@ export default {
     'data.valorPoints'(valors) {
       if (this.firstTimeValors) {
         const { noblePhantasms } = this.data
-        console.log(noblePhantasms)
-        if (noblePhantasms) {
-          noblePhantasms.forEach((np, i) =>
-            np.effects.forEach(e => {
-              this.data.valorPoints[i] -= e.valors
-            })
-          )
+        if (noblePhantasms && noblePhantasms.length > 1) {
+          noblePhantasms.forEach((np, i) => {
+            if (np.effects && np.effects.length > 0) {
+              np.effects.forEach((e) => {
+                this.data.valorPoints[i] -= e.valors
+              })
+            }
+          })
           this.firstTimeValors = false
         }
       }
@@ -907,7 +933,7 @@ export default {
     'data.stratagems'(stratagems) {
       if (this.firstTimeStratagems) {
         if (stratagems.length > 0) {
-          stratagems.forEach(el => this.decrementMerits(el))
+          stratagems.forEach((el) => this.decrementMerits(el))
         }
         this.firstTimeStratagems = false
         this.backupStratagems = stratagems
@@ -924,7 +950,7 @@ export default {
     'data.martialSkills'(martialSkills) {
       if (this.firstTimeMartialSkills) {
         if (martialSkills.length > 0) {
-          martialSkills.forEach(el => this.decrementMerits(el))
+          martialSkills.forEach((el) => this.decrementMerits(el))
         }
 
         this.firstTimeMartialSkills = false
@@ -942,7 +968,7 @@ export default {
     'data.specialTechniques'(specialTechniques) {
       if (this.firstTimeSpecialTechs) {
         if (specialTechniques.length > 0) {
-          specialTechniques.forEach(el => this.decrementMerits(el))
+          specialTechniques.forEach((el) => this.decrementMerits(el))
         }
 
         this.firstTimeSpecialTechs = false
@@ -960,7 +986,7 @@ export default {
     'data.negativeTraits'(negativeTraits) {
       if (this.firstTimeNegativeTraits) {
         if (negativeTraits.length > 0) {
-          negativeTraits.forEach(el => this.incrementMerits(el))
+          negativeTraits.forEach((el) => this.incrementMerits(el))
         }
 
         this.firstTimeNegativeTraits = false

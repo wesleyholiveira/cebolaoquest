@@ -15,19 +15,20 @@
             item-text="name"
             label="Tipo"
             @change="
-              selectedSpecialStrike = null
+              np.specialStrike = null
               valorSkills = data.valorSkills
             "
           />
         </v-col>
         <v-col cols="12" lg="6" sm="12">
           <v-combobox
-            v-model="selectedSpecialStrike"
-            :items="!!np.type ? np.type.specialStrikes : []"
+            v-model="np.specialStrike"
+            :items="dataSpecialStrike"
             chips
             item-text="name"
             label="Golpe Especial"
             deletable-chips
+            @change="np.specialStrike = {...backupSpecialStrike, name: np.specialStrike.name}"
           >
             <template v-slot:no-data>
               Nenhum tipo de fantasma nobre foi selecionado.
@@ -79,12 +80,14 @@ export default {
     index: Number,
     valorPoints: Array,
     valorCap: Number,
+    playerId: String,
   },
 
   created() {
     this.valorSkills = this.data.valorSkills
     this.valors = this.valorPoints[this.index]
     this.valorCapData = this.valorCap
+    this.backupSpecialStrike = this.np.specialStrike
   },
 
   data: (instance) => ({
@@ -94,8 +97,8 @@ export default {
     previouslyMagical: false,
     isOverloaded: false,
     valorSkills: [],
+    backupSpecialStrike: {},
     backupEffects: [],
-    selectedSpecialStrike: null,
     valorEffects: 0,
     valors: 0,
     rules: {
@@ -108,6 +111,19 @@ export default {
       ],
     },
   }),
+
+  computed: {
+    dataSpecialStrike() {
+      if (this.np.type) {
+        const typeSpecialStrikes = this.data.type.filter(el => el.name == this.np.type.name)
+        if (typeSpecialStrikes.length > 0) {
+          return typeSpecialStrikes[0].specialStrikes
+        }
+        return this.np.type.specialStrikes
+      }
+      return []
+    }
+  },
 
   methods: {
     calculateValorsFromArray: (data) =>
@@ -223,13 +239,15 @@ export default {
       }
     },
     'np.effects': function (effects) {
+      if (this.firstTime && this.playerId) {
+        this.backupEffects = effects
+        this.firstTime = false
+      }
+
       this.backupEffects = this.decideValorsOperation(
         effects,
         this.backupEffects
       )
-    },
-    selectedSpecialStrike(specialStrike) {
-      this.$emit('updateSpecialStrike', specialStrike)
     },
   },
 }

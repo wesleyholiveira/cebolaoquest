@@ -1,6 +1,6 @@
 module.exports = (db) => ({
     getById: async (id) => {
-        const query = `SELECT id FROM players WHERE id = ?`;
+        const query = 'SELECT id FROM players WHERE id = ? ORDER BY id DESC';
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
                 if (err) return reject(err)
@@ -11,7 +11,7 @@ module.exports = (db) => ({
     },
 
     getNameByUserId: async (id) => {
-        const query = `SELECT id, name FROM players WHERE user_id = ?`;
+        const query = 'SELECT id, name FROM players WHERE user_id = ? ORDER BY id DESC';
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
                 if (err) return reject(err)

@@ -206,6 +206,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       negativeTraitsSum = negativeTraits.map(trait => trait.merits).reduce((acc, merit) => acc + merit)
     }
 
+    let npLength = noblePhantasms.length > 1 ? noblePhantasms.length : 0
     const meritsList =
       stratagems.concat(martialSkills)
         .concat(specialTechniques)
@@ -213,7 +214,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
         .map(el => el.merits)
     const totalMerits =
       meritsList.length < 1 ? 0 :
-        meritsList.reduce((acc, merit) => acc + merit) - (negativeTraitsSum + noblePhantasms.length)
+        meritsList.reduce((acc, merit) => acc + merit) - (negativeTraitsSum + npLength)
 
     const npStructure = await noblePhantasms.map(async np => ({
       ...np,
@@ -505,8 +506,7 @@ app.post('/player', async (req, res) => {
 
         if (npSpecialStrikes.length > 0) {
           const npSpecialStrikeModels = npSpecialStrikes.map((s, i) => npSpecialStrikeModel({
-            id: null,
-            name: s || '',
+            ...s,
             np_id: npIds[i]
           }))
 
@@ -521,13 +521,17 @@ app.post('/player', async (req, res) => {
         })))
 
         const npeLength = npEffectModels.length
-        noblePhantasms.forEach(np =>
-          npEffectsRepo.deleteById(np.id).then(() => {
-            if (npeLength > 0) {
-              return npEffectRepository(db).insertAll(npEffectModels)
-            }
-          })
+        const npEffectsDeletionPromise = new Promise((resolve, rejet) =>
+          noblePhantasms.forEach(np =>
+            resolve(npEffectsRepo.deleteById(np.id))
+          )
         )
+
+        npEffectsDeletionPromise.then(() => {
+          if (npeLength > 0) {
+            npEffectRepository(db).insertAll(npEffectModels)
+          }
+        })
       }
     }
 
