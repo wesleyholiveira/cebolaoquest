@@ -892,7 +892,8 @@ export default {
     },
     'data.valorPoints'(valors) {
       if (this.firstTimeValors) {
-        const { noblePhantasms } = this.data.noblePhantasms
+        const { noblePhantasms } = this.data
+        console.log(noblePhantasms)
         if (noblePhantasms) {
           noblePhantasms.forEach((np, i) =>
             np.effects.forEach(e => {

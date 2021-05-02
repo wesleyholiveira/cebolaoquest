@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS players (
     age SMALLINT,
     blood_type CHAR(2),
     birthday DATE,
-    self_denomination VARCHAR(50),
+    self_denomination VARCHAR(100),
     talents TINYTEXT,
     likes TINYTEXT,
     dislikes TINYTEXT,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS players (
 CREATE TABLE IF NOT EXISTS player_attributes (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     name CHAR(3) NOT NULL,
-    `rank` CHAR(3) NOT NULL,
+    `rank` CHAR(4) NOT NULL,
     player_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE

@@ -105,7 +105,7 @@ export default {
         valors: 3
       },
       {
-        name: 'Perfeita para o Comabte',
+        name: 'Perfeita para o Combate',
         valors: 3
       },
       {

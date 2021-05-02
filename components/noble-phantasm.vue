@@ -208,7 +208,7 @@ export default {
             return
           }
 
-          if (this.previouslyMagical || this.firstTime) {
+          if (this.previouslyMagical) {
             this.valors -= 1
             this.valorCapData -= 1
 
@@ -219,16 +219,10 @@ export default {
             this.$emit('updateValorCap', this.valorCapData)
           }
           this.previouslyMagical = false
-          this.firstTime = false
         }
       }
     },
     'np.effects': function (effects) {
-      if (this.firstTime) {
-        this.backupEffects = effects
-        this.firstTime = false
-      }
-
       this.backupEffects = this.decideValorsOperation(
         effects,
         this.backupEffects
