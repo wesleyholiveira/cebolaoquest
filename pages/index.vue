@@ -37,6 +37,9 @@
 export default {
   data: () => ({
     items: [
+      'Corrigido bug de inserção e na visualização dos Golpes Especiais',
+      'Corrigido bug que deixava os méritos negativos na edição',
+      'Corrigido bug que inseria os efeitos para cada NP criado',
       'Corrigido botão de "-" no módulo de edição',
       'Corrigido botão de reset dos parâmetros',
       'Adicionado botão e funcionalidade de logout',
