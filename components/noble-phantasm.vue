@@ -23,10 +23,8 @@
           <v-combobox
             v-model="np.specialStrike"
             :items="dataSpecialStrike"
-            chips
             item-text="name"
             label="Golpe Especial"
-            deletable-chips
           >
             <template v-slot:no-data>
               Nenhum tipo de fantasma nobre foi selecionado.
@@ -61,6 +59,9 @@
             icon
             deletable-chips
             class="warn"
+            @change="
+              backupEffects = decideValorsOperation(np.effects, backupEffects)
+            "
           />
 
           <span v-if="isOverloaded" class="warn">
@@ -118,8 +119,9 @@ export default {
       if (this.np.type) {
         const type = this.data.type.filter((el) => el.name == this.np.type.name)
         const typeValors = type[0].valorSkills
+
         if (typeValors) {
-          return valorSkills.concat(typeValors.slice(0, typeValors.length - 2))
+          return valorSkills.concat(typeValors)
         }
       }
       return valorSkills

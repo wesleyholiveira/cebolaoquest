@@ -75,7 +75,7 @@
               </v-container>
             </v-expansion-panel-header>
             <v-expansion-panel-content class="pt-4" color="cyan darken-3">
-              Nada aqui ainda, curioso.
+              <ficha-profile />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>

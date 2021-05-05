@@ -84,6 +84,7 @@ export default {
         }
       }
     }
-  }
+  },
+  fetchOnServer: false
 }
 </script>

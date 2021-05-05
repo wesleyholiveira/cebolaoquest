@@ -166,6 +166,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       dislikes,
       abstract,
       talents,
+      valorPoints,
       // meritPoints
     } = player
 
@@ -181,7 +182,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
     const npEffectsRepo = npEffectRepository(db)
     const categories = await categoryRepository(db).getCategoriesByPlayerId(id)
     let unitAge = 'anos'
-    let valorPoints = []
+    const valorsArray = []
 
     if (age == 1) {
       unitAge = 'ano'
@@ -228,10 +229,12 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       const npeLength = np.effects.length
 
       if (npeLength > 0) {
-        valorPoints.push(np.effects.map(e => e.valors)
+        valorsArray.push(np.effects.map(e => e.valors)
           .reduce((acc, valor) => acc + valor))
       }
     })
+
+    valorsArray.push(valorPoints)
 
     const currentClass = player['class']
     const user = {
@@ -245,7 +248,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       meritPoints: totalMerits,
       statusPoints,
       parameters,
-      valorPoints,
+      valorPoints: valorsArray,
       noblePhantasms: npResults,
       proficiencyPoints,
       currentClass,
@@ -301,9 +304,9 @@ app.post('/register', async (req, res) => {
   const secret = process.env.SECRET
   const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
   const user = userModel({
-    username,
-    password: encryptedPwd,
-    email
+    username: username.trim(),
+    password: encryptedPwd.trim(),
+    email: email.trim()
   })
 
   return userRepository(db).insert(user).then(() => res.json({
@@ -350,7 +353,7 @@ app.post('/login', async (req, res) => {
 
   const secret = process.env.SECRET
   const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
-  const users = await userRepository(db).getUserByUsernameAndPassword(username, encryptedPwd)
+  const users = await userRepository(db).getUserByUsernameAndPassword(username.trim(), encryptedPwd)
   let userId = 0
 
   if (users.length > 0) {
@@ -592,16 +595,16 @@ app.post('/upload/:playerId', async (req, res) => {
     }
 
     const removeImages = () => new Promise((resolve, reject) =>
-      imageRepo.getImagesByPlayerId(playerId).then(imgs => {
-        resolve(imageRepo.deleteAllByPlayerId(playerId).then(() =>
-          imgs.forEach(i => unlink(`./uploads/${i.img}`, (err) => {
+      resolve(imageRepo.deleteAllByPlayerId(playerId))
+      // imageRepo.getImagesByPlayerId(playerId).then(imgs => {
+        // resolve().then(() =>
+          /*imgs.forEach(i => unlink(`./uploads/${i.img}`, (err) => {
             if (err) return reject(err)
             console.log(`Removed the image: ${i.img}`)
           }))
-        ))
-      })
+        ))*/
+      /*}*/
     )
-    await removeImages()
     const uploadPromise = () => new Promise((resolve, reject) => {
       form.parse(req, async (err, fields, files) => {
         if (err) return reject(err)
@@ -614,6 +617,8 @@ app.post('/upload/:playerId', async (req, res) => {
           return resolve(files.referenceImages.map(f => {
             const oldPath = f.path
             const newPath = `./uploads/${f.name}`
+
+            console.log(f.size)
 
             if (f.size > 0) {
               rename(oldPath, newPath, (err) => {
@@ -634,6 +639,7 @@ app.post('/upload/:playerId', async (req, res) => {
     })
 
     try {
+      await removeImages()
       const imgModels = await uploadPromise()
       await imageRepo.insertAll(imgModels)
 

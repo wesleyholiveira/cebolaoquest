@@ -46,38 +46,37 @@ export default {
     defaultStatusPoints: 0,
     negativeRuleErrorClass: '',
     baseParams: ['D', 'C', 'B', 'A', 'S'],
-    parameters: {
-      STR: {
+    parameters: [{
         id: null,
         name: 'STR',
         rank: 'D',
-      },
-      AGI: {
+        player_id: null,
+      }, {
         id: null,
         name: 'AGI',
         rank: 'D',
-      },
-      END: {
+        player_id: null,
+      }, {
         id: null,
         name: 'END',
         rank: 'D',
-      },
-      MAN: {
-        id: null,
-        name: 'MAN',
-        rank: 'D',
-      },
-      NP: {
-        id: null,
-        name: 'NP',
-        rank: 'D',
-      },
-      LUK: {
+        player_id: null,
+      }, {
         id: null,
         name: 'LUK',
         rank: 'D',
-      },
-    },
+        player_id: null,
+      }, {
+        id: null,
+        name: 'NP',
+        rank: 'D',
+        player_id: null,
+      }, {
+        id: null,
+        name: 'MAN',
+        rank: 'D',
+        player_id: null,
+      }],
     negativeRules: [],
     backup: [],
   }),

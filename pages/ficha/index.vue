@@ -47,7 +47,7 @@ export default {
         player_id: null,
       }, {
         id: null,
-        name: 'LUK',
+        name: 'MAN',
         rank: 'D',
         player_id: null,
       }],

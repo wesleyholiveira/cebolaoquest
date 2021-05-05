@@ -240,7 +240,6 @@ export default {
             name: 'Truque de Mãos',
             valors: 2
           },
-          ,
           {
             name: 'Pérola da Pureza',
             valors: 2
