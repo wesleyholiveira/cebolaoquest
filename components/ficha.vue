@@ -100,11 +100,13 @@
                         :attribute="attribute"
                         :playerLevel="data.level"
                         :statusPoints="data.statusPoints"
+                        :meritPoints="data.meritPoints"
                         :negativeTraits="data.negativeTraits"
                         :proficiencyPoints="data.proficiencyPoints"
                         :defaultProficiencyPoints="defaultProficiencyPoints"
                         v-on:updateParameters="data.parameters[i] = $event"
                         v-on:updateStatusPoints="data.statusPoints = $event"
+                        v-on:updateMeritPoints="data.meritPoints = $event"
                         v-on:updateProficiencyPoints="
                           data.proficiencyPoints = $event
                         "

@@ -77,6 +77,7 @@ export default {
   display: block;
 }
 .profile-group.inline {
+  justify-content: center;
   flex-direction: row;
   margin-bottom: 10px;
 }

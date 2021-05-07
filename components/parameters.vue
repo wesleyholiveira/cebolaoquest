@@ -35,12 +35,14 @@ export default {
     attribute: Object,
     defaultProficiencyPoints: Number,
     proficiencyPoints: Number,
+    meritPoints: Number,
     statusPoints: Number,
     playerLevel: Number,
     negativeTraits: Array,
   },
 
   data: () => ({
+    isNegative: false,
     dialogProf: false,
     index: 0,
     defaultStatusPoints: 0,
@@ -83,19 +85,27 @@ export default {
 
   created: function () {
     this.parameters = { ...this.attribute }
-    this.index = this.baseParams.indexOf(this.attribute.rank.replace('-', ''))
+    this.index = this.baseParams.indexOf(this.attribute.rank.replace(/[\-\+]/, ''))
     this.initialProficiencyPoints = this.proficiencyPoints
+    this.initialMeritPoints = this.meritPoints
     this.defaultStatusPoints = this.statusPoints
   },
 
   computed: {
     isCounterSynergy() {
-      return (
+      const isCounter = (
         (this.negativeTraits &&
           this.negativeTraits.filter((e) => e.name == 'Contra-sinergia')
             .length > 0) ||
-        this.attribute.rank.lastIndexOf('-') > 0
+        this.attribute.rank.lastIndexOf('-') > 0 || this.isNegative
       )
+
+      if (isCounter) {
+        this.isNegative = true
+        this.$emit('updateMeritPoints', this.initialMeritPoints)
+      }
+
+      return isCounter
     },
   },
 
@@ -104,6 +114,7 @@ export default {
       const proficiencyPoints = this.initialProficiencyPoints
 
       this.attribute.rank = this.baseParams[0]
+      this.isNegative = false
       this.$emit('updateProficiencyPoints', proficiencyPoints)
     },
 
@@ -166,9 +177,16 @@ export default {
     turnToDeficient() {
       const p = this.baseParams
       const i = this.index
+      const merits = this.meritPoints
 
-      const newParam = `${p[i]}-`
-      this.attribute.rank = newParam
+      if (!this.isNegative) {
+        const newParam = `${p[i]}-`
+        this.attribute.rank = newParam
+  
+        this.$emit('updateMeritPoints', merits + 1)
+        this.isNegative = true
+      }
+
     },
   },
 }

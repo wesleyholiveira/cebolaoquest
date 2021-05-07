@@ -122,27 +122,27 @@ export default {
       ],
       parametersItems: [
         {
-          label: 'STR:',
+          label: 'STR',
           value: 'D'
         },
         {
-          label: 'AGI:',
+          label: 'AGI',
           value: 'D'
         },
         {
-          label: 'END:',
+          label: 'END',
           value: 'D'
         },
         {
-          label: 'LUK:',
+          label: 'LUK',
           value: 'D'
         },
         {
-          label: 'MAN:',
+          label: 'MAN',
           value: 'D'
         },
         {
-          label: 'NP:',
+          label: 'NP',
           value: 'D'
         },
       ],
@@ -208,7 +208,7 @@ His belief that he would continue to save many people as a Heroic Spirit did hap
         },
         {
           label: 'Autodenominação:',
-          value: 'The best detective of the world'
+          value: 'The best detective of the worldasdasddsad'
         },
         {
           label: 'Talentos:',

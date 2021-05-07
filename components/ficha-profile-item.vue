@@ -30,7 +30,7 @@
             class="infos--item--link"
             v-bind="attrs"
             v-on="on"
-            v-if="effect != undefined"
+            v-if="effect"
             @click="dialog = true"
           >
             Efeito (?)
@@ -40,10 +40,11 @@
       </v-tooltip>
       <a
         class="infos--item--link"
-        v-if="effect != undefined && effect.length > 200"
+        v-if="effect && effect.length > 200"
         @click="dialog = true"
-        >Efeito (?)</a
       >
+        Efeito (?)
+      </a>
     </div>
     <slot name="divider">
       <v-divider class="infos--divider" v-if="!inline"></v-divider>
@@ -77,12 +78,19 @@ export default {
   margin-left: 15px;
 }
 .infos--item {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 .infos--item.inline {
-  width: 80px;
+  width: 120px;
+  justify-content: center;
 }
 .infos--item .infos--item--label {
-  width: 120px;
+  width: 150px;
+}
+.infos--item .infos--item--label,
+.infos--item .infos--item--value {
   word-wrap: break-word;
   word-break: break-all;
   display: inline-block;
@@ -90,13 +98,14 @@ export default {
 .infos--item .infos--item--label.inline {
   width: auto;
 }
+.infos--item .infos--item--value {
+  max-width: 205px;
+  padding-left: 15px;
+}
 .infos--item--link {
   font-size: 1rem;
   color: rgba(0, 0, 0, 0.75);
 }
-/* .infos--item .infos--item--value.inline {
-  margin-right: 15px;
-} */
 .infos--divider {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -113,7 +122,10 @@ export default {
 </style>
 
 <style>
-.profile-group .v-list-group .v-list-group__header .v-list-item__icon.v-list-group__header__append-icon {
+.profile-group
+  .v-list-group
+  .v-list-group__header
+  .v-list-item__icon.v-list-group__header__append-icon {
   margin-left: 0 !important;
 }
 </style>

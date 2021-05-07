@@ -40,21 +40,31 @@
         <v-expansion-panels v-for="player in players" :key="player.id">
           <v-expansion-panel
             :readonly="disabled"
-            @click="disabled = false"
             class="mb-5"
+            @click.stop="
+              disabled = false
+              getAllInfosByPlayer(player.id)
+            "
           >
             <v-expansion-panel-header color="cyan darken-4">
               <v-container style="padding: 0">
                 <v-row no-gutters justify="center" align="center">
                   <v-col>
-                    <span>{{ player.name }}</span>
+                    <span>{{ player.name }} - {{ player.id }}</span>
                   </v-col>
                   <v-col class="text-right">
+                    <v-btn
+                      v-if="loading"
+                      :loading="loading"
+                      depressed
+                      color="cyan darken-4"
+                    >
+                    </v-btn>
                     <v-btn
                       :href="player.url"
                       depressed
                       color="cyan darken-4"
-                      @click="disabled = true"
+                      @click.stop="disabled = true"
                     >
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
@@ -62,7 +72,7 @@
                       class="mr-4"
                       color="cyan darken-4"
                       depressed
-                      @click="
+                      @click.stop="
                         disabled = true
                         dialog = true
                         playerId = player.id
@@ -75,7 +85,7 @@
               </v-container>
             </v-expansion-panel-header>
             <v-expansion-panel-content class="pt-4" color="cyan darken-3">
-              <ficha-profile />
+              <ficha-profile :data="data" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -101,10 +111,12 @@
 <script>
 export default {
   data: () => ({
-    playerId: 0,
+    data: {},
+    loading: false,
     dialog: false,
-    players: [],
     disabled: false,
+    playerId: 0,
+    players: [],
   }),
   async fetch() {
     const { id, token } = this.$auth.user
@@ -127,6 +139,27 @@ export default {
   },
 
   methods: {
+    async getAllInfosByPlayer(playerId) {
+      const data = this.data
+      const { id, token } = this.$auth.user
+
+      if (data.user) {
+        return data.user
+      }
+
+      if (id && token) {
+        const url = `/api/player/${playerId}/user/${id}`
+        this.loading = true
+        const { data } = await this.$axios.get(url, {
+          headers: {
+            Authorization: token,
+          },
+        })
+
+        this.data = data
+        this.loading = false
+      }
+    },
     async removePlayer(id) {
       const { token } = this.$auth.user
       const url = `/api/player/${id}`
