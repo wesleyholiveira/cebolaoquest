@@ -11,7 +11,7 @@ import { createConnection } from 'mysql'
 const mysqlCon = createConnection({
     host: 'localhost',
     user: 'root',
-    password: '123mudar',
+    password: 'wesley001',
     database: 'cebolaoquest'
 })
 

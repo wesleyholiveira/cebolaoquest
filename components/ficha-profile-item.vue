@@ -1,20 +1,7 @@
 <template>
-  <div :class="{ group: group && inline }">
-    <v-dialog v-model="dialog" max-width="650">
-      <v-card>
-        <v-card-title class="headline">
-          {{ label }}
-        </v-card-title>
-        <v-card-text style="max-height: 450px; overflow-y: auto">
-          {{ effect }}
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false"> Sair </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <div :class="{ 'infos--item': true, 'add-padding': group, inline }">
+  <div :class="{ group: group && inline }" v-if="label && (value || effect)">
+    
+    <div :class="{ 'infos--item': true, 'add-margin': group, inline }">
       <span :class="{ 'infos--item--label': true, inline }">
         <strong>{{ label }}</strong>
       </span>
@@ -31,7 +18,7 @@
             v-bind="attrs"
             v-on="on"
             v-if="effect"
-            @click="dialog = true"
+            @click="sendToProfileGroup()"
           >
             Efeito (?)
           </a>
@@ -41,7 +28,7 @@
       <a
         class="infos--item--link"
         v-if="effect && effect.length > 200"
-        @click="dialog = true"
+        @click="sendToProfileGroup()"
       >
         Efeito (?)
       </a>
@@ -67,14 +54,21 @@ export default {
       required: false,
     },
   },
-  data: () => ({
-    dialog: false,
-  }),
+
+  methods: {
+    sendToProfileGroup() {
+      const { label, effect } = this
+      this.$emit('updateProfileGroup', {
+        label,
+        effect
+      })
+    }
+  }
 }
 </script>
 
 <style scoped>
-.add-padding {
+.add-margin {
   margin-left: 15px;
 }
 .infos--item {
@@ -92,14 +86,13 @@ export default {
 .infos--item .infos--item--label,
 .infos--item .infos--item--value {
   word-wrap: break-word;
-  word-break: break-all;
   display: inline-block;
 }
 .infos--item .infos--item--label.inline {
   width: auto;
 }
 .infos--item .infos--item--value {
-  max-width: 205px;
+  max-width: 170px;
   padding-left: 15px;
 }
 .infos--item--link {
@@ -111,13 +104,16 @@ export default {
   margin-bottom: 10px;
 }
 .group {
-  display: inline-block;
+  display: inline-flex;
 }
 .group .infos--item.inline {
   width: 80px;
 }
 .group .infos--item .infos--item--label.inline {
-  width: 50px;
+  width: 40px;
+}
+.group .infos--item .infos--item--value.inline {
+  width: 40px;
 }
 </style>
 

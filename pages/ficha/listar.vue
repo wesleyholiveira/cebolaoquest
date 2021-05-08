@@ -37,8 +37,9 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-expansion-panels v-for="player in players" :key="player.id">
+        <v-expansion-panels>
           <v-expansion-panel
+            v-for="(player, i) in players" :key="i"
             :readonly="disabled"
             class="mb-5"
             @click.stop="
@@ -50,7 +51,7 @@
               <v-container style="padding: 0">
                 <v-row no-gutters justify="center" align="center">
                   <v-col>
-                    <span>{{ player.name }} - {{ player.id }}</span>
+                    <span>{{ player.name }} - (ID: {{ player.id }})</span>
                   </v-col>
                   <v-col class="text-right">
                     <v-btn
@@ -85,7 +86,7 @@
               </v-container>
             </v-expansion-panel-header>
             <v-expansion-panel-content class="pt-4" color="cyan darken-3">
-              <ficha-profile :data="data" />
+              <ficha-profile :player="data" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -111,6 +112,7 @@
 <script>
 export default {
   data: () => ({
+    cache: {},
     data: {},
     loading: false,
     dialog: false,
@@ -129,7 +131,7 @@ export default {
       },
     })
 
-    data.forEach((player) => {
+    data.forEach(player => {
       player.url = `/ficha/${player.id}`
     })
 
@@ -140,15 +142,17 @@ export default {
 
   methods: {
     async getAllInfosByPlayer(playerId) {
-      const data = this.data
       const { id, token } = this.$auth.user
 
-      if (data.user) {
-        return data.user
+      if (this.cache[playerId]) {
+        this.loading = false
+        this.data = this.cache[playerId]
+        return
       }
 
       if (id && token) {
         const url = `/api/player/${playerId}/user/${id}`
+        
         this.loading = true
         const { data } = await this.$axios.get(url, {
           headers: {
@@ -156,7 +160,8 @@ export default {
           },
         })
 
-        this.data = data
+        this.data = data.user
+        this.cache[this.data.id] = this.data
         this.loading = false
       }
     },

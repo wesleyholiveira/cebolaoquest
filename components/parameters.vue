@@ -96,12 +96,14 @@ export default {
       const isCounter = (
         (this.negativeTraits &&
           this.negativeTraits.filter((e) => e.name == 'Contra-sinergia')
-            .length > 0) ||
-        this.attribute.rank.lastIndexOf('-') > 0 || this.isNegative
+            .length > 0)
       )
 
-      if (isCounter) {
+      if (this.attribute.rank.lastIndexOf('-') > 0) {
         this.isNegative = true
+      }
+
+      if (isCounter) {
         this.$emit('updateMeritPoints', this.initialMeritPoints)
       }
 

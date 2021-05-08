@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ 'profile-group': true, 'remove-margin': group, 'group-inline': group && inline, inline }">
+  <div
+    v-if="items && items.length > 0"
+    :class="{ 'profile-group': true, 'remove-margin': group, 'group-inline': group && inline, inline }"
+  >
     <v-list-group no-action v-if="group" v-model="profileGroup">
       <template v-slot:activator>
         <v-list-item-title class="text-center">{{groupTitle}}</v-list-item-title>
@@ -13,6 +16,7 @@
           :key="i"
           :inline="inline"
           :group="group"
+          v-on:updateProfileGroup="skills = $event"
         >
           <template v-slot:divider v-if="i == items.length - 1">
             <span></span>
@@ -56,8 +60,15 @@ export default {
   },
 
   data: (instance) => ({
-    profileGroup: instance.active
+    profileGroup: instance.active,
+    skills: {}
   }),
+
+  watch: {
+    skills(obj) {
+      this.$emit('updateProfile', obj)
+    }
+  }
 }
 </script>
 
