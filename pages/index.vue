@@ -37,6 +37,12 @@
 export default {
   data: () => ({
     items: [
+      'Corrigido bug no painel expansível que impedia de um painel ficar aberto e o outro fechado',
+      'Adicionado binding na listagem com todos os campos da ficha',
+      'Corrigido bug no parâmetro negativo que não permitia a edição do atributo',
+      'Adicionado rota no server-middleware para obter os arquivos de upload',
+      'Adicionado cache nas requisições de listagens',
+      'Componente dialog movido do "ficha-profile-item" para o componenter mais externo. Isto evitará renderização massiva do componente',
       'Corrigido bug de inserção e na visualização dos Golpes Especiais',
       'Corrigido bug que deixava os méritos negativos na edição',
       'Corrigido bug que inseria os efeitos para cada NP criado',
