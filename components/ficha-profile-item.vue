@@ -92,7 +92,7 @@ export default {
   width: auto;
 }
 .infos--item .infos--item--value {
-  max-width: 170px;
+  /* max-width: 170px; */
   padding-left: 15px;
 }
 .infos--item--link {

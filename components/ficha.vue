@@ -563,7 +563,7 @@ export default {
     maxCharsTalents: 100,
     maxCharsLikes: 100,
     maxCharsDislikes: 100,
-    maxCharsAbstract: 500,
+    maxCharsAbstract: 1000,
     maxCharsLocality: 50,
     firstTimeValors: true,
     firstTimeStratagems: true,

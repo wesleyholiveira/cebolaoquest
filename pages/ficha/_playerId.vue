@@ -1,5 +1,5 @@
 <template>
-  <ficha :data="data" />
+  <ficha :data="data" :editable="$auth.user.isAdmin" />
 </template>
 
 <script>

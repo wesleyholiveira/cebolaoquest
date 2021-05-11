@@ -12,7 +12,7 @@
           <v-virtual-scroll height="450" item-height="30" :items="items">
             <template v-slot:default="{ item }">
               <v-list-item :key="item">
-                <v-list-item-action-text>{{ item }}</v-list-item-action-text>
+                <v-list-item-action-text class="my-text">{{ item }}</v-list-item-action-text>
               </v-list-item>
             </template>
           </v-virtual-scroll>
@@ -37,6 +37,11 @@
 export default {
   data: () => ({
     items: [
+      'Reordenado informações sobre o personagem em dispositivos móveis',
+      'Removido posicionamento central do carousel',
+      'Adicionado scroll direto à seção selecionada',
+      'Criado componente de exibição de conteúdo das categorias (Listagem)',
+      'Criado componente de tabela de conteúdo (Listagem)',
       'Corrigido bug no painel expansível que impedia de um painel ficar aberto e o outro fechado',
       'Adicionado binding na listagem com todos os campos da ficha',
       'Corrigido bug no parâmetro negativo que não permitia a edição do atributo',
@@ -67,3 +72,6 @@ export default {
   })
 }
 </script>
+
+<style>
+</style>

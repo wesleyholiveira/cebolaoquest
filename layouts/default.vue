@@ -1,7 +1,13 @@
 <template>
   <v-app>
     <v-app-bar dark absolute>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-badge bordered color="error" icon="mdi-lock" overlap v-if="isAdmin">
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      </v-badge>
+      <v-app-bar-nav-icon
+        @click="drawer = !drawer"
+        v-if="!isAdmin"
+      ></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-btn icon v-if="$auth.user" @click="$auth.logout()">
         <v-icon>mdi-exit-to-app</v-icon>
@@ -56,6 +62,19 @@
 
 <script>
 export default {
+  computed: {
+    isAdmin() {
+      let isAdmin = false
+
+      if (this.$auth.user != null) {
+        if (this.$auth.user.isAdmin) {
+          isAdmin = true
+        }
+      }
+
+      return isAdmin
+    },
+  },
   data: () => ({
     drawer: false,
   }),

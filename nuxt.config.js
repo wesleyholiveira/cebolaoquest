@@ -3,7 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   server: {
     port: 3000,
-    // host: '10.243.62.152'
+    host: '10.243.62.152'
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -85,11 +85,11 @@ export default {
   },
 
   axios: {
-    // baseUrl: 'http://10.243.62.152:3000'
+    baseUrl: 'http://10.243.62.152:3000'
   },
 
   auth: {
-    // baseUrl: 'http://10.243.62.152:3000',
+    baseUrl: 'http://10.243.62.152:3000',
     strategies: {
       local: {
         token: {
@@ -98,7 +98,7 @@ export default {
           type: 'Bearer'
         },
         user: {
-          autoFetch: false,
+          autoFetch: false
         },
         endpoints: {
           user: { url: '/api/user' },

@@ -1,91 +1,45 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="12" lg="8" md="8" sm="12">
-        {{abstract}}
+      <v-col cols="12" xs="12" sm="12" class="hidden-md-and-up">
+        <ficha-aside
+          :name="name"
+          :referenceItems="referenceImages"
+          :characterItems="characterItems"
+          :profileItems="profileItems"
+          :parametersItems="parametersItems"
+          :stratagemsItems="stratagemsItems"
+          :negativeTraitsItems="negativeTraitsItems"
+          :martialSkillsItems="martialSkillsItems"
+          :specialTechniquesItems="specialTechniquesItems"
+          :extraInfoItems="extraInfoItems"
+      />
       </v-col>
-      <v-col cols="12" lg="4" md="4" sm="12">
-        <div class="infos">
-          <v-dialog v-model="dialog" max-width="650">
-            <v-card>
-              <v-card-title class="headline">
-                {{ skills.label }}
-              </v-card-title>
-              <v-card-text style="max-height: 450px; overflow-y: auto">
-                {{ skills.effect }}
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text @click="dialog = false"> Sair </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <h3 class="headline" style="word-break: break-word">{{name}}</h3>
-          <v-row justify="center">
-            <v-col>
-              <v-carousel hide-delimiters class="carousel">
-                <v-carousel-item
-                  v-for="(item, i) in referenceImages"
-                  :key="i"
-                  :src="item.src"
-                >
-                </v-carousel-item>
-              </v-carousel>
-            </v-col>
-            <v-col cols="12" style="margin: 0; padding: 0">
-              <ficha-profile-group
-                :items="characterItems"
-                inline
-                v-on:updateProfile="skills = $event;dialog = true"
-              ></ficha-profile-group>
-              <ficha-profile-group
-                :items="profileItems"
-                group-title="Ficha"
-                group
-                active
-                v-on:updateProfile="skills = $event;dialog = true"
-              ></ficha-profile-group>
-              <ficha-profile-group
-                :items="parametersItems"
-                group-title="Parâmetros"
-                group
-                inline
-                class="text-center"
-                v-on:updateProfile="skills = $event;dialog = true"
-              ></ficha-profile-group>
-              <ficha-profile-group
-                :items="stratagemsItems"
-                group-title="Estratagemas"
-                group
-                v-on:updateProfile="skills = $event;dialog = true"
-              ></ficha-profile-group>
-              <ficha-profile-group
-                :items="negativeTraitsItems"
-                group-title="Características Negativas"
-                group
-                v-on:updateProfile="skills = $event;dialog = true"
-              ></ficha-profile-group>
-              <ficha-profile-group
-                :items="martialSkillsItems"
-                group-title="Habilidades Marciais"
-                group
-                v-on:updateProfile="skills = $event;dialog = true"
-              ></ficha-profile-group>
-              <ficha-profile-group
-                :items="specialTechniquesItems"
-                group-title="Técnicas Especiais"
-                group
-                v-on:updateProfile="skills = $event;dialog = true"
-              ></ficha-profile-group>
-              <ficha-profile-group
-                :items="extraInfoItems"
-                group-title="Informações Adicionais"
-                group
-                v-on:updateProfile="skills = $event;dialog = true"
-              ></ficha-profile-group>
-            </v-col>
-          </v-row>
+      <v-col cols="12" lg="8" md="8" sm="12">
+        <p>{{ abstract }}</p>
+
+        <div class="table-content">
+          <h3 class="header">TABELA DE CONTEÚDO</h3>
+          <ficha-table-content :stories="stories" :playerId="player.id" />
         </div>
+
+        <div class="content">
+          <ficha-content :stories="stories" :playerId="player.id" />
+        </div>
+      </v-col>
+      <v-col cols="12" lg="4" md="4" class="hidden-sm-and-down">
+        <ficha-aside
+          :name="name"
+          :referenceItems="referenceImages"
+          :characterItems="characterItems"
+          :profileItems="profileItems"
+          :parametersItems="parametersItems"
+          :stratagemsItems="stratagemsItems"
+          :negativeTraitsItems="negativeTraitsItems"
+          :martialSkillsItems="martialSkillsItems"
+          :specialTechniquesItems="specialTechniquesItems"
+          :extraInfoItems="extraInfoItems"
+      />
       </v-col>
     </v-row>
   </v-container>
@@ -94,7 +48,7 @@
 <script>
 export default {
   props: {
-    player: Object
+    player: Object,
   },
 
   computed: {
@@ -105,10 +59,32 @@ export default {
         return player.name.toUpperCase()
       }
     },
-    
+
+    stories() {
+      const player = this.player
+
+      if (player.extraInfos) {
+        const recursiveForeach = (e, parentId, acc = '') => {
+          e.forEach((el, i) => {
+            el.pos = acc + `.${i + 1}`
+            recursiveForeach(el.children, parentId, el.pos)
+          })
+        }
+
+        const { stories } = player.extraInfos
+        stories.forEach((el, i) => {
+          const index = i + 1
+          el.pos = `${index}`
+          recursiveForeach(el.children, index, el.pos)
+        })
+
+        return stories
+      }
+    },
+
     profileItems() {
       const player = this.player
-  
+
       return [
         {
           label: 'Classe:',
@@ -116,31 +92,31 @@ export default {
         },
         {
           label: 'Personalidade:',
-          value: player.alignment
+          value: player.alignment,
         },
         {
           label: 'Principío:',
-          value: player.principle
-        }
+          value: player.principle,
+        },
       ]
     },
-  
+
     characterItems() {
       const player = this.player
 
       return [
         {
           label: 'Level:',
-          value: `${player.level}`
+          value: `${player.level}`,
         },
         {
           label: 'EXP:',
-          value: `${player.exp}`
+          value: `${player.exp}`,
         },
         {
           label: 'Fundos:',
-          value: `${player.funds}`
-        }
+          value: `${player.funds}`,
+        },
       ]
     },
 
@@ -148,9 +124,9 @@ export default {
       const player = this.player
 
       if (player.parameters) {
-        return player.parameters.map(el => ({
+        return player.parameters.map((el) => ({
           label: el.name,
-          value: el.rank
+          value: el.rank,
         }))
       }
     },
@@ -159,9 +135,9 @@ export default {
       const player = this.player
 
       if (player.stratagems) {
-        return player.stratagems.map(el => ({
+        return player.stratagems.map((el) => ({
           label: el.name,
-          effect: 'Teste'
+          effect: el.effect,
         }))
       }
     },
@@ -170,9 +146,9 @@ export default {
       const player = this.player
 
       if (player.negativeTraits) {
-        return player.negativeTraits.map(el => ({
+        return player.negativeTraits.map((el) => ({
           label: el.name,
-          effect: 'Teste'
+          effect: el.effect,
         }))
       }
     },
@@ -181,9 +157,9 @@ export default {
       const player = this.player
 
       if (player.martialSkills) {
-        return player.martialSkills.map(el => ({
+        return player.martialSkills.map((el) => ({
           label: el.name,
-          effect: 'Teste'
+          effect: el.effect,
         }))
       }
     },
@@ -192,9 +168,9 @@ export default {
       const player = this.player
 
       if (player.specialTechniques) {
-        return player.specialTechniques.map(el => ({
+        return player.specialTechniques.map((el) => ({
           label: el.name,
-          effect: 'Teste'
+          effect: el.effect,
         }))
       }
     },
@@ -215,61 +191,61 @@ export default {
           addressSelfAs,
           likes,
           dislikes,
-          talents
+          talents,
         } = player.extraInfos
 
         const dateBirthday = new Date(birthday)
         return [
           {
             label: 'Espécie:',
-            value: species
+            value: species,
           },
           {
             label: 'Sexo:',
-            value: sex
+            value: sex,
           },
           {
             label: 'Idade:',
-            value: age.formattedUnit
+            value: age.formattedUnit,
           },
           {
             label: 'Altura:',
-            value: height.formattedUnit
+            value: height.formattedUnit,
           },
           {
             label: 'Peso:',
-            value: weight.formattedWeight
+            value: weight.formattedWeight,
           },
           {
             label: 'Data de nascimento:',
             value: `${dateBirthday.getDate()} / 
                     ${`${dateBirthday.getMonth() + 1}`.padStart(2, '0')} /
-                    ${dateBirthday.getFullYear()}`
+                    ${dateBirthday.getFullYear()}`,
           },
           {
             label: 'Local de origem:',
-            value: locality
+            value: locality,
           },
           {
             label: 'Tipo sanguíneo:',
-            value: bloodType
+            value: bloodType,
           },
           {
             label: 'Autodenominação:',
-            value: addressSelfAs
+            value: addressSelfAs,
           },
           {
             label: 'Gosta de:',
-            value: likes
+            value: likes,
           },
           {
             label: 'Não gosta de:',
-            value: dislikes
+            value: dislikes,
           },
           {
             label: 'Talentos:',
-            value: talents
-          }
+            value: talents,
+          },
         ]
       }
     },
@@ -284,31 +260,31 @@ export default {
       if (extraInfos) {
         const { referenceImages } = extraInfos
         if (referenceImages) {
-          return referenceImages.map(el => ({
-            src: `/uploads/${el.img}`
+          return referenceImages.map((el) => ({
+            src: `/uploads/${el.img}`,
           }))
         }
       }
-    }
+    },
   },
-
-  data: () => ({
-    dialog: false,
-    skills: {}
-  })
 }
 </script>
 
 <style scoped>
-.infos {
-  padding: 10px;
-  border: 4px solid #006064;
+.content {
+  justify-content: center;
+  display: flex;
 }
-hr {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.table-content {
+  justify-content: center;
+  text-align: justify;
+  max-width: 270px;
+  margin-top: 25px;
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
-.carousel {
-  margin-top: 15px;
+.table-content .header {
+  margin: 10px 0px 0px 10px;
 }
 </style>
+

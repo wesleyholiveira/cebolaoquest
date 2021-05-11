@@ -37,6 +37,7 @@ import image from './models/image'
 import imageRepository from './repositories/imageRepository'
 import category from './models/category'
 import categoryRepository from './repositories/categoryRepository'
+import userRoleRepository from './repositories/userRoleRepository'
 
 const tokenBlacklist = []
 
@@ -85,12 +86,13 @@ app.use(function (req, res, next) {
 
 app.get('/user', async (req, res) => {
   const token = req.headers['authorization'].split(' ')[1]
-  const { userId } = decode(token)
+  const { userId, isAdmin } = decode(token)
 
   return res.json({
     user: {
       id: userId,
-      token
+      token,
+      isAdmin
     }
   })
 })
@@ -98,9 +100,17 @@ app.get('/user', async (req, res) => {
 app.get('/player/name/user/:userId', async (req, res) => {
   const { userId } = req.params
   try {
-    const results = await playerRepository(db).getNameByUserId(userId)
-    return res.json({ data: results })
+    const token = req.headers['authorization'].split(' ')[1]
+    const { isAdmin } = decode(token)
+
+    if (isAdmin) {
+      return res.json({ data: await playerRepository(db).getName() })
+    }
+
+    return res.json({ data: await playerRepository(db).getNameByUserId(userId) })
+
   } catch (err) {
+    console.log(err)
     return res.status(500).json({ err })
   }
 })
@@ -125,6 +135,9 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
 
   try {
     const { playerId, userId } = req.params
+    
+    const token = req.headers['authorization'].split(' ')[1]
+    const { isAdmin } = decode(token)
 
     if (!playerId || !userId) {
       return res.status(400).json({
@@ -133,7 +146,12 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       })
     }
 
-    const results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId })
+    let results
+    if (isAdmin) {
+      results = await playerRepository(db).getAllByPlayer(playerId)
+    } else {
+      results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId })
+    }
 
     if (results.length < 1) {
       return res.status(400).json({
@@ -167,6 +185,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       abstract,
       talents,
       valorPoints,
+      userRoleId
       // meritPoints
     } = player
 
@@ -239,6 +258,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
     const currentClass = player['class']
     const user = {
       id,
+      userRoleId,
       name,
       principle,
       alignment,
@@ -293,29 +313,38 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
 })
 
 app.post('/register', async (req, res) => {
-  const {
-    data: {
-      username,
-      password,
-      email
-    }
-  } = req.body
+  try {
+    const {
+      data: {
+        username,
+        password,
+        email,
+      }
+    } = req.body
 
-  const secret = process.env.SECRET
-  const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
-  const user = userModel({
-    username: username.trim(),
-    password: encryptedPwd.trim(),
-    email: email.trim()
-  })
+    const secret = process.env.SECRET
+    const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
+    const user = userModel({
+      username: username.trim(),
+      password: encryptedPwd.trim(),
+      email: email.trim()
+    })
 
-  return userRepository(db).insert(user).then(() => res.json({
-    message: 'Usuário criado com sucesso'
-  })
-  ).catch((err) => res.status(400).json({
-    message: err
-  })
-  )
+    const userId = await userRepository(db).insert(user)
+    await userRoleRepository(db).insert({
+      id: null,
+      userId,
+      roleId: 1
+    })
+
+    return res.json({
+      message: 'Usuário criado com sucesso'
+    })
+  } catch (err) {
+    return res.status(400).json({
+      message: err
+    })
+  }
 })
 
 app.post('/logout', async (req, res) => {
@@ -354,13 +383,25 @@ app.post('/login', async (req, res) => {
   const secret = process.env.SECRET
   const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
   const users = await userRepository(db).getUserByUsernameAndPassword(username.trim(), encryptedPwd)
-  let userId = 0
 
   if (users.length > 0) {
-    userId = users.flatMap(el => el.id)[0]
-    const token = sign({ userId, }, secret, { expiresIn: '1h' })
+    const result = users.flatMap(el => ({
+      userId: el.id,
+      roleId: el.role_id
+    }))[0]
 
-    return res.json({ userId, token })
+    let isAdmin = false
+    if (result.roleId && result.roleId == 2) {
+      isAdmin = true
+    }
+
+    const { userId } = result
+    const token = sign({
+      userId,
+      isAdmin
+    }, secret, { expiresIn: '1h' })
+
+    return res.json({ userId, isAdmin, token })
   }
 
   return res.status(401).json({ message: 'Usuário e/ou senha inválidos' })
@@ -387,7 +428,7 @@ app.post('/player', async (req, res) => {
     specialTechniques,
     noblePhantasms,
     userId,
-    extraInfos
+    extraInfos,
   } = req.body
 
   const playerRepo = playerRepository(db)
@@ -522,6 +563,7 @@ app.post('/player', async (req, res) => {
           id: ef.id || null,
           name: ef.name || '',
           valors: ef.valors,
+          effect: ef.effect,
           np_id: e.np_id
         })))
 
@@ -597,12 +639,12 @@ app.post('/upload/:playerId', async (req, res) => {
     const removeImages = () => new Promise((resolve, reject) =>
       resolve(imageRepo.deleteAllByPlayerId(playerId))
       // imageRepo.getImagesByPlayerId(playerId).then(imgs => {
-        // resolve().then(() =>
-          /*imgs.forEach(i => unlink(`./uploads/${i.img}`, (err) => {
-            if (err) return reject(err)
-            console.log(`Removed the image: ${i.img}`)
-          }))
-        ))*/
+      // resolve().then(() =>
+      /*imgs.forEach(i => unlink(`./uploads/${i.img}`, (err) => {
+        if (err) return reject(err)
+        console.log(`Removed the image: ${i.img}`)
+      }))
+    ))*/
       /*}*/
     )
     const uploadPromise = () => new Promise((resolve, reject) => {

@@ -26,7 +26,7 @@
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-btn>
                 </div>
-                <historia-ficha 
+                <historia-ficha
                     v-for="(children, i) in extraInfos.children"
                     :key="i"
                     :extraInfos="children"

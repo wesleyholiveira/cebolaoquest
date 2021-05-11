@@ -1,6 +1,21 @@
 module.exports = (db) => ({
     getById: async (id) => {
-        const query = 'SELECT id FROM players WHERE id = ? ORDER BY id DESC';
+        const query = `
+            SELECT 
+                players.id
+            FROM
+                players
+            JOIN
+                user_roles
+            ON
+                user_roles.user_id = players.user_id
+            JOIN
+                roles
+            ON
+                user_roles.role_id = roles.id
+            WHERE
+                players.id = ?
+            ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
                 if (err) return reject(err)
@@ -11,9 +26,48 @@ module.exports = (db) => ({
     },
 
     getNameByUserId: async (id) => {
-        const query = 'SELECT id, name FROM players WHERE user_id = ? ORDER BY id DESC';
+        const query = `
+        SELECT
+            players.id, players.name
+        FROM
+            players
+        JOIN
+            user_roles
+        ON
+            user_roles.user_id = players.user_id
+        JOIN
+            roles
+        ON
+            user_roles.role_id = roles.id
+        WHERE
+            players.user_id = ?
+        ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
+                if (err) return reject(err)
+
+                return resolve(result)
+            })
+        })
+    },
+
+    getName: async () => {
+        const query = `
+        SELECT
+            players.id, players.name
+        FROM
+            players
+        JOIN
+            user_roles
+        ON
+            user_roles.user_id = players.user_id
+        JOIN
+            roles
+        ON
+            user_roles.role_id = roles.id
+        ORDER BY id DESC`;
+        return new Promise((resolve, reject) => {
+            db.query(query, (err, result) => {
                 if (err) return reject(err)
 
                 return resolve(result)
@@ -33,11 +87,47 @@ module.exports = (db) => ({
         })
     },
 
-    getAllByPlayerAndUserID: async ({ userId, playerId }) => {
+    getAllByPlayer: async (playerId) => {
         const query = `
-            SELECT players.*, DATE_FORMAT(birthday, '%Y-%m-%d') as birthday
+            SELECT
+                players.*, DATE_FORMAT(birthday, '%Y-%m-%d') as birthday, user_roles.id as userRoleId
             FROM
                 players
+            JOIN
+                user_roles
+            ON
+                user_roles.user_id = players.user_id
+            JOIN
+                roles
+            ON
+                user_roles.role_id = roles.id
+            WHERE
+                players.id = ?
+            LIMIT 1`;
+        return new Promise((resolve, reject) => {
+            db.query(query, [playerId], (err, results) => {
+                if (err) return reject(err)
+
+                return resolve(results)
+            })
+        })
+    },
+
+
+    getAllByPlayerAndUserID: async ({ userId, playerId }) => {
+        const query = `
+            SELECT
+                players.*, DATE_FORMAT(birthday, '%Y-%m-%d') as birthday, user_roles.id as userRoleId
+            FROM
+                players
+            JOIN
+                user_roles
+            ON
+                user_roles.user_id = players.user_id
+            JOIN
+                roles
+            ON
+                user_roles.role_id = roles.id
             WHERE
                 players.id = ?
             AND
@@ -110,33 +200,34 @@ module.exports = (db) => ({
                 ?,
                 ?,
                 ?
-            ) ON DUPLICATE KEY UPDATE
-                id = VALUES(id),
-                name = VALUES(name),
-                level = VALUES(level),
-                exp = VALUES(exp),
-                funds = VALUES(funds),
-                proficiencyPoints = VALUES(proficiencyPoints),
-                statusPoints = VALUES(statusPoints),
-                meritPoints = VALUES(meritPoints),
-                alignment = VALUES(alignment),
-                principle = VALUES(principle),
-                class = VALUES(class),
-                valorPoints = VALUES(valorPoints),
-                species = VALUES(species),
-                sex = VALUES(sex),
-                height = VALUES(height),
-                weight = VALUES(weight),
-                locality = VALUES(locality),
-                age = VALUES(age),
-                blood_type = VALUES(blood_type),
-                birthday = VALUES(birthday),
-                self_denomination = VALUES(self_denomination),
-                talents = VALUES(talents),
-                likes = VALUES(likes),
-                dislikes = VALUES(dislikes),
-                abstract = VALUES(abstract),
-                user_id = VALUES(user_id)
+            ) as new
+                ON DUPLICATE KEY UPDATE
+                id = new.id,
+                name = new.name,
+                level = new.level,
+                exp = new.exp,
+                funds = new.funds,
+                proficiencyPoints = new.proficiencyPoints,
+                statusPoints = new.statusPoints,
+                meritPoints = new.meritPoints,
+                alignment = new.alignment,
+                principle = new.principle,
+                class = new.class,
+                valorPoints = new.valorPoints,
+                species = new.species,
+                sex = new.sex,
+                height = new.height,
+                weight = new.weight,
+                locality = new.locality,
+                age = new.age,
+                blood_type = new.blood_type,
+                birthday = new.birthday,
+                self_denomination = new.self_denomination,
+                talents = new.talents,
+                likes = new.likes,
+                dislikes = new.dislikes,
+                abstract = new.abstract,
+                user_id = new.user_id
         `
 
         return new Promise((resolve, reject) => {
@@ -170,7 +261,7 @@ module.exports = (db) => ({
             ], (err, result) => {
                 console.log(err)
                 if (err) return reject(err)
-    
+
                 console.log('A new player was inserted successfully')
                 return resolve(result.insertId == 0 ? playerModel.id : result.insertId)
             })

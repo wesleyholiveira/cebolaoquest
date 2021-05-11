@@ -132,3 +132,29 @@ CREATE TABLE IF NOT EXISTS player_categories (
     player_id INT NOT NULL,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
+
+ALTER TABLE `player_stratagems` ADD `effect` MEDIUMTEXT;
+ALTER TABLE `player_special_techniques` ADD `effect` MEDIUMTEXT;
+ALTER TABLE `player_martial_skills` ADD `effect` MEDIUMTEXT;
+ALTER TABLE `player_negative_traits` ADD `effect` MEDIUMTEXT;
+ALTER TABLE `player_noble_phantasm_effects` ADD `effect` MEDIUMTEXT;
+
+CREATE TABLE IF NOT EXISTS roles (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL  
+);
+
+CREATE TABLE IF NOT EXISTS user_roles (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  role_id INT NOT NULL,
+  FOREIGN KEY (`user_id`) REFERENCES users (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`role_id`) REFERENCES roles (`id`) ON DELETE CASCADE
+);
+
+INSERT INTO roles (name) VALUES ('user'),('admin');
+
+ALTER TABLE player_images ADD created_at TIMESTAMP NOT NULL DEFAULT current_timestamp;
+ALTER TABLE player_categories ADD created_at TIMESTAMP NOT NULL DEFAULT current_timestamp;
+ALTER TABLE roles ADD created_at TIMESTAMP NOT NULL DEFAULT current_timestamp;
+ALTER TABLE user_roles ADD created_at TIMESTAMP NOT NULL DEFAULT current_timestamp;

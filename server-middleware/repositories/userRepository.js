@@ -1,6 +1,20 @@
 module.exports = (db) => ({
     getUserByUsernameAndPassword: async (username, password) => {
-        const query = `SELECT id FROM users WHERE username = ? AND password = ?`;
+        const query = `
+            SELECT
+                users.id, user_roles.role_id
+            FROM
+                users
+            JOIN
+                user_roles
+            ON
+                user_roles.user_id = users.id
+            JOIN
+                roles
+            ON
+                user_roles.role_id = roles.id
+            WHERE
+                username = ? AND password = ?`;
         return new Promise((resolve, reject) => {
             db.query(query, [username, password], (err, result) => {
                 if (err) return reject(err)

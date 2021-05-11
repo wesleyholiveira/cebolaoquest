@@ -37,10 +37,10 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-expansion-panels>
+        <v-expansion-panels v-model="panel">
           <v-expansion-panel
-            v-for="(player, i) in players" :key="i"
-            :readonly="disabled"
+            v-for="(player, i) in players"
+            :key="i"
             class="mb-5"
             @click.stop="
               disabled = false
@@ -119,6 +119,7 @@ export default {
     disabled: false,
     playerId: 0,
     players: [],
+    panel: [],
   }),
   async fetch() {
     const { id, token } = this.$auth.user
@@ -131,7 +132,7 @@ export default {
       },
     })
 
-    data.forEach(player => {
+    data.forEach((player) => {
       player.url = `/ficha/${player.id}`
     })
 
@@ -145,14 +146,13 @@ export default {
       const { id, token } = this.$auth.user
 
       if (this.cache[playerId]) {
-        this.loading = false
         this.data = this.cache[playerId]
         return
       }
 
       if (id && token) {
         const url = `/api/player/${playerId}/user/${id}`
-        
+
         this.loading = true
         const { data } = await this.$axios.get(url, {
           headers: {
@@ -165,17 +165,24 @@ export default {
         this.loading = false
       }
     },
+
     async removePlayer(id) {
       const { token } = this.$auth.user
       const url = `/api/player/${id}`
+
+      this.loading = true
       const { data } = await this.$axios.delete(url, {
         headers: {
           Authorization: token,
         },
       })
 
+      this.loading = false
       if (data.statusMessage != 'error') {
         this.players = this.players.filter((player) => player.id != id)
+        this.cache[id] = {}
+        this.data = {}
+        this.panel = []
       }
     },
   },
