@@ -9,6 +9,7 @@
       <ficha-table-content
         :stories="category.children"
         :subcategory="true"
+        :playerId="playerId"
       />
     </li>
   </ul>
@@ -27,7 +28,9 @@ export default {
     goToSection(category, playerId) {
       const el = document.getElementById(`category-header-${category.pos}-${playerId}`)
 
-      goTo(el.offsetTop + el.offsetHeight)
+      if (el != null) {
+        goTo(el.offsetTop + el.offsetHeight)
+      }
     }
   }
 }

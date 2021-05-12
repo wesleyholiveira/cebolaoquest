@@ -102,13 +102,31 @@ export default {
     backupEffects: [],
     valorEffects: 0,
     valors: 0,
+    forbiddenSequence: {
+      'Rugidos de Rubi': ['Sonhos de Safira', 'Emanações de Esmeralda'],
+      'Sonhos de Safira': ['Rugidos de Rubi', 'Emanações de Esmeralda'],
+      'Emanações de Esmeralda': ['Rugidos de Rubi', 'Sonhos de Safira'],
+    },
     rules: {
       effect: [
         (v) =>
           v.filter((el) => !el.name).length < 1 ||
           'Há pelo menos um efeito inválido',
         (v) =>
-          instance.validateMaxPoints(v, instance.valors, instance.valorCap),
+          instance.validateMaxPoints(v, instance.valorCap),
+        (v) => {
+          const seq = instance.forbiddenSequence
+          const e = v.map(el => el.name)
+          const effect = e[e.length - 1]
+
+          const s = seq[effect]
+          if (s) {
+            const result =  s.filter(el => e.includes(el))
+            return result.length < 1 || `Você não pode usar estas valors juntas: ${effect},${s}`
+          }
+
+          return true
+        }
       ],
     },
   }),
@@ -118,10 +136,13 @@ export default {
       const valorSkills = this.data.valorSkills
       if (this.np.type) {
         const type = this.data.type.filter((el) => el.name == this.np.type.name)
-        const typeValors = type[0].valorSkills
 
-        if (typeValors) {
-          return valorSkills.concat(typeValors)
+        if (type[0]) {
+          const typeValors = type[0].valorSkills
+  
+          if (typeValors) {
+            return valorSkills.concat(typeValors)
+          }
         }
       }
       return valorSkills
@@ -145,13 +166,13 @@ export default {
     calculateValorsFromArray: (data) =>
       data.map((el) => el.valors).reduce((acc, valor) => acc + valor),
 
-    validateMaxPoints(v, points, cap) {
+    validateMaxPoints(v, cap) {
       let result = 0
       if (v.length > 0) {
         result = this.calculateValorsFromArray(v)
       }
 
-      if ((v.length > 0 && result > cap) || points < 0) {
+      if (v.length > 0 && result > cap) {
         this.isOverloaded = true
         this.dmgDown = Math.abs(10 * (result - cap))
       } else {

@@ -1,9 +1,8 @@
 <template>
-  <div style="margin-top: 20px">
+  <div style="margin-top: 20px;width: 100%">
     <section v-for="(story, i) in stories" :key="i" class="ficha-content">
-      category-header-{{story.pos}}-{{playerId}}
-      <h2 v-if="!subcategory" :id="`category-header-${story.pos}-${playerId}`">{{ story.name }}</h2>
-      <h3 v-if="subcategory" :id="`category-header-${story.pos}-${playerId}`">{{ story.name }}</h3>
+      <h2 v-if="!subcategory" :id="genererateIDAttribute(story, playerId)">{{ story.name }}</h2>
+      <h3 v-if="subcategory" :id="genererateIDAttribute(story, playerId)">{{ story.name }}</h3>
       <v-divider v-if="!subcategory"></v-divider>
       <p v-html="story.content" class="ficha-content--text"></p>
       <ficha-content :stories="story.children" :subcategory="true" :playerId="playerId" />
@@ -18,6 +17,12 @@ export default {
     subcategory: Boolean,
     playerId: Number
   },
+
+  methods: {
+    genererateIDAttribute(story, playerId) {
+      return `category-header-${story.pos}-${playerId}`
+    }
+  }
 }
 </script>
 

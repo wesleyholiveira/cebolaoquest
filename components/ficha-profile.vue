@@ -18,7 +18,7 @@
       <v-col cols="12" lg="8" md="8" sm="12">
         <p>{{ abstract }}</p>
 
-        <div class="table-content">
+        <div class="table-content" v-if="stories && stories.length > 0">
           <h3 class="header">TABELA DE CONTEÚDO</h3>
           <ficha-table-content :stories="stories" :playerId="player.id" />
         </div>
@@ -78,7 +78,7 @@ export default {
           recursiveForeach(el.children, index, el.pos)
         })
 
-        return stories
+        return stories.filter(el => el.name != "")
       }
     },
 
@@ -95,7 +95,7 @@ export default {
           value: player.alignment,
         },
         {
-          label: 'Principío:',
+          label: 'Princípio:',
           value: player.principle,
         },
       ]
