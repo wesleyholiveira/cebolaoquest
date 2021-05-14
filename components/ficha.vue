@@ -58,21 +58,18 @@
                     <v-text-field
                       v-model="data.level"
                       label="Level"
-                      :disabled="!editable"
                     />
                   </v-col>
                   <v-col cols="12" lg="4" sm="12">
                     <v-text-field
                       v-model="data.exp"
                       label="EXP"
-                      :disabled="!editable"
                     />
                   </v-col>
                   <v-col cols="12" lg="4" sm="12">
                     <v-text-field
                       v-model="data.funds"
                       label="Fundos"
-                      :disabled="!editable"
                     />
                   </v-col>
                   <v-col cols="12" lg="6" sm="12">
@@ -520,10 +517,6 @@ export default {
     data: {
       type: Object,
       required: true,
-    },
-    editable: {
-      type: Boolean,
-      default: false,
     },
   },
 

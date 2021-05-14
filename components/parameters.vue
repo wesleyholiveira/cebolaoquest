@@ -103,9 +103,9 @@ export default {
         this.isNegative = true
       }
 
-      if (isCounter) {
-        this.$emit('updateMeritPoints', this.initialMeritPoints)
-      }
+      // if (isCounter) {
+      //   this.$emit('updateMeritPoints', this.initialMeritPoints)
+      // }
 
       return isCounter
     },

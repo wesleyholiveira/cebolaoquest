@@ -1,11 +1,9 @@
 <template>
   <ul :class="{ 'content-wrapper': true, subcategory }">
-    <li
-      class="content-wrapper--item"
-      v-for="(category, i) in stories"
-      :key="i"
-    >
-      <a @click="goToSection(category, playerId)">{{ category.pos.replace(/^[\.]/, '') }} - {{ category.name }}</a>
+    <li class="content-wrapper--item" v-for="(category, i) in stories" :key="i">
+      <a href="#" @click="goToSection(category, playerId)">
+        {{ category.pos.replace(/^[\.]/, '') }} - {{ category.name }}
+      </a>
       <ficha-table-content
         :stories="category.children"
         :subcategory="true"
@@ -21,18 +19,21 @@ export default {
   props: {
     stories: Array,
     subcategory: Boolean,
-    playerId: Number
+    playerId: Number,
   },
 
   methods: {
     goToSection(category, playerId) {
-      const el = document.getElementById(`category-header-${category.pos}-${playerId}`)
+      const el = document.getElementById(
+        `category-header-${category.pos}-${playerId}`
+      )
 
       if (el != null) {
+        console.log(el.id, el.offsetTop, el.getBoundingClientRect())
         goTo(el.offsetTop + el.offsetHeight)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

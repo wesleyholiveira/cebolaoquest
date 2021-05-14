@@ -1,10 +1,9 @@
 <template>
-  <div style="margin-top: 20px;width: 100%">
-    <section v-for="(story, i) in stories" :key="i" class="ficha-content">
-      <h2 v-if="!subcategory" :id="genererateIDAttribute(story, playerId)">{{ story.name }}</h2>
-      <h3 v-if="subcategory" :id="genererateIDAttribute(story, playerId)">{{ story.name }}</h3>
+  <div class="ficha-content">
+    <section v-for="(story, i) in stories" :key="i">
+      <h3 class="ficha-content--header" :id="genererateIDAttribute(story, playerId)">{{ story.name }}</h3>
       <v-divider v-if="!subcategory"></v-divider>
-      <p v-html="story.content" class="ficha-content--text"></p>
+      <p v-if="story.content && story.content.length > 0" v-html="story.content" class="ficha-content--text"></p>
       <ficha-content :stories="story.children" :subcategory="true" :playerId="playerId" />
     </section>
   </div>
@@ -28,6 +27,9 @@ export default {
 
 <style>
 .ficha-content {
+  width: 100%;
+}
+.ficha-content .ficha-content--header {
 }
 .ficha-content .ficha-content--text a {
   color: #fff !important;

@@ -43,7 +43,6 @@
             :key="i"
             class="mb-5"
             @click.stop="
-              disabled = false
               getAllInfosByPlayer(player.id)
             "
           >
@@ -74,7 +73,6 @@
                       color="cyan darken-4"
                       depressed
                       @click.stop="
-                        disabled = true
                         dialog = true
                         playerId = player.id
                       "
