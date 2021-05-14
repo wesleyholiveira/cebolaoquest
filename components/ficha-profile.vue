@@ -16,7 +16,7 @@
       />
       </v-col>
       <v-col cols="12" lg="8" md="8" sm="12">
-        <p>{{ abstract }}</p>
+        <p v-if="abstract.length > 0">{{ abstract }}</p>
 
         <div class="table-content" v-if="stories && stories.length > 0">
           <h3 class="header">TABELA DE CONTEÚDO</h3>

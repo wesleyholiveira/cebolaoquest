@@ -42,6 +42,7 @@ export default {
   },
 
   data: () => ({
+    backupMerit: 0,
     isNegative: false,
     dialogProf: false,
     index: 0,
@@ -117,6 +118,7 @@ export default {
 
       this.attribute.rank = this.baseParams[0]
       this.isNegative = false
+      this.$emit('updateMeritPoints', this.backupMerit)
       this.$emit('updateProficiencyPoints', proficiencyPoints)
     },
 
@@ -135,7 +137,6 @@ export default {
 
         this.index = i
         this.attribute.rank = this.baseParams[i]
-
         this.$emit('updateStatusPoints', statusPoints)
       }
     },
@@ -183,12 +184,13 @@ export default {
 
       if (!this.isNegative) {
         const newParam = `${p[i]}-`
+        const newMerit = merits + 1
         this.attribute.rank = newParam
   
-        this.$emit('updateMeritPoints', merits + 1)
+        this.backupMerit = newMerit - 1
         this.isNegative = true
+        this.$emit('updateMeritPoints', newMerit)
       }
-
     },
   },
 }
