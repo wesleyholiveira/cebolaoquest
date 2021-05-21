@@ -1,7 +1,7 @@
 <template>
   <ul :class="{ 'content-wrapper': true, subcategory }">
     <li class="content-wrapper--item" v-for="(category, i) in stories" :key="i">
-      <a href="#" @click="goToSection(category, playerId)">
+      <a @click="goToSection(category, playerId)">
         {{ category.pos.replace(/^[\.]/, '') }} - {{ category.name }}
       </a>
       <ficha-table-content
@@ -29,8 +29,8 @@ export default {
       )
 
       if (el != null) {
-        console.log(el.id, el.offsetTop, el.getBoundingClientRect())
-        goTo(el.offsetTop + el.offsetHeight)
+        console.log(el.id, el.innerHTML, el.offsetTop, el.getBoundingClientRect())
+        goTo(el.offsetTop)
       }
     },
   },
@@ -43,7 +43,7 @@ export default {
   padding: 20px;
 }
 .content-wrapper a {
-  color: rgba(255, 255, 255, 0.87);
+  color: #63b1ff !important;
   text-decoration: underline;
 }
 .content-wrapper.subcategory {

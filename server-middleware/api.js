@@ -44,8 +44,13 @@ const tokenBlacklist = []
 app.use(json())
 app.use(function (req, res, next) {
   let token = req.headers['authorization']
+  const path = req.path
 
-  if (req.path == '/login' || req.path == '/register' || req.path == '/logout') {
+  if (path.indexOf('/login') >= 0
+    || path.indexOf('/register') >= 0
+    || path.indexOf('/logout') >= 0
+    || (new RegExp(/\/player\/\d+/)).test(path)
+  ) {
     return next()
   }
 
@@ -140,7 +145,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
     const { isAdmin } = decode(token)
 
     if (!playerId || !userId) {
-      return res.status(400).json({
+      return res.status(404).json({
         message: 'Usuário não encontrado',
         statusMessage: 'error'
       })
@@ -154,7 +159,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
     }
 
     if (results.length < 1) {
-      return res.status(400).json({
+      return res.status(404).json({
         message: 'Usuário não encontrado',
         statusMessage: 'error'
       })
@@ -185,8 +190,8 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
       abstract,
       talents,
       valorPoints,
-      userRoleId
-      // meritPoints
+      userRoleId,
+      meritPoints
     } = player
 
     const parameters = await attributeRepository(db).getParametersByPlayerId(id)
@@ -405,6 +410,133 @@ app.post('/login', async (req, res) => {
   }
 
   return res.status(401).json({ message: 'Usuário e/ou senha inválidos' })
+})
+
+app.get('/player/:id', async (req, res) => {
+  const { id } = req.params
+  if (!id) {
+    return res.status(400).json({
+      message: 'Usuário inválido',
+      statusMessage: 'error'
+    })
+  }
+
+  const results = await playerRepository(db).getAllByPlayer(id)
+  if (!results || results.length < 1) {
+    return res.status(404).json({
+      message: 'Usuário não encontrado',
+      statusMessage: 'error'
+    })
+  }
+
+  const player = results[0]
+  const {
+    name,
+    principle,
+    alignment,
+    level,
+    exp,
+    funds,
+    species,
+    sex,
+    age,
+    height,
+    weight,
+    birthday,
+    locality,
+    blood_type,
+    self_denomination,
+    likes,
+    dislikes,
+    abstract,
+    talents
+  } = player
+
+  const parameters = await attributeRepository(db).getParametersByPlayerId(id)
+  const stratagems = await stratagemRepository(db).getStratagemsByPlayerId(id)
+  const negativeTraits = await negativeTraitsRepository(db).getNegativeTraitsByPlayerId(id)
+  const martialSkills = await martialSkillRepository(db).getMartialSKillsByPlayerId(id)
+  const specialTechniques = await specialTechniqueRepository(db).getSpecialTechniquesByPlayerId(id)
+  const noblePhantasms = await npRepository(db).getNoblePhantasmsByPlayerId(id)
+  const referenceImages = await imageRepository(db).getImagesByPlayerId(id)
+  const npTypeRepo = npTypeRepository(db)
+  const npSpecialSkRepo = npSpecialStrikeRepository(db)
+  const npEffectsRepo = npEffectRepository(db)
+  const categories = await categoryRepository(db).getCategoriesByPlayerId(id)
+
+  let unitAge = 'anos'
+
+  if (age < 2) {
+    unitAge = 'ano'
+  }
+
+  let stories = [{
+    name: '',
+    content: '',
+    subcategory: false,
+    children: [],
+  }]
+
+  if (categories.length > 0) {
+    stories = categories.flatMap(cat => ({
+      ...cat,
+      children: JSON.parse(cat.children)
+    }))
+  }
+
+  const npStructure = await noblePhantasms.map(async np => ({
+    ...np,
+    type: await npTypeRepo.getNoblePhantasmTypeByNpId(np.id),
+    specialStrike: await npSpecialSkRepo.getNoblePhantasmSpecialStrikesByNpId(np.id),
+    effects: await npEffectsRepo.getNoblePhantasmEffectsByNpId(np.id)
+  }))
+
+  const npResults = await Promise.all(npStructure)
+  const currentClass = player['class']
+  const user = {
+    id,
+    name,
+    principle,
+    alignment,
+    level,
+    exp,
+    funds,
+    parameters,
+    noblePhantasms: npResults,
+    currentClass,
+    stratagems,
+    negativeTraits,
+    martialSkills,
+    specialTechniques,
+    extraInfos: {
+      species: species || '',
+      sex,
+      age: {
+        formattedUnit: `${age} ${unitAge}`,
+        unit: player.age
+      },
+      height: {
+        formattedUnit: `${height.toFixed(2).replace('.', ',')} m`,
+        unit: player.height
+      },
+      weight: {
+        formattedWeight: `${weight} kg`,
+        unit: player.weight
+      },
+      birthday,
+      locality: locality || '',
+      bloodType: blood_type,
+      addressSelfAs: self_denomination || '',
+      likes: likes || '',
+      dislikes: dislikes || '',
+      abstract: abstract || '',
+      talents: talents || '',
+      stories,
+      referenceImages
+    }
+  }
+
+  return res.json(user)
 })
 
 app.post('/player', async (req, res) => {

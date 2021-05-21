@@ -12,19 +12,20 @@
           :negativeTraitsItems="negativeTraitsItems"
           :martialSkillsItems="martialSkillsItems"
           :specialTechniquesItems="specialTechniquesItems"
+          :noblePhantasmsItems="noblePhantasmsItems"
           :extraInfoItems="extraInfoItems"
-      />
+        />
       </v-col>
       <v-col cols="12" lg="8" md="8" sm="12">
         <p v-if="abstract.length > 0">{{ abstract }}</p>
 
         <div class="table-content" v-if="stories && stories.length > 0">
           <h3 class="header">TABELA DE CONTEÚDO</h3>
-          <ficha-table-content :stories="stories" :playerId="player.id" />
+          <ficha-table-content :stories="stories" :playerId="playerID" />
         </div>
 
         <div class="content">
-          <ficha-content :stories="stories" :playerId="player.id" />
+          <ficha-content :stories="stories" :playerId="playerID" />
         </div>
       </v-col>
       <v-col cols="12" lg="4" md="4" class="hidden-sm-and-down">
@@ -38,8 +39,9 @@
           :negativeTraitsItems="negativeTraitsItems"
           :martialSkillsItems="martialSkillsItems"
           :specialTechniquesItems="specialTechniquesItems"
+          :noblePhantasmsItems="noblePhantasmsItems"
           :extraInfoItems="extraInfoItems"
-      />
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -55,15 +57,25 @@ export default {
     name() {
       const player = this.player
 
-      if (player.name) {
+      if (player && player.name) {
         return player.name.toUpperCase()
+      }
+
+      return ''
+    },
+
+    playerID() {
+      const player = this.player
+
+      if (player && player.id) {
+        return parseInt(player.id)
       }
     },
 
     stories() {
       const player = this.player
 
-      if (player.extraInfos) {
+      if (player && player.extraInfos) {
         const recursiveForeach = (e, parentId, acc = '') => {
           e.forEach((el, i) => {
             el.pos = acc + `.${i + 1}`
@@ -78,107 +90,162 @@ export default {
           recursiveForeach(el.children, index, el.pos)
         })
 
-        return stories.filter(el => el.name != "")
+        return stories.filter((el) => el.name != '')
       }
+
+      return []
     },
 
     profileItems() {
       const player = this.player
 
-      return [
-        {
-          label: 'Classe:',
-          value: player.currentClass,
-        },
-        {
-          label: 'Personalidade:',
-          value: player.alignment,
-        },
-        {
-          label: 'Princípio:',
-          value: player.principle,
-        },
-      ]
+      if (player) {
+        return [
+          {
+            label: 'Classe:',
+            value: player.currentClass,
+          },
+          {
+            label: 'Personalidade:',
+            value: player.alignment,
+          },
+          {
+            label: 'Princípio:',
+            value: player.principle,
+          },
+        ]
+      }
+
+      return []
     },
 
     characterItems() {
       const player = this.player
 
-      return [
-        {
-          label: 'Level:',
-          value: `${player.level}`,
-        },
-        {
-          label: 'EXP:',
-          value: `${player.exp}`,
-        },
-        {
-          label: 'Fundos:',
-          value: `${player.funds}`,
-        },
-      ]
+      if (player) {
+        return [
+          {
+            label: 'Level:',
+            value: `${player.level}`,
+          },
+          {
+            label: 'EXP:',
+            value: `${player.exp}`,
+          },
+          {
+            label: 'Fundos:',
+            value: `${player.funds}`,
+          },
+        ]
+      }
+
+      return []
     },
 
     parametersItems() {
       const player = this.player
 
-      if (player.parameters) {
+      if (player && player.parameters) {
         return player.parameters.map((el) => ({
           label: el.name,
           value: el.rank,
         }))
       }
+
+      return []
     },
 
     stratagemsItems() {
       const player = this.player
 
-      if (player.stratagems) {
+      if (player && player.stratagems) {
         return player.stratagems.map((el) => ({
           label: el.name,
           effect: el.effect,
         }))
       }
+
+      return []
     },
 
     negativeTraitsItems() {
       const player = this.player
 
-      if (player.negativeTraits) {
+      if (player && player.negativeTraits) {
         return player.negativeTraits.map((el) => ({
           label: el.name,
           effect: el.effect,
         }))
       }
+
+      return []
     },
 
     martialSkillsItems() {
       const player = this.player
 
-      if (player.martialSkills) {
+      if (player && player.martialSkills) {
         return player.martialSkills.map((el) => ({
           label: el.name,
           effect: el.effect,
         }))
       }
+
+      return []
     },
 
     specialTechniquesItems() {
       const player = this.player
 
-      if (player.specialTechniques) {
+      if (player && player.specialTechniques) {
         return player.specialTechniques.map((el) => ({
           label: el.name,
           effect: el.effect,
         }))
+      }
+
+      return []
+    },
+
+    noblePhantasmsItems() {
+      const player = this.player
+
+      if (player && player.noblePhantasms) {
+        const npItems = player.noblePhantasms.map((np) => ({
+          label: np.name,
+          value: '',
+          infos: np.effects.map((e) => ({
+            label: e.name,
+            effect: e.effect,
+          })),
+          type: np.type ? np.type.name : '',
+          specialStrike:
+            np.specialStrike && np.specialStrike.name != '0'
+              ? np.specialStrike.name
+              : 'Nenhum',
+        }))
+
+        npItems.forEach((np) => {
+          np.infos.unshift(
+            {
+              label: 'Golpe Especial:',
+              value: np.specialStrike,
+            },
+            {
+              label: 'Tipo de Armamento Lendário:',
+              value: np.type,
+            }
+          )
+        })
+
+        return npItems
       }
     },
 
     extraInfoItems() {
       const player = this.player
 
-      if (player.extraInfos) {
+      if (player && player.extraInfos) {
         const {
           species,
           sex,
@@ -248,23 +315,35 @@ export default {
           },
         ]
       }
+      return []
     },
 
     abstract() {
-      return this.player.extraInfos ? this.player.extraInfos.abstract : ''
+      const player = this.player
+      if (player) {
+        return player.extraInfos ? player.extraInfos.abstract : ''
+      }
+
+      return ''
     },
 
     referenceImages() {
-      const { extraInfos } = this.player
+      const player = this.player
 
-      if (extraInfos) {
-        const { referenceImages } = extraInfos
-        if (referenceImages) {
-          return referenceImages.map((el) => ({
-            src: `/uploads/${el.img}`,
-          }))
+      if (player) {
+        const { extraInfos } = player
+
+        if (extraInfos) {
+          const { referenceImages } = extraInfos
+          if (referenceImages) {
+            return referenceImages.map((el) => ({
+              src: `/uploads/${el.img}`,
+            }))
+          }
         }
       }
+
+      return []
     },
   },
 }

@@ -42,49 +42,73 @@
             v-for="(player, i) in players"
             :key="i"
             class="mb-5"
-            @click.stop="
-              getAllInfosByPlayer(player.id)
-            "
+            @click.stop="getAllInfosByPlayer(player.id)"
           >
             <v-expansion-panel-header color="cyan darken-4">
               <v-container style="padding: 0">
                 <v-row no-gutters justify="center" align="center">
-                  <v-col>
-                    <span>{{ player.name }} - (ID: {{ player.id }})</span>
+                  <v-col cols="12" lg="10" md="6" sm="12">
+                    <span class="text-center"
+                      >{{ player.name }} - (ID: {{ player.id }})</span
+                    >
                   </v-col>
-                  <v-col class="text-right">
-                    <v-btn
-                      v-if="loading"
-                      :loading="loading"
-                      depressed
-                      color="cyan darken-4"
-                    >
-                    </v-btn>
-                    <v-btn
-                      :href="player.url"
-                      depressed
-                      color="cyan darken-4"
-                      @click.stop="disabled = true"
-                    >
-                      <v-icon>mdi-pencil</v-icon>
-                    </v-btn>
-                    <v-btn
-                      class="mr-4"
-                      color="cyan darken-4"
-                      depressed
-                      @click.stop="
-                        dialog = true
-                        playerId = player.id
-                      "
-                    >
-                      <v-icon style="color: red">mdi-delete</v-icon>
-                    </v-btn>
+                  <v-col cols="12" lg="2" md="6" sm="12">
+                    <v-container>
+                      <v-row>
+                        <v-col>
+                          <v-btn
+                            v-if="loading"
+                            :loading="loading"
+                            depressed
+                            color="cyan darken-4"
+                          >
+                          </v-btn>
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ attrs, on }">
+                              <v-btn
+                                v-on="on"
+                                v-bind="attrs"
+                                depressed
+                                color="cyan darken-4"
+                                @click.stop="copyURLToClipboard(player.id)"
+                              >
+                                <v-icon>mdi-share-variant</v-icon>
+                              </v-btn>
+                            </template>
+                            <span>Copiar URL do Perfil</span>
+                          </v-tooltip>
+                        </v-col>
+                        <v-col>
+                          <v-btn
+                            :href="player.url"
+                            depressed
+                            color="cyan darken-4"
+                            @click.stop="disabled = true"
+                          >
+                            <v-icon>mdi-pencil</v-icon>
+                          </v-btn>
+                        </v-col>
+                        <v-col>
+                          <v-btn
+                            class="mr-4"
+                            color="cyan darken-4"
+                            depressed
+                            @click.stop="
+                              dialog = true
+                              playerId = player.id
+                            "
+                          >
+                            <v-icon style="color: red">mdi-delete</v-icon>
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-container>
                   </v-col>
                 </v-row>
               </v-container>
             </v-expansion-panel-header>
             <v-expansion-panel-content class="pt-4" color="cyan darken-3">
-              <ficha-profile :player="data" />
+              <ficha-profile :player="data[player.id]" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -110,7 +134,7 @@
 <script>
 export default {
   data: () => ({
-    cache: {},
+    show: false,
     data: {},
     loading: false,
     dialog: false,
@@ -140,16 +164,11 @@ export default {
   },
 
   methods: {
-    async getAllInfosByPlayer(playerId) {
+    async getAllInfosByPlayer(pID) {
       const { id, token } = this.$auth.user
 
-      if (this.cache[playerId]) {
-        this.data = this.cache[playerId]
-        return
-      }
-
-      if (id && token) {
-        const url = `/api/player/${playerId}/user/${id}`
+      if (id && token && !this.data[pID]) {
+        const url = `/api/player/${pID}/user/${id}`
 
         this.loading = true
         const { data } = await this.$axios.get(url, {
@@ -158,18 +177,17 @@ export default {
           },
         })
 
-        this.data = data.user
-        this.cache[this.data.id] = this.data
+        this.data[pID] = data.user
         this.loading = false
       }
     },
 
-    async removePlayer(id) {
+    async removePlayer(pID) {
       const { token } = this.$auth.user
-      const url = `/api/player/${id}`
+      const path = `/api/player/${pID}`
 
       this.loading = true
-      const { data } = await this.$axios.delete(url, {
+      const { data } = await this.$axios.delete(path, {
         headers: {
           Authorization: token,
         },
@@ -177,11 +195,36 @@ export default {
 
       this.loading = false
       if (data.statusMessage != 'error') {
-        this.players = this.players.filter((player) => player.id != id)
-        this.cache[id] = {}
-        this.data = {}
+        this.players = this.players.filter((player) => player.id != pID)
+        this.data[pID] = {}
         this.panel = []
       }
+    },
+
+    copyURLToClipboard(id) {
+      const el = document.createElement('textarea')
+
+      el.style.position = 'fixed'
+      el.style.top = 0
+      el.style.left = 0
+
+      el.style.width = '2em'
+      el.style.height = '2em'
+
+      el.style.padding = 0
+
+      el.style.border = 'none'
+      el.style.outline = 'none'
+      el.style.boxShadow = 'none'
+      el.style.background = 'transparent'
+
+      el.value = `${process.env.baseURL}/profile/${id}`
+      document.body.appendChild(el)
+      el.focus()
+      el.select()
+
+      console.log(document.execCommand('copy'))
+      document.body.removeChild(el)
     },
   },
 }

@@ -13,7 +13,7 @@
         <v-icon>mdi-exit-to-app</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" temporary absolute v-if="$auth.user">
+    <v-navigation-drawer v-model="drawer" temporary absolute>
       <v-list nav dense>
         <v-list-item href="/">
           <v-list-item-icon>
@@ -23,7 +23,7 @@
           <v-list-item-title>Home</v-list-item-title>
         </v-list-item>
 
-        <v-list-group no-action prepend-icon="mdi-clipboard-list">
+        <v-list-group no-action prepend-icon="mdi-clipboard-list" v-if="$auth.user">
           <template v-slot:activator>
             <v-list-item-title>Ficha</v-list-item-title>
           </template>
@@ -45,7 +45,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-item @click="$auth.logout()">
+        <v-list-item @click="$auth.logout()" v-if="$auth.user">
           <v-list-item-icon>
             <v-icon>mdi-exit-to-app</v-icon>
           </v-list-item-icon>
@@ -55,7 +55,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-container class="myContainer">
-      <Nuxt />
+      <Nuxt keep-alive />
     </v-container>
   </v-app>
 </template>

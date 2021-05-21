@@ -94,7 +94,7 @@ export default [
         `
     },
     {
-        name: 'Vingança Divina de Lught',
+        name: 'Vingança Divina de Lugh',
         merits: 1,
         rarity: 'red',
         effect: `Histórias sobre incríveis manobras que derrubaram um vilão no momento em que ele tentava atacar o herói são contidas nessa base: Contra-Ataques que acontecem em um piscar de olhos,

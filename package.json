@@ -20,6 +20,7 @@
     "@tiptap/extension-text-align": "^2.0.0-beta.9",
     "body-parser": "^1.19.0",
     "core-js": "^3.9.1",
+    "cors": "^2.8.5",
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
     "formidable": "^1.2.2",
@@ -29,6 +30,9 @@
     "mysql": "^2.18.1",
     "net": "^1.0.2",
     "nuxt": "^2.15.3",
+    "nuxt-socket-io": "^1.1.18",
+    "socket.io": "^4.1.1",
+    "socket.io-client": "^4.1.1",
     "sqlstring": "^2.3.2",
     "tiptap-vuetify": "^2.24.0"
   },

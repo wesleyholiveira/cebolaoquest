@@ -35,8 +35,13 @@
 
 <script>
 export default {
+  auth: true,
   data: () => ({
     items: [
+      'Adicionado página pública para visualização do perfil de cada usuário',
+      'Adicionado botão para compartilhar a URL do perfil',
+      'Adicionado "Fantasmas Nobres" nas informações do perfil',
+      'Corrigido bug de mérito infinito',
       'Reordenado informações sobre o personagem em dispositivos móveis',
       'Removido posicionamento central do carousel',
       'Adicionado scroll direto à seção selecionada',
@@ -69,7 +74,7 @@ export default {
       'Corrigido problema de upload de fotos na edição',
       'Corrigido bug envolvendo a sobrecarga de Valors'
     ]
-  })
+  }),
 }
 </script>
 

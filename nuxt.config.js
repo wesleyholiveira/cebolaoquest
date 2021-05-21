@@ -1,10 +1,17 @@
 import colors from 'vuetify/es5/util/colors'
 
+console.log(process.env.BASE_URL)
 export default {
+  dev: process.env.NODE_ENV !== 'production',
   server: {
     port: 3000,
-    host: '10.243.62.152'
+    host: process.env.DNS
   },
+
+  env: {
+    baseURL: process.env.BASE_URL,
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Cebolão Quest',
@@ -14,7 +21,7 @@ export default {
       { hid: 'description', name: 'description', content: '' },
     ],
     link: [
-      { rel: 'icon', type: 'image/png', href: '/icon.png'}
+      { rel: 'icon', type: 'image/png', href: '/icon.png' }
     ],
   },
 
@@ -39,10 +46,9 @@ export default {
     '@nuxtjs/auth-next',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    // '~/modules/api'
+    'nuxt-socket-io'
   ],
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
@@ -74,22 +80,39 @@ export default {
     middleware: ['auth']
   },
 
-  serverMiddleware: [
-    { path: "/", handler: "~/server-middleware/index.js" },
-    { path: "/api", handler: "~/server-middleware/api.js" },
-  ],
-
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['vuetify/lib', 'tiptap-vuetify']
+    transpile: ['vuetify/lib', 'tiptap-vuetify'],
+    parallel: true,
+    cache: true,
+    // hardSource: true,
   },
 
   axios: {
-    baseUrl: 'http://10.243.62.152:3000'
+    baseUrl: process.env.BASE_URL
+  },
+
+  serverMiddleware: [
+    { path: '/', handler: '~/server-middleware/index.js' },
+    { path: '/api', handler: '~/server-middleware/api.js' },
+    // { path: '/websocket', handler: '~/server-middleware/websocket.js' }
+  ],
+
+  io: {
+    sockets: [{
+      name: 'main',
+      url: process.env.BASE_URL,
+      namespaces: {
+        '/index': {
+          emitters: ['getMessage2 + testMsg --> message2Rxd'],
+          listeners: ['chatMessage2', 'chatMessage3 --> message3Rxd']
+        },
+      }
+    }]
   },
 
   auth: {
-    baseUrl: 'http://10.243.62.152:3000',
+    baseUrl: process.env.BASE_URL,
     strategies: {
       local: {
         token: {

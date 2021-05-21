@@ -100,6 +100,24 @@
           "
         ></ficha-profile-group>
         <ficha-profile-group
+          :items="noblePhantasmsItems"
+          group-title="Fantasmas Nobres"
+          group
+        >
+          <template v-slot:noble-phantasm="npProps">
+            <ficha-profile-group
+              :items="npProps.item.infos"
+              :group-title="npProps.item.label"
+              noble-phantasm
+              group
+              v-on:updateProfile="
+                skills = $event
+                dialog = true
+              "
+            />
+          </template>
+        </ficha-profile-group>
+        <ficha-profile-group
           :items="extraInfoItems"
           group-title="Informações Adicionais"
           group
@@ -125,6 +143,7 @@ export default {
     negativeTraitsItems: Array,
     martialSkillsItems: Array,
     specialTechniquesItems: Array,
+    noblePhantasmsItems: Array,
     extraInfoItems: Array,
   },
 

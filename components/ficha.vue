@@ -1,508 +1,489 @@
 <template>
-  <client-only>
-    <v-row>
-      <v-col cols="12">
-        <v-alert :type="response.status" v-if="response.status != undefined">
-          {{ response.text }}
-        </v-alert>
-      </v-col>
-      <v-col cols="12">
-        <v-stepper v-model="step">
-          <v-stepper-header>
-            <v-stepper-step
-              step="1"
-              :complete="step > 1"
-              :rules="[() => valid]"
-            >
-              Cadastro da Ficha
-            </v-stepper-step>
-            <v-divider></v-divider>
-            <v-stepper-step step="2" :complete="step > 2">
-              Informações do Personagem
-            </v-stepper-step>
-          </v-stepper-header>
+  <v-row>
+    <v-col cols="12">
+      <v-alert :type="response.status" v-if="response.status != undefined">
+        {{ response.text }}
+      </v-alert>
+    </v-col>
+    <v-col cols="12">
+      <v-stepper v-model="step">
+        <v-stepper-header>
+          <v-stepper-step step="1" :complete="step > 1" :rules="[() => valid]">
+            Cadastro da Ficha
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="2" :complete="step > 2">
+            Informações do Personagem
+          </v-stepper-step>
+        </v-stepper-header>
 
-          <v-stepper-items>
-            <ficha-info
-              :meritPoints="data.meritPoints"
-              :statusPoints="data.statusPoints"
-              :proficiencyPoints="data.proficiencyPoints"
-              :valorPoints="calculateValorPoints()"
-              class="mt-5"
-            />
-            <v-stepper-content step="1">
-              <v-form
-                ref="form"
-                v-model="valid"
-                lazy-validation
-                style="position: relative"
-              >
-                <v-row>
-                  <v-col cols="12" lg="6" sm="12">
-                    <v-text-field
-                      v-model="data.name"
-                      :counter="maxCharsName"
-                      :rules="nameRules"
-                      label="Nome *"
-                    />
+        <v-stepper-items>
+          <ficha-info
+            :meritPoints="data.meritPoints"
+            :statusPoints="data.statusPoints"
+            :proficiencyPoints="data.proficiencyPoints"
+            :valorPoints="calculateValorPoints()"
+            class="mt-5"
+          />
+          <v-stepper-content step="1">
+            <v-form
+              ref="form"
+              v-model="valid"
+              lazy-validation
+              style="position: relative"
+            >
+              <v-row>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-text-field
+                    v-model="data.name"
+                    :counter="maxCharsName"
+                    :rules="nameRules"
+                    label="Nome *"
+                  />
+                </v-col>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-combobox
+                    v-model="data.currentClass"
+                    :items="classes"
+                    :rules="classRules"
+                    label="Classe *"
+                  />
+                </v-col>
+                <v-col cols="12" lg="4" sm="12">
+                  <v-text-field v-model="data.level" label="Level" />
+                </v-col>
+                <v-col cols="12" lg="4" sm="12">
+                  <v-text-field v-model="data.exp" label="EXP" />
+                </v-col>
+                <v-col cols="12" lg="4" sm="12">
+                  <v-text-field v-model="data.funds" label="Fundos" />
+                </v-col>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-combobox
+                    v-model="data.alignment"
+                    :items="alignments"
+                    :rules="alignmentRules"
+                    label="Personalidade *"
+                  />
+                </v-col>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-combobox
+                    v-model="data.principle"
+                    :items="principles"
+                    :rules="principleRules"
+                    label="Principio *"
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <h2 class="text-center">Parâmetros</h2>
+                </v-col>
+                <template v-for="(attribute, i) in data.parameters">
+                  <v-col :key="i" cols="12" lg="4" md="6" sm="12">
+                    <parameters
+                      :attribute="attribute"
+                      :playerLevel="data.level"
+                      :statusPoints="data.statusPoints"
+                      :meritPoints="data.meritPoints"
+                      :negativeTraits="data.negativeTraits"
+                      :proficiencyPoints="data.proficiencyPoints"
+                      :defaultProficiencyPoints="defaultProficiencyPoints"
+                      v-on:updateParameters="data.parameters[i] = $event"
+                      v-on:updateStatusPoints="data.statusPoints = $event"
+                      v-on:updateMeritPoints="data.meritPoints = $event"
+                      v-on:updateProficiencyPoints="
+                        data.proficiencyPoints = $event
+                      "
+                    ></parameters>
                   </v-col>
-                  <v-col cols="12" lg="6" sm="12">
-                    <v-combobox
-                      v-model="data.currentClass"
-                      :items="classes"
-                      :rules="classRules"
-                      label="Classe *"
-                    />
-                  </v-col>
-                  <v-col cols="12" lg="4" sm="12">
-                    <v-text-field
-                      v-model="data.level"
-                      label="Level"
-                    />
-                  </v-col>
-                  <v-col cols="12" lg="4" sm="12">
-                    <v-text-field
-                      v-model="data.exp"
-                      label="EXP"
-                    />
-                  </v-col>
-                  <v-col cols="12" lg="4" sm="12">
-                    <v-text-field
-                      v-model="data.funds"
-                      label="Fundos"
-                    />
-                  </v-col>
-                  <v-col cols="12" lg="6" sm="12">
-                    <v-combobox
-                      v-model="data.alignment"
-                      :items="alignments"
-                      :rules="alignmentRules"
-                      label="Personalidade *"
-                    />
-                  </v-col>
-                  <v-col cols="12" lg="6" sm="12">
-                    <v-combobox
-                      v-model="data.principle"
-                      :items="principles"
-                      :rules="principleRules"
-                      label="Principio *"
-                    />
-                  </v-col>
-                  <v-col cols="12">
-                    <h2 class="text-center">Parâmetros</h2>
-                  </v-col>
-                  <template v-for="(attribute, i) in data.parameters">
-                    <v-col :key="i" cols="12" lg="4" md="6" sm="12">
-                      <parameters
-                        :attribute="attribute"
-                        :playerLevel="data.level"
-                        :statusPoints="data.statusPoints"
-                        :meritPoints="data.meritPoints"
-                        :negativeTraits="data.negativeTraits"
-                        :proficiencyPoints="data.proficiencyPoints"
-                        :defaultProficiencyPoints="defaultProficiencyPoints"
-                        v-on:updateParameters="data.parameters[i] = $event"
-                        v-on:updateStatusPoints="data.statusPoints = $event"
-                        v-on:updateMeritPoints="data.meritPoints = $event"
-                        v-on:updateProficiencyPoints="
-                          data.proficiencyPoints = $event
-                        "
-                      ></parameters>
-                    </v-col>
-                  </template>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" lg="4" sm="12">
-                    <v-combobox
-                      v-model="data.stratagems"
-                      :items="stratagems"
-                      :rules="stratagemsRules"
-                      item-text="name"
-                      attach
-                      chips
-                      label="Estratagemas"
-                      multiple
-                      deletable-chips
-                    />
-                  </v-col>
-                  <v-col cols="12" lg="4" sm="12">
-                    <v-combobox
-                      v-model="data.negativeTraits"
-                      :items="negativeTraits"
-                      :rules="negativeTraitsRules"
-                      item-text="name"
-                      attach
-                      chips
-                      label="Características Negativas"
-                      multiple
-                      deletable-chips
-                    />
-                  </v-col>
-                  <v-col cols="12" lg="4" sm="12">
-                    <v-combobox
-                      v-model="data.martialSkills"
-                      :items="martialSkills"
-                      :rules="martialSkillsRules"
-                      item-text="name"
-                      attach
-                      chips
-                      label="Habilidades Marciais"
-                      multiple
-                      deletable-chips
-                    />
-                  </v-col>
-                  <v-col cols="12">
-                    <v-combobox
-                      v-model="data.specialTechniques"
-                      :items="specialTechniques"
-                      :rules="specialTechniquesRules"
-                      item-text="name"
-                      attach
-                      chips
-                      label="Técnicas Especiais"
-                      multiple
-                      deletable-chips
-                    />
-                  </v-col>
-                </v-row>
-                <template v-for="(item, key) in data.noblePhantasms">
-                  <noble-phantasm
-                    :np="item"
-                    :data="dataNoblePhantasms"
-                    :index="key"
-                    :key="key"
-                    :valorPoints="data.valorPoints"
-                    :valorCap="capValorPoints"
-                    :playerId="data.id"
-                    v-on:updateValorPoints="data.valorPoints = $event"
-                    v-on:updateValorCap="capValorPoints = $event"
-                  ></noble-phantasm>
                 </template>
-                <v-row>
-                  <v-col cols="12">
-                    <v-dialog v-model="meritsDialog" max-width="400">
+              </v-row>
+              <v-row>
+                <v-col cols="12" lg="4" sm="12">
+                  <v-combobox
+                    v-model="data.stratagems"
+                    :items="stratagems"
+                    :rules="stratagemsRules"
+                    item-text="name"
+                    attach
+                    chips
+                    label="Estratagemas"
+                    multiple
+                    deletable-chips
+                  />
+                </v-col>
+                <v-col cols="12" lg="4" sm="12">
+                  <v-combobox
+                    v-model="data.negativeTraits"
+                    :items="negativeTraits"
+                    :rules="negativeTraitsRules"
+                    item-text="name"
+                    attach
+                    chips
+                    label="Características Negativas"
+                    multiple
+                    deletable-chips
+                  />
+                </v-col>
+                <v-col cols="12" lg="4" sm="12">
+                  <v-combobox
+                    v-model="data.martialSkills"
+                    :items="martialSkills"
+                    :rules="martialSkillsRules"
+                    item-text="name"
+                    attach
+                    chips
+                    label="Habilidades Marciais"
+                    multiple
+                    deletable-chips
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <v-combobox
+                    v-model="data.specialTechniques"
+                    :items="specialTechniques"
+                    :rules="specialTechniquesRules"
+                    item-text="name"
+                    attach
+                    chips
+                    label="Técnicas Especiais"
+                    multiple
+                    deletable-chips
+                  />
+                </v-col>
+              </v-row>
+              <template v-for="(item, key) in data.noblePhantasms">
+                <noble-phantasm
+                  :np="item"
+                  :data="dataNoblePhantasms"
+                  :index="key"
+                  :key="key"
+                  :valorPoints="data.valorPoints"
+                  :valorCap="capValorPoints"
+                  :playerId="data.id"
+                  v-on:updateValorPoints="data.valorPoints = $event"
+                  v-on:updateValorCap="capValorPoints = $event"
+                ></noble-phantasm>
+              </template>
+              <v-row>
+                <v-col cols="12">
+                  <v-dialog v-model="meritsDialog" max-width="400">
+                    <v-card>
+                      <v-card-title class="headline">
+                        Então você é um ixxxpertinho?!
+                      </v-card-title>
+                      <v-card-text>
+                        Tentando gastar mais pontos de méritos do que realmente
+                        tem? Vai assistir a live do
+                        <a
+                          href="https://twitch.tv/cebolaolunar"
+                          target="_blank"
+                          style="font-size: 17px"
+                        >
+                          Cebolão Lunar </a
+                        >. Garanto que é mais produtivo do que tentar burlar o
+                        sistema.
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text @click="meritsDialog = false"> Sair </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                  <v-btn
+                    v-if="data.noblePhantasms.length > 0"
+                    style="right: 90px"
+                    title="Remover Fantasma Nobre"
+                    right
+                    absolute
+                    color="red darken-1"
+                    @click="removeNoblePhantasm()"
+                  >
+                    <v-icon>mdi-minus-circle</v-icon>
+                  </v-btn>
+                  <v-btn
+                    title="Adicionar Fantasma Nobre"
+                    right
+                    absolute
+                    color="green darken-1"
+                    @click="addNoblePhantasm()"
+                  >
+                    <v-icon>mdi-plus-circle</v-icon>
+                  </v-btn>
+                </v-col>
+                <v-col cols="12" class="text-center">
+                  <v-btn
+                    :disabled="!valid"
+                    color="green darken-1"
+                    class="mr-4"
+                    style="margin-bottom: 80px; margin-top: 80px"
+                    @click="validateAndGo()"
+                  >
+                    Próximo
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-stepper-content>
+          <v-stepper-content step="2">
+            <v-form
+              ref="extraInfosForm"
+              @submit.prevent="validate()"
+              lazy-validation
+              v-model="extraInfosValid"
+              style="position: relative"
+              class="extraInfos"
+            >
+              <v-row>
+                <v-col cols="12">
+                  <v-container class="text-center">
+                    <v-row>
+                      <v-col cols="12" class="noPaddingBottom">
+                        <h2>Aparência</h2>
+                        <v-file-input
+                          v-model="data.extraInfos.referenceImages"
+                          placeholder="Suba suas imagens de refência do personagem"
+                          label="Imagens de Referência"
+                          class="noPaddingTop"
+                          accept="image/png, image/jpeg, image/gif"
+                          multiple
+                          persistent-hint
+                          hint="Segure CTRL para selecionar múltiplos arquivos"
+                        >
+                          <template v-slot:selection="{ index, text }">
+                            <v-chip
+                              small
+                              label
+                              color="primary"
+                              close
+                              @click:close="removeItem(index)"
+                            >
+                              {{ text }}
+                            </v-chip>
+                          </template>
+                        </v-file-input>
+                      </v-col>
+                      <v-col cols="12" class="noPaddingBottom">
+                        <h2>Características Físicas</h2>
+                      </v-col>
+                      <v-col cols="12" lg="6" sm="12">
+                        <v-text-field
+                          v-model="data.extraInfos.species"
+                          :counter="maxCharsSpecies"
+                          :rules="speciesRules"
+                          label="Espécie"
+                          class="noPaddingTop"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="6" sm="12">
+                        <v-select
+                          v-model="data.extraInfos.sex"
+                          :items="sexs"
+                          label="Sexo"
+                          class="noPaddingTop"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="3" sm="12">
+                        <v-combobox
+                          v-model="data.extraInfos.height"
+                          :items="generateHeights(10)"
+                          label="Altura"
+                          item-text="formattedUnit"
+                          item-value="unit"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="3" sm="12">
+                        <v-combobox
+                          v-model="data.extraInfos.weight"
+                          :items="generateWeights(500)"
+                          label="Peso"
+                          item-text="formattedWeight"
+                          item-value="unit"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="3" sm="12">
+                        <v-text-field
+                          v-model="data.extraInfos.locality"
+                          :counter="maxCharsLocality"
+                          :rules="localityRules"
+                          label="Local de origem"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="3" sm="12">
+                        <v-combobox
+                          v-model="data.extraInfos.age"
+                          :items="generateAges(5000)"
+                          item-text="formattedUnit"
+                          item-value="unit"
+                          label="Idade"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="6" sm="12">
+                        <v-combobox
+                          v-model="data.extraInfos.bloodType"
+                          :items="bloodTypes"
+                          label="Tipo Sanguíneo"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="6" sm="12">
+                        <v-menu
+                          ref="menu"
+                          v-model="menu"
+                          :close-on-content-click="false"
+                          transition="scale-transition"
+                          offset-y
+                          min-width="auto"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="data.extraInfos.birthday"
+                              label="Data de Nascimento"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            ref="picker"
+                            v-model="data.extraInfos.birthday"
+                            min="0001-01-01"
+                          ></v-date-picker>
+                        </v-menu>
+                      </v-col>
+                      <v-col cols="12" class="noPaddingBottom">
+                        <h2>Informações Pessoais</h2>
+                      </v-col>
+                      <v-col cols="12" lg="6" sm="12">
+                        <v-text-field
+                          v-model="data.extraInfos.addressSelfAs"
+                          :counter="maxCharsSelfDenomination"
+                          :rules="selfDenominationRules"
+                          label="Autodenominação"
+                          class="noPaddingTop"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="6" sm="12">
+                        <v-text-field
+                          v-model="data.extraInfos.talents"
+                          :counter="maxCharsTalents"
+                          :rules="talentsRules"
+                          label="Talentos"
+                          class="noPaddingTop"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="6" sm="12">
+                        <v-text-field
+                          v-model="data.extraInfos.likes"
+                          :counter="maxCharsLikes"
+                          :rules="likesOfRules"
+                          label="Gosta de"
+                          placeholder="Insira brevemente o que seu personagem gosta"
+                        />
+                      </v-col>
+                      <v-col cols="12" lg="6" sm="12">
+                        <v-text-field
+                          v-model="data.extraInfos.dislikes"
+                          :counter="maxCharsDislikes"
+                          :rules="dislikesOfRules"
+                          label="Não gosta de"
+                          placeholder="Insira brevemente o que seu personagem NÃO gosta"
+                        />
+                      </v-col>
+                      <v-col cols="12" class="noPaddingBottom">
+                        <h2>História & Background</h2>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-textarea
+                          v-model="data.extraInfos.abstract"
+                          :counter="maxCharsAbstract"
+                          :rules="abstractRules"
+                          label="Resumo"
+                          outlined
+                          placeholder="Insira brevemente um resumo da história do personagem"
+                        />
+                      </v-col>
+                      <v-col cols="12" class="text-left">
+                        <historia-ficha
+                          v-for="(item, i) in data.extraInfos.stories"
+                          :absolute="true"
+                          :extraInfos="item"
+                          :key="i"
+                          :stories="data.extraInfos.stories"
+                          v-on:updateStories="data.extraInfos.stories = $event"
+                        >
+                        </historia-ficha>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-col>
+                <v-col cols="12">
+                  <div class="text-center">
+                    <v-btn class="mr-4" @click="step = 1"> Voltar </v-btn>
+                    <v-dialog
+                      v-if="hasPointsNotSpent"
+                      v-model="dialog"
+                      persistent
+                      max-width="350"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          :disabled="!valid"
+                          color="green darken-1"
+                          class="mr-4"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          Enviar
+                        </v-btn>
+                      </template>
                       <v-card>
                         <v-card-title class="headline">
-                          Então você é um ixxxpertinho?!
+                          Você não tá comendo bola?
                         </v-card-title>
                         <v-card-text>
-                          Tentando gastar mais pontos de méritos do que
-                          realmente tem? Vai assistir a live do
-                          <a
-                            href="https://twitch.tv/cebolaolunar"
-                            target="_blank"
-                            style="font-size: 17px"
-                          >
-                            Cebolão Lunar </a
-                          >. Garanto que é mais produtivo do que tentar burlar o
-                          sistema.
+                          Você ainda possui pontos não distruídos e caso não
+                          sejam distribuídos <strong>serão perdidos</strong>.
+                          Desejar continuar mesmo assim?
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn text @click="meritsDialog = false">
-                            Sair
+                          <v-btn
+                            color="red darken-1"
+                            text
+                            @click="dialog = false"
+                          >
+                            Não
+                          </v-btn>
+                          <v-btn
+                            color="green darken-1"
+                            text
+                            @click="
+                              dialog = false
+                              validate()
+                            "
+                          >
+                            Sim
                           </v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
                     <v-btn
-                      v-if="data.noblePhantasms.length > 0"
-                      style="right: 90px"
-                      title="Remover Fantasma Nobre"
-                      right
-                      absolute
-                      color="red darken-1"
-                      @click="removeNoblePhantasm()"
-                    >
-                      <v-icon>mdi-minus-circle</v-icon>
-                    </v-btn>
-                    <v-btn
-                      title="Adicionar Fantasma Nobre"
-                      right
-                      absolute
-                      color="green darken-1"
-                      @click="addNoblePhantasm()"
-                    >
-                      <v-icon>mdi-plus-circle</v-icon>
-                    </v-btn>
-                  </v-col>
-                  <v-col cols="12" class="text-center">
-                    <v-btn
+                      v-if="!hasPointsNotSpent"
                       :disabled="!valid"
                       color="green darken-1"
                       class="mr-4"
-                      style="margin-bottom: 80px; margin-top: 80px"
-                      @click="validateAndGo()"
+                      type="submit"
                     >
-                      Próximo
+                      Enviar
                     </v-btn>
-                  </v-col>
-                </v-row>
-              </v-form>
-            </v-stepper-content>
-            <v-stepper-content step="2">
-              <v-form
-                ref="extraInfosForm"
-                @submit.prevent="validate()"
-                lazy-validation
-                v-model="extraInfosValid"
-                style="position: relative"
-                class="extraInfos"
-              >
-                <v-row>
-                  <v-col cols="12">
-                    <v-container class="text-center">
-                      <v-row>
-                        <v-col cols="12" class="noPaddingBottom">
-                          <h2>Aparência</h2>
-                          <v-file-input
-                            v-model="data.extraInfos.referenceImages"
-                            placeholder="Suba suas imagens de refência do personagem"
-                            label="Imagens de Referência"
-                            class="noPaddingTop"
-                            accept="image/png, image/jpeg, image/gif"
-                            multiple
-                            persistent-hint
-                            hint="Segure CTRL para selecionar múltiplos arquivos"
-                          >
-                            <template v-slot:selection="{ index, text }">
-                              <v-chip
-                                small
-                                label
-                                color="primary"
-                                close
-                                @click:close="removeItem(index)"
-                              >
-                                {{ text }}
-                              </v-chip>
-                            </template>
-                          </v-file-input>
-                        </v-col>
-                        <v-col cols="12" class="noPaddingBottom">
-                          <h2>Características Físicas</h2>
-                        </v-col>
-                        <v-col cols="12" lg="6" sm="12">
-                          <v-text-field
-                            v-model="data.extraInfos.species"
-                            :counter="maxCharsSpecies"
-                            :rules="speciesRules"
-                            label="Espécie"
-                            class="noPaddingTop"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="6" sm="12">
-                          <v-select
-                            v-model="data.extraInfos.sex"
-                            :items="sexs"
-                            label="Sexo"
-                            class="noPaddingTop"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="3" sm="12">
-                          <v-combobox
-                            v-model="data.extraInfos.height"
-                            :items="generateHeights(10)"
-                            label="Altura"
-                            item-text="formattedUnit"
-                            item-value="unit"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="3" sm="12">
-                          <v-combobox
-                            v-model="data.extraInfos.weight"
-                            :items="generateWeights(500)"
-                            label="Peso"
-                            item-text="formattedWeight"
-                            item-value="unit"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="3" sm="12">
-                          <v-text-field
-                            v-model="data.extraInfos.locality"
-                            :counter="maxCharsLocality"
-                            :rules="localityRules"
-                            label="Local de origem"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="3" sm="12">
-                          <v-combobox
-                            v-model="data.extraInfos.age"
-                            :items="generateAges(5000)"
-                            item-text="formattedUnit"
-                            item-value="unit"
-                            label="Idade"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="6" sm="12">
-                          <v-combobox
-                            v-model="data.extraInfos.bloodType"
-                            :items="bloodTypes"
-                            label="Tipo Sanguíneo"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="6" sm="12">
-                          <v-menu
-                            ref="menu"
-                            v-model="menu"
-                            :close-on-content-click="false"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="auto"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-text-field
-                                v-model="data.extraInfos.birthday"
-                                label="Data de Nascimento"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                              ></v-text-field>
-                            </template>
-                            <v-date-picker
-                              ref="picker"
-                              v-model="data.extraInfos.birthday"
-                              min="0001-01-01"
-                            ></v-date-picker>
-                          </v-menu>
-                        </v-col>
-                        <v-col cols="12" class="noPaddingBottom">
-                          <h2>Informações Pessoais</h2>
-                        </v-col>
-                        <v-col cols="12" lg="6" sm="12">
-                          <v-text-field
-                            v-model="data.extraInfos.addressSelfAs"
-                            :counter="maxCharsSelfDenomination"
-                            :rules="selfDenominationRules"
-                            label="Autodenominação"
-                            class="noPaddingTop"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="6" sm="12">
-                          <v-text-field
-                            v-model="data.extraInfos.talents"
-                            :counter="maxCharsTalents"
-                            :rules="talentsRules"
-                            label="Talentos"
-                            class="noPaddingTop"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="6" sm="12">
-                          <v-text-field
-                            v-model="data.extraInfos.likes"
-                            :counter="maxCharsLikes"
-                            :rules="likesOfRules"
-                            label="Gosta de"
-                            placeholder="Insira brevemente o que seu personagem gosta"
-                          />
-                        </v-col>
-                        <v-col cols="12" lg="6" sm="12">
-                          <v-text-field
-                            v-model="data.extraInfos.dislikes"
-                            :counter="maxCharsDislikes"
-                            :rules="dislikesOfRules"
-                            label="Não gosta de"
-                            placeholder="Insira brevemente o que seu personagem NÃO gosta"
-                          />
-                        </v-col>
-                        <v-col cols="12" class="noPaddingBottom">
-                          <h2>História & Background</h2>
-                        </v-col>
-                        <v-col cols="12">
-                          <v-textarea
-                            v-model="data.extraInfos.abstract"
-                            :counter="maxCharsAbstract"
-                            :rules="abstractRules"
-                            label="Resumo"
-                            outlined
-                            placeholder="Insira brevemente um resumo da história do personagem"
-                          />
-                        </v-col>
-                        <v-col cols="12" class="text-left">
-                          <historia-ficha
-                            v-for="(item, i) in data.extraInfos.stories"
-                            :absolute="true"
-                            :extraInfos="item"
-                            :key="i"
-                            :stories="data.extraInfos.stories"
-                            v-on:updateStories="
-                              data.extraInfos.stories = $event
-                            "
-                          >
-                          </historia-ficha>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-col>
-                  <v-col cols="12">
-                    <div class="text-center">
-                      <v-btn class="mr-4" @click="step = 1"> Voltar </v-btn>
-                      <v-dialog
-                        v-if="hasPointsNotSpent"
-                        v-model="dialog"
-                        persistent
-                        max-width="350"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            :disabled="!valid"
-                            color="green darken-1"
-                            class="mr-4"
-                            v-bind="attrs"
-                            v-on="on"
-                          >
-                            Enviar
-                          </v-btn>
-                        </template>
-                        <v-card>
-                          <v-card-title class="headline">
-                            Você não tá comendo bola?
-                          </v-card-title>
-                          <v-card-text>
-                            Você ainda possui pontos não distruídos e caso não
-                            sejam distribuídos <strong>serão perdidos</strong>.
-                            Desejar continuar mesmo assim?
-                          </v-card-text>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              color="red darken-1"
-                              text
-                              @click="dialog = false"
-                            >
-                              Não
-                            </v-btn>
-                            <v-btn
-                              color="green darken-1"
-                              text
-                              @click="
-                                dialog = false
-                                validate()
-                              "
-                            >
-                              Sim
-                            </v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-                      <v-btn
-                        v-if="!hasPointsNotSpent"
-                        :disabled="!valid"
-                        color="green darken-1"
-                        class="mr-4"
-                        type="submit"
-                      >
-                        Enviar
-                      </v-btn>
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-form>
-            </v-stepper-content>
-          </v-stepper-items>
-        </v-stepper>
-      </v-col>
-    </v-row>
-  </client-only>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-stepper>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
