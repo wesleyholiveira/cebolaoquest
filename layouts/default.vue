@@ -23,7 +23,11 @@
           <v-list-item-title>Home</v-list-item-title>
         </v-list-item>
 
-        <v-list-group no-action prepend-icon="mdi-clipboard-list" v-if="$auth.user">
+        <v-list-group
+          no-action
+          prepend-icon="mdi-clipboard-list"
+          v-if="$auth.user"
+        >
           <template v-slot:activator>
             <v-list-item-title>Ficha</v-list-item-title>
           </template>
@@ -45,13 +49,23 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-item @click="$auth.logout()" v-if="$auth.user">
-          <v-list-item-icon>
-            <v-icon>mdi-exit-to-app</v-icon>
-          </v-list-item-icon>
+        <div v-if="$auth.user">
+          <v-list-item href="/chat">
+            <v-list-item-icon>
+              <v-icon>mdi-tooltip-outline</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-title>Sair</v-list-item-title>
-        </v-list-item>
+            <v-list-item-title>Chat</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item @click="$auth.logout()">
+            <v-list-item-icon>
+              <v-icon>mdi-exit-to-app</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-title>Sair</v-list-item-title>
+          </v-list-item>
+        </div>
       </v-list>
     </v-navigation-drawer>
     <v-container class="myContainer">

@@ -1,6 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
 
-console.log(process.env.BASE_URL)
 export default {
   dev: process.env.NODE_ENV !== 'production',
   server: {
@@ -46,8 +45,8 @@ export default {
     '@nuxtjs/auth-next',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    // '~/modules/api'
-    'nuxt-socket-io'
+    'nuxt-socket-io',
+    '~/modules/api'
   ],
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -83,9 +82,29 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: ['vuetify/lib', 'tiptap-vuetify'],
-    parallel: true,
+    // parallel: true,
     cache: true,
-    // hardSource: true,
+    hardSource: true,
+    collapseBooleanAttributes: true,
+    decodeEntities: true,
+    minifyCSS: true,
+    minifyJS: true,
+    processConditionalComments: true,
+    removeEmptyAttributes: true,
+    removeRedundantAttributes: true,
+    trimCustomFragments: true,
+    useShortDoctype: true,
+    minimize: true,
+    minimizer: [
+      'terser-webpack-plugin',
+      'optimize-css-assets-webpack-plugin',
+    ],
+    splitChunks: {
+      chunks: 'all',
+      automaticNameDelimiter: '.',
+      name: undefined,
+      cacheGroups: {}
+    }
   },
 
   axios: {
@@ -93,8 +112,8 @@ export default {
   },
 
   serverMiddleware: [
-    { path: '/', handler: '~/server-middleware/index.js' },
-    { path: '/api', handler: '~/server-middleware/api.js' },
+    // { path: '/', handler: '~/server-middleware/index.js' },
+    // { path: '/api', handler: '~/server-middleware/api.js' },
     // { path: '/websocket', handler: '~/server-middleware/websocket.js' }
   ],
 
@@ -102,12 +121,6 @@ export default {
     sockets: [{
       name: 'main',
       url: process.env.BASE_URL,
-      namespaces: {
-        '/index': {
-          emitters: ['getMessage2 + testMsg --> message2Rxd'],
-          listeners: ['chatMessage2', 'chatMessage3 --> message3Rxd']
-        },
-      }
     }]
   },
 

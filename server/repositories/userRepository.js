@@ -2,7 +2,7 @@ module.exports = (db) => ({
     getUserByUsernameAndPassword: async (username, password) => {
         const query = `
             SELECT
-                users.id, user_roles.role_id
+                users.id, user_roles.role_id, users.username
             FROM
                 users
             JOIN

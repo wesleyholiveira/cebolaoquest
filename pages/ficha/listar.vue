@@ -47,12 +47,12 @@
             <v-expansion-panel-header color="cyan darken-4">
               <v-container style="padding: 0">
                 <v-row no-gutters justify="center" align="center">
-                  <v-col cols="12" lg="10" md="6" sm="12">
+                  <v-col cols="12" lg="8" md="6" sm="12">
                     <span class="text-center"
                       >{{ player.name }} - (ID: {{ player.id }})</span
                     >
                   </v-col>
-                  <v-col cols="12" lg="2" md="6" sm="12">
+                  <v-col cols="12" lg="4" md="6" sm="12">
                     <v-container>
                       <v-row>
                         <v-col>

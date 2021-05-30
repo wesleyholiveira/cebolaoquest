@@ -46,11 +46,12 @@ app.use(function (req, res, next) {
   let token = req.headers['authorization']
   const path = req.path
 
-  if (path.indexOf('/login') >= 0
+  if (!path.startsWith('/api') || (
+    path.indexOf('/login') >= 0
     || path.indexOf('/register') >= 0
     || path.indexOf('/logout') >= 0
     || (new RegExp(/\/player\/\d+/)).test(path)
-  ) {
+  )) {
     return next()
   }
 
@@ -89,20 +90,21 @@ app.use(function (req, res, next) {
   return next()
 })
 
-app.get('/user', async (req, res) => {
+app.get('/api/user', async (req, res) => {
   const token = req.headers['authorization'].split(' ')[1]
-  const { userId, isAdmin } = decode(token)
+  const { userId, username, isAdmin } = decode(token)
 
   return res.json({
     user: {
       id: userId,
+      username,
       token,
       isAdmin
     }
   })
 })
 
-app.get('/player/name/user/:userId', async (req, res) => {
+app.get('/api/player/name/user/:userId', async (req, res) => {
   const { userId } = req.params
   try {
     const token = req.headers['authorization'].split(' ')[1]
@@ -120,7 +122,7 @@ app.get('/player/name/user/:userId', async (req, res) => {
   }
 })
 
-app.delete('/player/:userId', async (req, res) => {
+app.delete('/api/player/:userId', async (req, res) => {
   const { userId } = req.params
   try {
     await playerRepository(db).deleteById(userId)
@@ -136,11 +138,11 @@ app.delete('/player/:userId', async (req, res) => {
   }
 })
 
-app.get('/player/:playerId/user/:userId', async (req, res) => {
+app.get('/api/player/:playerId/user/:userId', async (req, res) => {
 
   try {
     const { playerId, userId } = req.params
-    
+
     const token = req.headers['authorization'].split(' ')[1]
     const { isAdmin } = decode(token)
 
@@ -317,7 +319,7 @@ app.get('/player/:playerId/user/:userId', async (req, res) => {
   }
 })
 
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
   try {
     const {
       data: {
@@ -352,7 +354,7 @@ app.post('/register', async (req, res) => {
   }
 })
 
-app.post('/logout', async (req, res) => {
+app.post('/api/logout', async (req, res) => {
   let token = req.headers['authorization']
   if (!token) {
     return res.status(401).json({
@@ -379,7 +381,7 @@ app.post('/logout', async (req, res) => {
   }
 })
 
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   const {
     username,
     password
@@ -403,16 +405,17 @@ app.post('/login', async (req, res) => {
     const { userId } = result
     const token = sign({
       userId,
+      username,
       isAdmin
     }, secret, { expiresIn: '1h' })
 
-    return res.json({ userId, isAdmin, token })
+    return res.json({ userId, username, isAdmin, token })
   }
 
   return res.status(401).json({ message: 'Usuário e/ou senha inválidos' })
 })
 
-app.get('/player/:id', async (req, res) => {
+app.get('/api/player/:id', async (req, res) => {
   const { id } = req.params
   if (!id) {
     return res.status(400).json({
@@ -539,7 +542,7 @@ app.get('/player/:id', async (req, res) => {
   return res.json(user)
 })
 
-app.post('/player', async (req, res) => {
+app.post('/api/player', async (req, res) => {
   const {
     id,
     name,
@@ -751,7 +754,7 @@ app.post('/player', async (req, res) => {
   })
 })
 
-app.post('/upload/:playerId', async (req, res) => {
+app.post('/api/upload/:playerId', async (req, res) => {
   let playerId = null
   const form = new IncomingForm({ multiples: true })
   const imageRepo = imageRepository(db)

@@ -213,10 +213,10 @@ export default {
           data: this.login,
         })
         
-        const { userId, token, isAdmin } = response.data
+        const { userId, username, token, isAdmin } = response.data
 
         this.$refs.formLogin.reset()
-        this.$auth.setUser({ id: userId, token, isAdmin })
+        this.$auth.setUser({ id: userId, username, token, isAdmin })
       } catch (err) {
         console.log(err)
         const {
