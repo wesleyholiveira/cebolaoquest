@@ -1,4 +1,4 @@
-require('dotenv-safe').config()
+require('dotenv').config()
 
 import { rename, unlink } from 'fs'
 import { createHash } from 'crypto'
