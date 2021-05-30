@@ -3,7 +3,10 @@
     <v-row>
       <v-col>
         <div class="chat-messages">
-          <p v-for="(sys, i) in messages" :key="i" v-html="sys"></p>
+          <span v-for="(msg, i) in messages" :key="i">
+            <pre v-if="msg.system"><strong>{{msg.username}}</strong> entrou na sessão.</pre>
+            <pre v-if="!msg.system"><strong>{{msg.username}}:</strong> {{msg.message}}</pre>
+          </span>
         </div>
       </v-col>
     </v-row>
@@ -102,7 +105,7 @@ export default {
           'send',
           {
             username: this.username,
-            message: this.message.replace("\n", '<br />'),
+            message: this.message,
           },
           () => {
             this.message = null

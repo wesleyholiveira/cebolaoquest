@@ -18,12 +18,13 @@ module.exports = (db) => ({
                 role_id = new.role_id
         `
         return new Promise((resolve, reject) => {
-            db.query(query, [
+            const q = db.query(query, [
                 userRole.id,
                 userRole.userId,
                 userRole.roleId
             ], (err, result) => {
                 if (err) {
+                    console.log(q.sql)
                     console.log(err)
                     return reject(err)
                 }

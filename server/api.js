@@ -160,6 +160,8 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId })
     }
 
+    console.log('RESULT', results)
+
     if (results.length < 1) {
       return res.status(404).json({
         message: 'Usuário não encontrado',
@@ -224,7 +226,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     if (categories.length > 0) {
       stories = categories.flatMap(cat => ({
         ...cat,
-        children: JSON.parse(cat.children)
+        children: cat.children.length > 0 ? JSON.parse(cat.children) : []
       }))
     }
 
@@ -291,7 +293,8 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
           unit: player.age
         },
         height: {
-          formattedUnit: `${height.toFixed(2).replace('.', ',')} m`,
+          formattedUnit: height != undefined ?
+            `${parseFloat(height).toFixed(2).replace('.', ',')} m` : '0 m',
           unit: player.height
         },
         weight: {

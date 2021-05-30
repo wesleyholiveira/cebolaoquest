@@ -2,14 +2,20 @@ export default function (socket, io) {
 
   return Object.freeze({
     whenUserEnter(user) {
-      const msg = `<strong>${user}</strong> entrou na sessão.`
 
       // systemMessages.push(msg)
-      io.of('index').emit('data', msg)
+      io.of('index').emit('data', {
+        username: user,
+        system: true
+      })
     },
 
     send({ username, message }) {
-      io.of('index').emit('data', `<strong>${username}:</strong> ${message}`)
+      io.of('index').emit('data', {
+        username,
+        message,
+        system: false
+      })
     },
 
     userTyping({ username, typing }) {
