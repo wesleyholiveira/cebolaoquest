@@ -1,25 +1,15 @@
 import { createConnection } from 'mysql'
 
-// const gracefulFunc =  () => {
-//     console.log('SIGNAL RECEIVED')
-//     console.log('Closing mysql server')
-//     mysqlCon.end(err => {
-//         if (err) throw err
-//         console.log('Closed connection with mysql')
-//     })
-// }
 const mysqlCon = createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123mudar',
-    database: 'cebolaoquest'
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USERNAME || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME
 })
 
 mysqlCon.connect(err => {
     if (err) throw err;
     console.log('Conexão com o banco de dados estabelecida')
 })
-
-// process.on('SIGTERM', gracefulFunc)
 
 export default mysqlCon
