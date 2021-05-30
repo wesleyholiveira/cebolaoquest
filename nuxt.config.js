@@ -3,7 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   dev: process.env.NODE_ENV !== 'production',
   server: {
-    port: 3000,
+    port: process.env.PORT || 3000,
     host: process.env.DNS
   },
 
