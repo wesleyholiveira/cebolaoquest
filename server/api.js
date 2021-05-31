@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-import { rename, unlink } from 'fs'
+import { copyFile } from 'fs'
 import { join } from 'path'
 import { createHash } from 'crypto'
 
@@ -800,7 +800,7 @@ app.post('/api/upload/:playerId', async (req, res) => {
             console.log(f.size)
 
             if (f.size > 0) {
-              rename(oldPath, newPath, (err) => {
+              copyFile(oldPath, newPath, (err) => {
                 if (err) throw err
               })
             }
