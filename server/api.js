@@ -796,7 +796,7 @@ app.post('/api/upload/:playerId', async (req, res) => {
 
           return resolve(files.referenceImages.map(f => {
             const oldPath = f.path
-            const newPath = `./uploads/${f.name}`
+            const newPath = path.join(__dirname, '..', `/uploads/${f.name}`)
 
             console.log(f.size)
 

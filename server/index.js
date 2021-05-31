@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs'
+import { join } from 'path'
 import express from 'express'
 
 const app = express()
@@ -8,7 +9,7 @@ app.get('/uploads/:filename', (req, res) => {
 
     try {
         if (filename) {
-            return res.end(readFileSync(`./uploads/${filename}`))
+            return res.end(readFileSync(join(__dirname, '..', `/uploads/${filename}`)))
         }
     } catch(err) {
         console.log(err)
