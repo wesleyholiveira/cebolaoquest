@@ -27,7 +27,7 @@
                 v-on:focus="socket.emit('typing', { username, typing: false })"
                 v-on:blur="socket.emit('typing', { username, typing: false })"
                 v-on:keypress="writing($event)"
-                v-on:keyup.13="sendMessage($event)"
+                v-on:keypress.13="sendMessage($event)"
                 ref="chatMessage"
               ></v-textarea>
               <span class="chat--typing" v-if="typing.length > 0">{{
@@ -101,6 +101,8 @@ export default {
   methods: {
     sendMessage(event) {
       if (!event.shiftKey && this.message && this.message.trim().length > 0) {
+        event.preventDefault()
+        
         this.socket.emit(
           'send',
           {
