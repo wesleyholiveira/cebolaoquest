@@ -485,7 +485,7 @@ app.get('/api/player/:id', async (req, res) => {
   if (categories.length > 0) {
     stories = categories.flatMap(cat => ({
       ...cat,
-      children: JSON.parse(cat.children)
+      children: cat.children.length > 0 ? JSON.parse(cat.children) : []
     }))
   }
 
@@ -521,7 +521,7 @@ app.get('/api/player/:id', async (req, res) => {
         unit: player.age
       },
       height: {
-        formattedUnit: `${height.toFixed(2).replace('.', ',')} m`,
+        formattedUnit: height != undefined ? `${parseFloat(height).toFixed(2).replace('.', ',')} m` : '0 m',
         unit: player.height
       },
       weight: {
