@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 import { rename, unlink } from 'fs'
+import { join } from 'path'
 import { createHash } from 'crypto'
 
 import { verify, decode, sign } from 'jsonwebtoken'
@@ -159,8 +160,6 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     } else {
       results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId })
     }
-
-    console.log('RESULT', results)
 
     if (results.length < 1) {
       return res.status(404).json({
@@ -796,7 +795,7 @@ app.post('/api/upload/:playerId', async (req, res) => {
 
           return resolve(files.referenceImages.map(f => {
             const oldPath = f.path
-            const newPath = path.join(__dirname, '..', `/uploads/${f.name}`)
+            const newPath = join(__dirname, '..', `/uploads/${f.name}`)
 
             console.log(f.size)
 
