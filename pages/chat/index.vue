@@ -3,14 +3,16 @@
     <v-row>
       <v-col>
         <div class="chat-messages">
-          <span v-for="(msg, i) in messages" :key="i">
+          <div v-for="(msg, i) in messages" :key="i">
             <pre
               v-if="msg.system"
+              class="chat--pre"
             ><strong>{{msg.username}}</strong> entrou na sessão.</pre>
             <pre
               v-if="!msg.system"
+              class="chat--pre"
             ><strong>{{msg.username}}:</strong> {{msg.message}}</pre>
-          </span>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -171,8 +173,13 @@ export default {
   position: relative;
 }
 .chat-container .chat-messages {
-  max-height: calc(100vh - 160px);
+  max-height: calc(100vh - 170px);
   overflow-y: auto;
+}
+.chat-messages .chat--pre {
+  word-break: break-word;
+  white-space: normal;
+  word-wrap: break-word;
 }
 .chat-container .chat--input-group {
   width: 100%;
