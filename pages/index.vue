@@ -10,7 +10,7 @@
             Este sistema tem como objetivo adaptar de forma fiel o RPG criado
             pelo grande Cebolão (Rafael)
           </p>
-          <v-virtual-scroll height="450" item-height="30" :items="items">
+          <v-virtual-scroll height="450" item-height="80" :items="items">
             <template v-slot:default="{ item }">
               <v-list-item :key="item">
                 <v-list-item-action-text class="my-text">{{item}}</v-list-item-action-text>
