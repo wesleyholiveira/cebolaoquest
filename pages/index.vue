@@ -7,12 +7,13 @@
         </v-card-title>
         <v-card-text>
           <p>
-            Este sistema tem como objetivo adaptar de forma fiel o RPG criado pelo grande Cebolão (Rafael)
+            Este sistema tem como objetivo adaptar de forma fiel o RPG criado
+            pelo grande Cebolão (Rafael)
           </p>
           <v-virtual-scroll height="450" item-height="30" :items="items">
             <template v-slot:default="{ item }">
               <v-list-item :key="item">
-                <v-list-item-action-text class="my-text">{{ item }}</v-list-item-action-text>
+                <v-list-item-action-text class="my-text">{{item}}</v-list-item-action-text>
               </v-list-item>
             </template>
           </v-virtual-scroll>
@@ -38,6 +39,18 @@ export default {
   auth: true,
   data: () => ({
     items: [
+      'Adicionado verificação de existência dos campos "height" e "cat.children" nas rotas que recebem os dados completos do jogador',
+      'Ajustado a forma como o caminho da pasta de upload é resolvido (api)',
+      'Ajustado upload de arquivos pois a função rename não permite mover entre diferentes pontos de montagem (api)',
+      'Reconfigurado propriedade white-space da tag PRE para quebrar linha quando o limite de comprimento do componente é atingido (chat)',
+      'Removido evento de keypress pois está depreciado nas versões mobiles dos navegadores (chat)',
+      'Adicionado funcionalidade que envia mensagem a todos os usuários conectados (chat)',
+      'Adicionado condição que oculta a mensagem de que o usuário está digitando para si próprio (chat)',
+      'Adicionado funcionalidade que verifica se o usuário está digitando para os demais conectados no socket (chat)',
+      'Adicionado página de chat',
+      'Adicionado variáveis de ambiente para obter a URL do projeto e DNS',
+      'Adicionado variáveis de ambiente para conexão com banco de dados',
+      'Adicionado nuxt-socket-io',
       'Adicionado página pública para visualização do perfil de cada usuário',
       'Adicionado botão para compartilhar a URL do perfil',
       'Adicionado "Fantasmas Nobres" nas informações do perfil',
@@ -72,8 +85,8 @@ export default {
       'Corrigido evento de click no botão de exclusão (Listagem)',
       'Corrigido bug no login, onde o USERID e o TOKEN não eram retornados do endpoint',
       'Corrigido problema de upload de fotos na edição',
-      'Corrigido bug envolvendo a sobrecarga de Valors'
-    ]
+      'Corrigido bug envolvendo a sobrecarga de Valors',
+    ],
   }),
 }
 </script>
