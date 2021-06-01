@@ -1,10 +1,11 @@
 <template>
   <div class="ficha-content">
-    <section v-for="(story, i) in stories" :key="i">
-      <h3
-        class="ficha-content--header"
-        :id="genererateIDAttribute(story, playerId)"
-      >
+    <section
+      v-for="(story, i) in stories"
+      :key="i"
+      :id="genererateIDAttribute(story, playerId)"
+    >
+      <h3 class="ficha-content--header">
         {{ story.name }}
       </h3>
       <v-divider v-if="!subcategory"></v-divider>

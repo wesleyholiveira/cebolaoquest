@@ -4,8 +4,12 @@
       <v-col>
         <div class="chat-messages">
           <span v-for="(msg, i) in messages" :key="i">
-            <pre v-if="msg.system"><strong>{{msg.username}}</strong> entrou na sessão.</pre>
-            <pre v-if="!msg.system"><strong>{{msg.username}}:</strong> {{msg.message}}</pre>
+            <pre
+              v-if="msg.system"
+            ><strong>{{msg.username}}</strong> entrou na sessão.</pre>
+            <pre
+              v-if="!msg.system"
+            ><strong>{{msg.username}}:</strong> {{msg.message}}</pre>
           </span>
         </div>
       </v-col>
@@ -26,13 +30,11 @@
                 class="chat--input--textarea"
                 v-on:focus="socket.emit('typing', { username, typing: false })"
                 v-on:blur="socket.emit('typing', { username, typing: false })"
-                v-on:keypress="writing($event)"
-                v-on:keypress.13="sendMessage($event)"
+                v-on:keyup="writing($event)"
+                v-on:keydown.13="sendMessage($event)"
                 ref="chatMessage"
               ></v-textarea>
-              <span class="chat--typing" v-if="typing.length > 0">{{
-                usersTyping
-              }}</span>
+              <span class="chat--typing" v-if="usersTyping">{{usersTyping}}</span>
               <div class="chat--buttons">
                 <v-btn icon>
                   <v-icon>mdi-dice-6</v-icon>
@@ -60,7 +62,7 @@ export default {
 
   computed: {
     usersTyping() {
-      const typing = this.typing.filter(e => e != this.username)
+      const typing = this.typing.filter((e) => e != this.username)
       if (typing) {
         if (typing.length > 0) {
           let verb = 'está'
@@ -102,7 +104,7 @@ export default {
     sendMessage(event) {
       if (!event.shiftKey && this.message && this.message.trim().length > 0) {
         event.preventDefault()
-        
+
         this.socket.emit(
           'send',
           {
@@ -132,16 +134,13 @@ export default {
           }
 
           if (timeout != undefined) clearTimeout(timeout)
-          timeout = setTimeout(
-            () => {
-              this.socket.emit('userTyping', {
-                username: this.username,
-                typing: false,
-              })
-              this.typing = this.typing.filter(e => e != this.username)
-            },
-            1000
-          )
+          timeout = setTimeout(() => {
+            this.socket.emit('userTyping', {
+              username: this.username,
+              typing: false,
+            })
+            this.typing = this.typing.filter((e) => e != this.username)
+          }, 1000)
         }
       }
     },

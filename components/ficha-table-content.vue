@@ -29,8 +29,7 @@ export default {
       )
 
       if (el != null) {
-        console.log(el.id, el.innerHTML, el.offsetTop, el.getBoundingClientRect())
-        goTo(el.offsetTop)
+        goTo(el.getBoundingClientRect().top + window.pageYOffset)
       }
     },
   },
