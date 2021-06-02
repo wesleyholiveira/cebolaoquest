@@ -166,6 +166,24 @@
               </template>
               <v-row>
                 <v-col cols="12">
+                  <v-dialog
+                    v-model="registerDialog"
+                    max-width="200"
+                    class="loader"
+                  >
+                    <v-card>
+                      <v-card-text class="loader--body">
+                        <span class="d-block loader--body--text">{{registerMessage}}</span>
+                        <v-progress-circular
+                          :size="70"
+                          :width="7"
+                          color="cyan darken-1"
+                          indeterminate
+                          class="text-center"
+                        ></v-progress-circular>
+                      </v-card-text>
+                    </v-card>
+                  </v-dialog>
                   <v-dialog v-model="meritsDialog" max-width="400">
                     <v-card>
                       <v-card-title class="headline">
@@ -493,6 +511,7 @@ import dataStratagems from '../mock/stratagems'
 import dataMartialSkills from '../mock/martialSkills'
 import dataSpecialTechniques from '../mock/specialTechniques'
 import dataNegativeTraits from '../mock/negativeTraits'
+let interval
 export default {
   props: {
     data: {
@@ -515,6 +534,7 @@ export default {
   data: (instance) => ({
     step: 1,
     content: '',
+    registerMessage: 'ENVIANDO',
     sexs: ['Masculino', 'Feminino'],
     bloodTypes: [
       'A',
@@ -544,6 +564,7 @@ export default {
     firstTimeMartialSkills: true,
     firstTimeSpecialTechs: true,
     firstTimeNegativeTraits: true,
+    registerDialog: false,
     meritsDialog: false,
     dialog: false,
     valid: true,
@@ -664,6 +685,21 @@ export default {
     specialTechniques: dataSpecialTechniques,
   }),
   methods: {
+    animateMessage() {
+      let i = 0
+      const originalMessage = this.registerMessage
+
+      interval = setInterval(() => {
+        if (i < 3) {
+          this.registerMessage = this.registerMessage + '.'
+          i++
+        } else {
+          this.registerMessage = originalMessage
+          i = 0
+        }
+      }, 450)
+    },
+
     removeItem(index) {
       this.data.extraInfos.referenceImages.splice(index, 1)
       this.data.extraInfos.referenceImages = [
@@ -763,6 +799,9 @@ export default {
         const valorPoints = this.calculateValorPoints()
         const formData = new FormData()
         const { referenceImages } = this.data.extraInfos
+        
+        this.animateMessage()
+        this.registerDialog = true
 
         if (referenceImages) {
           for (const ref of referenceImages) {
@@ -808,6 +847,10 @@ export default {
         }
 
         if (referenceImages && data.statusMessage != 'error') {
+          clearInterval(interval)
+          this.registerMessage = 'ENVIANDO AS FOTOS'
+          this.animateMessage()
+
           const uploadResponse = await this.$axios({
             method: 'post',
             url: `/api/upload/${data.playerId}`,
@@ -825,6 +868,9 @@ export default {
             }
           }
         }
+
+        this.registerDialog = false
+        clearInterval(interval)
 
         if (this.response.status != 'error') {
           // this.backupStratagems = []
@@ -1044,5 +1090,15 @@ export default {
 }
 .extraInfos .noPaddingBottom {
   padding-bottom: 0;
+}
+.loader--body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loader--body--text {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
 }
 </style>

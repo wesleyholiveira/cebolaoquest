@@ -63,6 +63,8 @@
                             color="cyan darken-4"
                           >
                           </v-btn>
+                        </v-col>
+                        <v-col>
                           <v-tooltip bottom>
                             <template v-slot:activator="{ attrs, on }">
                               <v-btn
