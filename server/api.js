@@ -391,30 +391,36 @@ app.post('/api/login', async (req, res) => {
 
   const secret = process.env.SECRET
   const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
-  const users = await userRepository(db).getUserByUsernameAndPassword(username.trim(), encryptedPwd)
 
-  if (users.length > 0) {
-    const result = users.flatMap(el => ({
-      userId: el.id,
-      roleId: el.role_id
-    }))[0]
+  if (username && password) {
 
-    let isAdmin = false
-    if (result.roleId && result.roleId == 2) {
-      isAdmin = true
+    const users = await userRepository(db).getUserByUsernameAndPassword(username.trim(), encryptedPwd)
+    if (users.length > 0) {
+      const result = users.flatMap(el => ({
+        userId: el.id,
+        roleId: el.role_id
+      }))[0]
+  
+      let isAdmin = false
+      if (result.roleId && result.roleId == 2) {
+        isAdmin = true
+      }
+  
+      const { userId } = result
+      const token = sign({
+        userId,
+        username,
+        isAdmin
+      }, secret, { expiresIn: '1h' })
+  
+      return res.json({ userId, username, isAdmin, token })
     }
-
-    const { userId } = result
-    const token = sign({
-      userId,
-      username,
-      isAdmin
-    }, secret, { expiresIn: '1h' })
-
-    return res.json({ userId, username, isAdmin, token })
+  
+    return res.status(401).json({ message: 'Usuário e/ou senha inválidos', statusMessage: 'error' })
   }
 
-  return res.status(401).json({ message: 'Usuário e/ou senha inválidos' })
+  return res.status(400).json({message: 'Dados invállidos', statusMessage: 'error'})
+
 })
 
 app.get('/api/player/:id', async (req, res) => {
