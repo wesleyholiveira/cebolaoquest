@@ -84,7 +84,7 @@ export default {
     transpile: ['vuetify/lib', 'tiptap-vuetify'],
     // parallel: true,
     cache: true,
-    hardSource: true,
+    // hardSource: true,
     collapseBooleanAttributes: true,
     decodeEntities: true,
     minifyCSS: true,
