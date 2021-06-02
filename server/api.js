@@ -390,7 +390,7 @@ app.post('/api/login', async (req, res) => {
   } = req.body
 
   const secret = process.env.SECRET
-  const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
+  const encryptedPwd = createHash('sha512').update(password.trim() + secret).digest('hex')
 
   if (username && password) {
 
