@@ -411,7 +411,7 @@ app.post('/api/login', async (req, res) => {
         userId,
         username,
         isAdmin
-      }, secret, { expiresIn: '1h' })
+      }, secret, { expiresIn: '3h' })
   
       return res.json({ userId, username, isAdmin, token })
     }
