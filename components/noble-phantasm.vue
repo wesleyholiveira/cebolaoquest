@@ -10,18 +10,21 @@
         </v-col>
         <v-col cols="12" lg="6" sm="12">
           <v-combobox
-            v-model="np.type"
+            v-model="type"
             :items="data.type"
             item-text="name"
             label="Tipo"
             @change="
-              np.specialStrike = null
+              specialStrike = {
+                id: specialStrike.id || null,
+                name: dataSpecialStrike[0] ? dataSpecialStrike[0].name : null,
+              }
             "
           />
         </v-col>
         <v-col cols="12" lg="6" sm="12">
           <v-combobox
-            v-model="np.specialStrike"
+            v-model="specialStrike"
             :items="dataSpecialStrike"
             item-text="name"
             label="Golpe Especial"
@@ -102,6 +105,8 @@ export default {
     backupEffects: [],
     valorEffects: 0,
     valors: 0,
+    type: instance.np.type,
+    specialStrike: instance.np.specialStrike,
     forbiddenSequence: {
       'Rugidos de Rubi': ['Sonhos de Safira', 'Emanações de Esmeralda'],
       'Sonhos de Safira': ['Rugidos de Rubi', 'Emanações de Esmeralda'],
@@ -112,21 +117,23 @@ export default {
         (v) =>
           v.filter((el) => !el.name).length < 1 ||
           'Há pelo menos um efeito inválido',
-        (v) =>
-          instance.validateMaxPoints(v, instance.valorCap),
+        (v) => instance.validateMaxPoints(v, instance.valorCap),
         (v) => {
           const seq = instance.forbiddenSequence
-          const e = v.map(el => el.name)
+          const e = v.map((el) => el.name)
           const effect = e[e.length - 1]
 
           const s = seq[effect]
           if (s) {
-            const result =  s.filter(el => e.includes(el))
-            return result.length < 1 || `Você não pode usar estas valors juntas: ${effect},${s}`
+            const result = s.filter((el) => e.includes(el))
+            return (
+              result.length < 1 ||
+              `Você não pode usar estas valors juntas: ${effect},${s}`
+            )
           }
 
           return true
-        }
+        },
       ],
     },
   }),
@@ -139,7 +146,7 @@ export default {
 
         if (type[0]) {
           const typeValors = type[0].valorSkills
-  
+
           if (typeValors) {
             return valorSkills.concat(typeValors)
           }
@@ -149,14 +156,14 @@ export default {
     },
 
     dataSpecialStrike() {
-      if (this.np.type) {
+      if (this.type) {
         const typeSpecialStrikes = this.data.type.filter(
-          (el) => el.name == this.np.type.name
+          (el) => el.name == this.type.name
         )
         if (typeSpecialStrikes.length > 0) {
           return typeSpecialStrikes[0].specialStrikes
         }
-        return this.np.type.specialStrikes
+        return this.type.specialStrikes
       }
       return []
     },
@@ -275,6 +282,22 @@ export default {
           }
           this.previouslyMagical = false
         }
+      }
+    },
+    type: function (newType) {
+      let old = this.np.type
+
+      this.np.type = {
+        ...old,
+        name: newType.name,
+      }
+    },
+    specialStrike: function (newSpecialStrike) {
+      let old = this.np.specialStrike
+
+      this.np.specialStrike = {
+        ...old,
+        name: newSpecialStrike.name,
       }
     },
   },
