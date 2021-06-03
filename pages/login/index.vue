@@ -23,6 +23,7 @@
               v-model="valid"
               lazy-validation
             >
+              <h2 class="form--title">LOGIN</h2>
               <v-row class="px-4">
                 <v-col cols="12">
                   <v-text-field
@@ -72,6 +73,7 @@
             ref="register"
             v-show="expandRegister"
           >
+            <h2 class="form--title">CADASTRO</h2>
             <v-form
               ref="formRegister"
               @submit.prevent="sendRegister()"
@@ -212,7 +214,7 @@ export default {
         const response = await this.$auth.loginWith('local', {
           data: this.login,
         })
-        
+
         const { userId, username, token, isAdmin } = response.data
 
         this.$refs.formLogin.reset()
@@ -257,3 +259,12 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.form--title {
+  text-align: center;
+  font-weight: normal;
+  padding-top: 10px;
+  color: rgba(0, 255, 255, 0.6);
+}
+</style>
