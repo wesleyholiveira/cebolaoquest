@@ -2,7 +2,7 @@
   <v-container class="chat-container" fluid>
     <v-row>
       <v-col>
-        <div class="chat-messages">
+        <div class="chat-messages" ref="chat">
           <div v-for="(msg, i) in messages" :key="i">
             <pre v-if="msg.type && msg.type == 'system'" class="chat--pre">
               <strong>{{msg.username}}</strong> entrou na sessão.
@@ -61,7 +61,7 @@
                       overlap
                       small
                     >
-                      <v-btn icon @click="dices.d6.push(generateRNG(6))">
+                      <v-btn icon @click="dices.d6.push(generateRNG(1, 6))">
                         <v-icon>mdi-dice-d6-outline</v-icon>
                       </v-btn>
                     </v-badge>
@@ -72,7 +72,7 @@
                       overlap
                       small
                     >
-                      <v-btn icon @click="dices.d8.push(generateRNG(8))">
+                      <v-btn icon @click="dices.d8.push(generateRNG(1, 8))">
                         <v-icon>mdi-dice-d8-outline</v-icon>
                       </v-btn>
                     </v-badge>
@@ -83,7 +83,7 @@
                       overlap
                       small
                     >
-                      <v-btn icon @click="dices.d10.push(generateRNG(10))">
+                      <v-btn icon @click="dices.d10.push(generateRNG(1, 10))">
                         <v-icon>mdi-dice-d10-outline</v-icon>
                       </v-btn>
                     </v-badge>
@@ -94,7 +94,7 @@
                       overlap
                       small
                     >
-                      <v-btn icon @click="dices.d12.push(generateRNG(12))">
+                      <v-btn icon @click="dices.d12.push(generateRNG(1, 12))">
                         <v-icon>mdi-dice-d12-outline</v-icon>
                       </v-btn>
                     </v-badge>
@@ -105,7 +105,7 @@
                       overlap
                       small
                     >
-                      <v-btn icon @click="dices.d20.push(generateRNG(20))">
+                      <v-btn icon @click="dices.d20.push(generateRNG(1, 20))">
                         <v-icon>mdi-dice-d20-outline</v-icon>
                       </v-btn>
                     </v-badge>
@@ -123,13 +123,16 @@
                                 })
                                 resetDices()
                                 dialog = false
-                              ">ROLL!</v-btn
+                              "
+                              >ROLL!</v-btn
                             >
                           </v-col>
                         </v-row>
                         <v-row>
                           <v-col>
-                            <v-btn block depressed @click="resetDices()">RESETAR</v-btn>
+                            <v-btn block depressed @click="resetDices()"
+                              >RESETAR</v-btn
+                            >
                           </v-col>
                         </v-row>
                       </v-container>
@@ -192,7 +195,10 @@ export default {
 
     this.socket.emit('whenUserEnter', username)
 
-    this.socket.on('data', (res) => this.messages.push(res))
+    this.socket.on('data', (res) => {
+      this.messages.push(res)
+      setTimeout(() => this.$refs['chat'].scrollTop += 99999, 30)
+    })
 
     this.socket.on('typing', (res) => {
       if (res.typing) {
@@ -206,8 +212,10 @@ export default {
   },
 
   methods: {
-    generateRNG(max) {
-      return Math.floor(Math.random() * max) + 1
+    generateRNG(min, max) {
+      min = Math.ceil(min)
+      max = Math.floor(max)
+      return Math.floor(Math.random() * (max - min + 1)) + min
     },
 
     getDice(diceKey) {
@@ -316,7 +324,7 @@ export default {
   position: relative;
 }
 .chat-container .chat-messages {
-  max-height: calc(100vh - 170px);
+  max-height: calc(100vh - 180px);
   overflow-y: auto;
 }
 .chat-messages .chat--roll {
@@ -328,7 +336,7 @@ export default {
 .chat-messages .chat--pre {
   margin-bottom: 15px;
   word-break: break-word;
-  white-space: normal;
+  white-space: pre-line;
   word-wrap: break-word;
 }
 .chat-container .chat--input-group {
