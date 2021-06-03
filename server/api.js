@@ -391,35 +391,40 @@ app.post('/api/login', async (req, res) => {
 
   const secret = process.env.SECRET
   
-  if ((username && password) && username.length > 0 && password.length > 0) {
+  try {
+    if ((username && password) && username.length > 0 && password.length > 0) {
+      
+      const encryptedPwd = createHash('sha512').update(password.trim() + secret).digest('hex')
+      const users = await userRepository(db).getUserByUsernameAndPassword(username.trim(), encryptedPwd)
+      if (users.length > 0) {
+        const result = users.flatMap(el => ({
+          userId: el.id,
+          roleId: el.role_id
+        }))[0]
     
-    const encryptedPwd = createHash('sha512').update(password.trim() + secret).digest('hex')
-    const users = await userRepository(db).getUserByUsernameAndPassword(username.trim(), encryptedPwd)
-    if (users.length > 0) {
-      const result = users.flatMap(el => ({
-        userId: el.id,
-        roleId: el.role_id
-      }))[0]
-  
-      let isAdmin = false
-      if (result.roleId && result.roleId == 2) {
-        isAdmin = true
+        let isAdmin = false
+        if (result.roleId && result.roleId == 2) {
+          isAdmin = true
+        }
+    
+        const { userId } = result
+        const token = sign({
+          userId,
+          username,
+          isAdmin
+        }, secret, { expiresIn: '3h' })
+    
+        return res.json({ userId, username, isAdmin, token })
       }
-  
-      const { userId } = result
-      const token = sign({
-        userId,
-        username,
-        isAdmin
-      }, secret, { expiresIn: '3h' })
-  
-      return res.json({ userId, username, isAdmin, token })
+    
+      return res.status(401).json({ message: 'Usuário e/ou senha inválidos', statusMessage: 'error' })
     }
-  
-    return res.status(401).json({ message: 'Usuário e/ou senha inválidos', statusMessage: 'error' })
-  }
 
-  return res.status(400).json({message: 'Dados invállidos', statusMessage: 'error'})
+    return res.status(400).json({message: 'Dados invállidos', statusMessage: 'error'})
+  } catch(err) {
+    console.log(err)
+    return res.status(400).json({message: 'Dados invállidos', statusMessage: 'error'})
+  }
 
 })
 
