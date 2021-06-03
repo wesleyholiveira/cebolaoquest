@@ -390,10 +390,10 @@ app.post('/api/login', async (req, res) => {
   } = req.body
 
   const secret = process.env.SECRET
-  const encryptedPwd = createHash('sha512').update(password.trim() + secret).digest('hex')
-
-  if (username && password) {
-
+  
+  if ((username && password) && username.length > 0 && password.length > 0) {
+    
+    const encryptedPwd = createHash('sha512').update(password.trim() + secret).digest('hex')
     const users = await userRepository(db).getUserByUsernameAndPassword(username.trim(), encryptedPwd)
     if (users.length > 0) {
       const result = users.flatMap(el => ({
