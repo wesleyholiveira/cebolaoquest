@@ -1,7 +1,7 @@
 <template>
   <v-container class="chat-container" fluid>
     <v-row>
-      <v-col>
+      <v-col style="padding: 0">
         <div class="chat-messages" ref="chat">
           <div v-for="(msg, i) in messages" :key="i">
             <pre v-if="msg.type && msg.type == 'system'" class="chat--pre">
@@ -324,13 +324,15 @@ export default {
   overflow-y: auto;
 }
 .chat-messages .chat--roll {
-  margin-bottom: 15px;
-  font-size: 0.85rem;
+  width: 100%;
+  font-size: 14px;
   font-style: italic;
   display: block;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 .chat-messages .chat--pre {
-  margin-bottom: 15px;
+  padding: 12px;
   word-break: break-word;
   white-space: pre-line;
   word-wrap: break-word;
