@@ -197,7 +197,7 @@ export default {
 
     this.socket.on('data', (res) => {
       this.messages.push(res)
-      setTimeout(() => this.$refs['chat'].scrollTop += 99999, 30)
+      setTimeout(() => (this.$refs['chat'].scrollTop += 99999), 30)
     })
 
     this.socket.on('typing', (res) => {
@@ -258,20 +258,16 @@ export default {
       if (!event.shiftKey && this.message && this.message.trim().length > 0) {
         event.preventDefault()
 
-        this.socket.emit(
-          'send',
-          {
-            username: this.username,
-            message: this.message,
-          },
-          () => {
-            this.message = null
-            this.socket.emit('userTyping', {
-              username: this.username,
-              typing: false,
-            })
-          }
-        )
+        this.socket.emit('send', {
+          username: this.username,
+          message: this.message,
+        })
+
+        this.message = null
+        this.socket.emit('userTyping', {
+          username: this.username,
+          typing: false,
+        })
       }
     },
 
