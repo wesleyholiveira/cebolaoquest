@@ -2,11 +2,9 @@ export default function (socket, io) {
 
   return Object.freeze({
     whenUserEnter(user) {
-
-      // systemMessages.push(msg)
       io.of('index').emit('data', {
         username: user,
-        system: true
+        type: 'system'
       })
     },
 
@@ -14,15 +12,24 @@ export default function (socket, io) {
       io.of('index').emit('data', {
         username,
         message,
-        system: false
+        type: null
       })
     },
 
     userTyping({ username, typing }) {
       socket.broadcast.emit('typing', {
         username,
-        typing
+        typing,
+        type: null
       })
-    }
+    },
+
+    roll({ username, dices }) {
+      io.of('index').emit('data', {
+        username,
+        dices,
+        type: 'roll'
+      })
+    },
   })
 }

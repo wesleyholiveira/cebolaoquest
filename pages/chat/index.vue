@@ -4,12 +4,16 @@
       <v-col>
         <div class="chat-messages">
           <div v-for="(msg, i) in messages" :key="i">
+            <pre v-if="msg.type && msg.type == 'system'" class="chat--pre">
+              <strong>{{msg.username}}</strong> entrou na sessão.
+            </pre>
+            <span
+              v-if="msg.type && msg.type == 'roll'"
+              class="chat--roll"
+              v-html="formatRollMessage(msg)"
+            ></span>
             <pre
-              v-if="msg.system"
-              class="chat--pre"
-            ><strong>{{msg.username}}</strong> entrou na sessão.</pre>
-            <pre
-              v-if="!msg.system"
+              v-if="!msg.type"
               class="chat--pre"
             ><strong>{{msg.username}}:</strong> {{msg.message}}</pre>
           </div>
@@ -36,11 +40,102 @@
                 v-on:keydown.13="sendMessage($event)"
                 ref="chatMessage"
               ></v-textarea>
-              <span class="chat--typing" v-if="usersTyping">{{usersTyping}}</span>
+              <span class="chat--typing" v-if="usersTyping">{{
+                usersTyping
+              }}</span>
               <div class="chat--buttons">
-                <v-btn icon>
-                  <v-icon>mdi-dice-6</v-icon>
-                </v-btn>
+                <v-dialog
+                  v-model="dialog"
+                  max-width="230"
+                  @click:outside="resetDices()"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                      <v-icon>mdi-dice-6</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-card class="chat--buttons--card">
+                    <v-badge
+                      :content="getDice('d6')"
+                      :value="getDice('d6')"
+                      overlap
+                      small
+                    >
+                      <v-btn icon @click="dices.d6.push(generateRNG(6))">
+                        <v-icon>mdi-dice-d6-outline</v-icon>
+                      </v-btn>
+                    </v-badge>
+                    <v-badge
+                      :content="getDice('d8')"
+                      :value="getDice('d8')"
+                      color="red darken-1"
+                      overlap
+                      small
+                    >
+                      <v-btn icon @click="dices.d8.push(generateRNG(8))">
+                        <v-icon>mdi-dice-d8-outline</v-icon>
+                      </v-btn>
+                    </v-badge>
+                    <v-badge
+                      :content="getDice('d10')"
+                      :value="getDice('d10')"
+                      color="cyan"
+                      overlap
+                      small
+                    >
+                      <v-btn icon @click="dices.d10.push(generateRNG(10))">
+                        <v-icon>mdi-dice-d10-outline</v-icon>
+                      </v-btn>
+                    </v-badge>
+                    <v-badge
+                      :content="getDice('d12')"
+                      :value="getDice('d12')"
+                      color="green darken-1"
+                      overlap
+                      small
+                    >
+                      <v-btn icon @click="dices.d12.push(generateRNG(12))">
+                        <v-icon>mdi-dice-d12-outline</v-icon>
+                      </v-btn>
+                    </v-badge>
+                    <v-badge
+                      :content="getDice('d20')"
+                      :value="getDice('d20')"
+                      color="yellow darken-3"
+                      overlap
+                      small
+                    >
+                      <v-btn icon @click="dices.d20.push(generateRNG(20))">
+                        <v-icon>mdi-dice-d20-outline</v-icon>
+                      </v-btn>
+                    </v-badge>
+                    <v-card-actions>
+                      <v-container>
+                        <v-row>
+                          <v-col>
+                            <v-btn
+                              block
+                              color="green"
+                              @click="
+                                socket.emit('roll', {
+                                  username,
+                                  dices,
+                                })
+                                resetDices()
+                                dialog = false
+                              ">ROLL!</v-btn
+                            >
+                          </v-col>
+                        </v-row>
+                        <v-row>
+                          <v-col>
+                            <v-btn block depressed @click="resetDices()">RESETAR</v-btn>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
               </div>
             </v-form>
           </div>
@@ -59,6 +154,14 @@ export default {
       messages: [],
       message: '',
       typing: [],
+      dialog: false,
+      dices: {
+        d6: [],
+        d8: [],
+        d10: [],
+        d12: [],
+        d20: [],
+      },
     }
   },
 
@@ -103,6 +206,46 @@ export default {
   },
 
   methods: {
+    generateRNG(max) {
+      return Math.floor(Math.random() * max) + 1
+    },
+
+    getDice(diceKey) {
+      const d = this.dices[diceKey]
+      if (d) {
+        return d.length
+      }
+
+      return 0
+    },
+
+    formatRollMessage(data) {
+      const { username, dices } = data
+      let msg = `${username} rolou `
+
+      for (const k of Object.keys(dices)) {
+        const values = dices[k]
+
+        if (values.length > 0) {
+          msg = `${msg}<strong>${
+            values.length
+          }x${k.toUpperCase()}</strong> (${values}), `
+        }
+      }
+
+      return msg.substring(0, msg.lastIndexOf(','))
+    },
+
+    resetDices() {
+      this.dices = {
+        d6: [],
+        d8: [],
+        d10: [],
+        d12: [],
+        d20: [],
+      }
+    },
+
     sendMessage(event) {
       if (!event.shiftKey && this.message && this.message.trim().length > 0) {
         event.preventDefault()
@@ -176,7 +319,14 @@ export default {
   max-height: calc(100vh - 170px);
   overflow-y: auto;
 }
+.chat-messages .chat--roll {
+  margin-bottom: 15px;
+  font-size: 0.85rem;
+  font-style: italic;
+  display: block;
+}
 .chat-messages .chat--pre {
+  margin-bottom: 15px;
   word-break: break-word;
   white-space: normal;
   word-wrap: break-word;
@@ -207,5 +357,11 @@ export default {
   right: 20px;
   display: flex;
   align-items: center;
+}
+.chat--buttons--dialog {
+  width: auto;
+}
+.chat--buttons--card {
+  padding: 15px;
 }
 </style>
