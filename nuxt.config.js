@@ -44,7 +44,7 @@ export default {
   modules: [
     '@nuxtjs/auth-next',
     '@nuxtjs/axios',
-    '@nuxtjs/pwa',
+    '@nuxtjs/recaptcha',
     'nuxt-socket-io',
     '~/modules/api'
   ],
@@ -73,6 +73,12 @@ export default {
         },
       },
     },
+  },
+
+  recaptcha: {
+    language: 'pt-br',
+    siteKey: process.env.RECAPTCHA_PRIVATEKEY,
+    version: 'v2'
   },
 
   router: {

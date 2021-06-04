@@ -43,6 +43,9 @@
                   />
                 </v-col>
                 <v-col cols="12">
+                  <div id="login-captcha"></div>
+                </v-col>
+                <v-col cols="12">
                   <v-row class="mb-2">
                     <v-card-actions>
                       <v-btn
@@ -118,6 +121,9 @@
                   />
                 </v-col>
                 <v-col cols="12">
+                  <div id="register-captcha"></div>
+                </v-col>
+                <v-col cols="12">
                   <v-row class="mb-2">
                     <v-card-actions>
                       <v-btn
@@ -148,10 +154,23 @@
 
 <script>
 export default {
+  async mounted() {
+    await this.$recaptcha.init()
+    this.widgetIdLogin = this.$recaptcha.render('login-captcha', {
+      sitekey: '6Lfl7Q4bAAAAACeqbHdKUNnYpJzdSzg6cjJa9_-E',
+    })
+
+    this.widgetIdRegister = this.$recaptcha.render('register-captcha', {
+      sitekey: '6Lfl7Q4bAAAAACeqbHdKUNnYpJzdSzg6cjJa9_-E',
+    })
+  },
+
   data: (instance) => ({
     valid: true,
     expandLogin: true,
     expandRegister: false,
+    widgetIdLogin: 0,
+    widgetIdRegister: 0,
     usernameMinChars: 4,
     usernameMaxChars: 40,
     usernameRules: [
@@ -211,12 +230,21 @@ export default {
   methods: {
     async sendLogin() {
       try {
+        let recaptchaToken
+        try {
+          recaptchaToken = await this.$recaptcha.getResponse(this.widgetIdLogin)
+        } catch (captchaErr) {
+          recaptchaToken = undefined
+        }
+
         const response = await this.$auth.loginWith('local', {
-          data: this.login,
+          data: {
+            ...this.login,
+            recaptchaToken,
+          },
         })
 
         const { userId, username, token, isAdmin } = response.data
-
         this.$refs.formLogin.reset()
         this.$auth.setUser({ id: userId, username, token, isAdmin })
       } catch (err) {
@@ -226,13 +254,24 @@ export default {
         } = err.response
         this.response.type = 'error'
         this.response.message = message
+
+        await this.$recaptcha.reset(this.widgetIdLogin)
       }
     },
 
     async sendRegister() {
       try {
+        let recaptchaToken
+        try {
+          recaptchaToken = await this.$recaptcha.getResponse(this.widgetIdRegister)
+        } catch (captchaErr) {
+          recaptchaToken = undefined
+        }
         const response = await this.$axios.post('/api/register', {
-          data: this.register,
+          data: {
+            ...this.register,
+            recaptchaToken,
+          },
         })
         const {
           data: { message },
@@ -254,6 +293,8 @@ export default {
         } = err.response
         this.response.type = 'error'
         this.response.message = message
+
+        await this.$recaptcha.reset(this.widgetIdRegister)
       }
     },
   },

@@ -40,6 +40,7 @@ import category from './models/category'
 import categoryRepository from './repositories/categoryRepository'
 import userRoleRepository from './repositories/userRoleRepository'
 
+const axios = require('axios').default
 const tokenBlacklist = []
 
 app.use(json())
@@ -322,7 +323,29 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
 })
 
 app.post('/api/register', async (req, res) => {
+  if (!req.body.data || !req.body.data.recaptchaToken) {
+    return res.status(401).json({
+      message: 'Recaptcha inválido',
+      statusMessage: 'invalidCaptcha'
+    })
+  }
+
   try {
+
+    const { RECAPTCHA_PRIVATEKEY, SECRET } = process.env
+    const { recaptchaToken } = req.body.data
+    const { data } = await axios.get(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_PRIVATEKEY}&response=${recaptchaToken}`
+    )
+  
+    if (!data.success) {
+      console.log('entrou aqui ó')
+      return res.status(401).json({
+        message: 'Recaptcha inválido',
+        statusMessage: 'invalidCaptcha'
+      })
+    }
+
     const {
       data: {
         username,
@@ -331,8 +354,7 @@ app.post('/api/register', async (req, res) => {
       }
     } = req.body
 
-    const secret = process.env.SECRET
-    const encryptedPwd = createHash('sha512').update(password + secret).digest('hex')
+    const encryptedPwd = createHash('sha512').update(password + SECRET).digest('hex')
     const user = userModel({
       username: username.trim(),
       password: encryptedPwd.trim(),
@@ -384,46 +406,61 @@ app.post('/api/logout', async (req, res) => {
 })
 
 app.post('/api/login', async (req, res) => {
+
+  if (!req.body || !req.body.recaptchaToken) {
+    return res.status(401).json({
+      message: 'Recaptcha inválido',
+      statusMessage: 'invalidCaptcha'
+    })
+  }
+
+  const { SECRET, RECAPTCHA_PRIVATEKEY } = process.env
+  const { recaptchaToken } = req.body
+  const { data } = await axios.get(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_PRIVATEKEY}&response=${recaptchaToken}`
+  )
+
+  if (!data.success) {
+    return res.status(401).json({
+      message: 'Recaptcha inválido',
+      statusMessage: 'invalidCaptcha',
+    })
+  }
+
   const {
     username,
     password
   } = req.body
 
-  const secret = process.env.SECRET
-  
   try {
     if ((username && password) && username.length > 0 && password.length > 0) {
-      
-      const encryptedPwd = createHash('sha512').update(password.trim() + secret).digest('hex')
+      const encryptedPwd = createHash('sha512').update(password.trim() + SECRET).digest('hex')
       const users = await userRepository(db).getUserByUsernameAndPassword(username.trim(), encryptedPwd)
       if (users.length > 0) {
         const result = users.flatMap(el => ({
           userId: el.id,
           roleId: el.role_id
         }))[0]
-    
+
         let isAdmin = false
         if (result.roleId && result.roleId == 2) {
           isAdmin = true
         }
-    
+
         const { userId } = result
         const token = sign({
           userId,
           username,
           isAdmin
-        }, secret, { expiresIn: '3h' })
-    
+        }, SECRET, { expiresIn: '3h' })
+
         return res.json({ userId, username, isAdmin, token })
       }
-    
-      return res.status(401).json({ message: 'Usuário e/ou senha inválidos', statusMessage: 'error' })
     }
-
-    return res.status(400).json({message: 'Dados invállidos', statusMessage: 'error'})
-  } catch(err) {
+    return res.status(401).json({ message: 'Usuário e/ou senha inválidos', statusMessage: 'error' })
+  } catch (err) {
     console.log(err)
-    return res.status(400).json({message: 'Dados invállidos', statusMessage: 'error'})
+    return res.status(401).json({ message: 'Dados inválidos', statusMessage: 'error' })
   }
 
 })
