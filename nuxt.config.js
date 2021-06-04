@@ -77,7 +77,7 @@ export default {
 
   recaptcha: {
     language: 'pt-br',
-    siteKey: process.env.RECAPTCHA_PRIVATEKEY,
+    siteKey: process.env.RECAPTCHA_SITEKEY,
     version: 'v2'
   },
 
