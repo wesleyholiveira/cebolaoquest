@@ -19,7 +19,7 @@
           >
             <v-form
               ref="formLogin"
-              v-on:submit.prevent="sendLogin()"
+              @submit.prevent="sendLogin()"
               v-model="valid"
               lazy-validation
             >
@@ -80,7 +80,7 @@
             <v-form
               ref="formRegister"
               @submit.prevent="sendRegister()"
-              v-model="valid"
+              v-model="validRegister"
               lazy-validation
             >
               <v-row class="px-4">
@@ -167,6 +167,7 @@ export default {
 
   data: (instance) => ({
     valid: true,
+    validRegister: true,
     expandLogin: true,
     expandRegister: false,
     widgetIdLogin: 0,
@@ -195,7 +196,8 @@ export default {
     ],
     emailMinChars: 10,
     emailMaxChars: 120,
-    emailFormatRegEx: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/,
+    emailFormatRegEx:
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/,
     emailRules: [
       (v) => !!v || 'Este campo é obrigatório',
       (v) =>
@@ -230,6 +232,7 @@ export default {
   methods: {
     async sendLogin() {
       try {
+        console.log('ENTROU ACÁ')
         let recaptchaToken
         try {
           recaptchaToken = await this.$recaptcha.getResponse(this.widgetIdLogin)
@@ -263,7 +266,9 @@ export default {
       try {
         let recaptchaToken
         try {
-          recaptchaToken = await this.$recaptcha.getResponse(this.widgetIdRegister)
+          recaptchaToken = await this.$recaptcha.getResponse(
+            this.widgetIdRegister
+          )
         } catch (captchaErr) {
           recaptchaToken = undefined
         }
