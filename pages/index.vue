@@ -39,6 +39,7 @@ export default {
   auth: true,
   data: () => ({
     items: [
+      'Adicionado outro modelo para validar individualmente login e registro (login)',
       'Adicionado nome do jogador ao titulo da página (profile/ficha)',
       'Correção no dialog da ficha (ficha)',
       'Correção na edição da ficha (quando feita por um ADEMIR)',
