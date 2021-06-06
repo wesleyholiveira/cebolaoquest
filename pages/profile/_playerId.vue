@@ -15,7 +15,8 @@ export default {
   auth: false,
 
   head() {
-    const { abstract, name } = this.data
+    const { name } = this.data
+    const { abstract } = this.data.extraInfos
 
     const title = `Cebolão Quest - ${name}`
     const description =
