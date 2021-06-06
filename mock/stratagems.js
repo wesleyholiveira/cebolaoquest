@@ -395,7 +395,7 @@ export default [
     },
     {
       name: 'Metamorfose Divina',
-      merits: 2,
+      merits: 1,
       effect: `Você é um semi-deus ou possui uma ligação muito forte a divindades de qualquer panteão ancestral.
       Por sua vontade, você pode fazer esse sangue divino despertar, se cobrindo com uma aura brilhante que demonstra o poder de um filho dos deuses.<br />
       <strong>Possuir essa Estratagema faz você ser tratado como possuindo a característica Divindade a todo o momento, mesmo quando não está ativada.</strong><br />

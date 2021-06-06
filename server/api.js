@@ -226,7 +226,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     if (categories.length > 0) {
       stories = categories.flatMap(cat => ({
         ...cat,
-        children: cat.children.length > 0 ? JSON.parse(cat.children) : []
+        children: cat.children && cat.children.length > 0 ? JSON.parse(cat.children) : []
       }))
     }
 
