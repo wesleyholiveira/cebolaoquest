@@ -39,6 +39,13 @@ export default {
   auth: true,
   data: () => ({
     items: [
+      'Adicionado nome do jogador ao titulo da página (profile/ficha)',
+      'Correção no dialog da ficha (ficha)',
+      'Correção na edição da ficha (quando feita por um ADEMIR)',
+      'Otimizado página da ficha',
+      'Corrigido bug na sobrecarga de efeitos escolhidos que ignorava valorPoints negativos',
+      'Corrigido problema em pegar o ID quando o specialStrike não existia no componente de noble-phantasm (noble-phantasm)',
+      'Criado novo componente para lidar com a cópia do perfil de maneira individual para cada ficha listada (ficha/listar)',
       'Adicionado verificação de existência dos campos "height" e "cat.children" nas rotas que recebem os dados completos do jogador',
       'Ajustado a forma como o caminho da pasta de upload é resolvido (api)',
       'Ajustado upload de arquivos pois a função rename não permite mover entre diferentes pontos de montagem (api)',
