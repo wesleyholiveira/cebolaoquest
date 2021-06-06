@@ -16,7 +16,7 @@
             label="Tipo"
             @change="
               specialStrike = {
-                id: specialStrike.id || null,
+                id: specialStrike ? specialStrike.id : null,
                 name: dataSpecialStrike[0] ? dataSpecialStrike[0].name : null,
               }
             "
