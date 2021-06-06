@@ -178,6 +178,5 @@ hr {
 
 <style>
 .v-carousel__item .v-image__image {
-  background-position: initial !important;
 }
 </style>
