@@ -12,6 +12,30 @@
 import error from '~/layouts/error.vue'
 export default {
   components: { error },
+
+  mounted() {
+    let referenceImages = []
+    if (this.data.extraInfos.referenceImages) {
+      referenceImages = this.data.extraInfos.referenceImages.map((img) => {
+        const file = new File(
+          [
+            new Blob([''], {
+              type: 'text/plain',
+            }),
+          ],
+          img.img,
+          {
+            type: 'application/octet-binary',
+          }
+        )
+
+        return file
+      })
+    }
+
+    this.data.extraInfos.referenceImages = referenceImages
+  },
+
   data: () => ({
     data: {
       id: null,
@@ -63,24 +87,6 @@ export default {
         })
 
         const user = data.user
-        let referenceImages = []
-        if (user.extraInfos.referenceImages) {
-          referenceImages = user.extraInfos.referenceImages.map((img) => {
-            const file = new File(
-              [
-                new Blob([''], {
-                  type: 'text/plain',
-                }),
-              ],
-              img.img,
-              {
-                type: 'application/octet-binary',
-              }
-            )
-
-            return file
-          })
-        }
 
         if (data) {
           this.data = {
@@ -88,20 +94,20 @@ export default {
             ...user,
             extraInfos: {
               ...user.extraInfos,
-              referenceImages,
             },
             id: playerId,
-            loading: false
+            loading: false,
           }
         }
       }
     } catch (err) {
+      console.log(err)
       this.data = {
         ...this.data,
         message: 'Usuário não encontrado',
         statusCode: 404,
         statusMessage: 'error',
-        loading: false
+        loading: false,
       }
     }
   },

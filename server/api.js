@@ -161,7 +161,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     } else {
       results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId })
     }
-
+    
     if (results.length < 1) {
       return res.status(404).json({
         message: 'Usuário não encontrado',
@@ -280,7 +280,6 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     }
 
     return res.json({ user })
-
   } catch (err) {
     console.log(err)
     return res.status(500).json({ message: err, statusMessage: 'error' })
