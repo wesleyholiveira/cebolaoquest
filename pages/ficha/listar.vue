@@ -65,19 +65,7 @@
                           </v-btn>
                         </v-col>
                         <v-col>
-                          <v-tooltip bottom v-model="show">
-                            <template v-slot:activator="{ attrs }">
-                              <v-btn
-                                v-bind="attrs"
-                                depressed
-                                color="cyan darken-4"
-                                @click.stop.prevent="copyURLToClipboard(player.id)"
-                              >
-                                <v-icon>mdi-share-variant</v-icon>
-                              </v-btn>
-                            </template>
-                            <span>URL copiada com sucesso</span>
-                          </v-tooltip>
+                          <copy-clipboard :playerId="player.id.toString()" />
                         </v-col>
                         <v-col>
                           <v-btn
@@ -135,7 +123,7 @@
 <script>
 export default {
   data: () => ({
-    show: false,
+    show: {},
     data: {},
     loading: false,
     dialog: false,
@@ -200,35 +188,6 @@ export default {
         this.data[pID] = {}
         this.panel = []
       }
-    },
-
-    copyURLToClipboard(id) {
-      const el = document.createElement('textarea')
-
-      el.style.position = 'fixed'
-      el.style.top = 0
-      el.style.left = 0
-
-      el.style.width = '2em'
-      el.style.height = '2em'
-
-      el.style.padding = 0
-
-      el.style.border = 'none'
-      el.style.outline = 'none'
-      el.style.boxShadow = 'none'
-      el.style.background = 'transparent'
-
-      el.value = `${process.env.baseURL}/profile/${id}`
-      document.body.appendChild(el)
-      el.focus()
-      el.select()
-
-      console.log(document.execCommand('copy'))
-      document.body.removeChild(el)
-
-      this.show = true
-      setTimeout(() => this.show = false, 1500)
     },
   },
 }
