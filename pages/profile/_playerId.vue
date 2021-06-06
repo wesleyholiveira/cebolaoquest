@@ -15,8 +15,20 @@ export default {
   auth: false,
 
   head() {
+    const { abstract, name } = this.data
+
+    const title = `Cebolão Quest - ${name}`
+    const description =
+      abstract && abstract.length > 0
+        ? abstract
+        : 'Usuário não forneceu um resumo sobre a sua ficha.'
     return {
-      title: `Cebolão Quest - ${this.data.name}`
+      title,
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: description
+      }]
     }
   },
 
