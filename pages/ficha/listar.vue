@@ -65,19 +65,18 @@
                           </v-btn>
                         </v-col>
                         <v-col>
-                          <v-tooltip bottom>
-                            <template v-slot:activator="{ attrs, on }">
+                          <v-tooltip bottom v-model="show">
+                            <template v-slot:activator="{ attrs }">
                               <v-btn
-                                v-on="on"
                                 v-bind="attrs"
                                 depressed
                                 color="cyan darken-4"
-                                @click.stop="copyURLToClipboard(player.id)"
+                                @click.stop.prevent="copyURLToClipboard(player.id)"
                               >
                                 <v-icon>mdi-share-variant</v-icon>
                               </v-btn>
                             </template>
-                            <span>Copiar URL do Perfil</span>
+                            <span>URL copiada com sucesso</span>
                           </v-tooltip>
                         </v-col>
                         <v-col>
@@ -227,6 +226,9 @@ export default {
 
       console.log(document.execCommand('copy'))
       document.body.removeChild(el)
+
+      this.show = true
+      setTimeout(() => this.show = false, 1500)
     },
   },
 }

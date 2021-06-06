@@ -173,7 +173,9 @@
                   >
                     <v-card>
                       <v-card-text class="loader--body">
-                        <span class="d-block loader--body--text">Carregando...</span>
+                        <span class="d-block loader--body--text"
+                          >Carregando...</span
+                        >
                         <v-progress-circular
                           :size="70"
                           :width="7"
@@ -191,7 +193,9 @@
                   >
                     <v-card>
                       <v-card-text class="loader--body">
-                        <span class="d-block loader--body--text">{{registerMessage}}</span>
+                        <span class="d-block loader--body--text">{{
+                          registerMessage
+                        }}</span>
                         <v-progress-circular
                           :size="70"
                           :width="7"
@@ -698,6 +702,10 @@ export default {
     ],
     dataNoblePhantasms: dataNP,
     stratagems: dataStratagems,
+    bStratagems: instance.data.stratagems,
+    bMartialSkills: instance.data.martialSkills,
+    bNegativeTraits: instance.data.negativeTraits,
+    bSpecialTechniques: instance.data.specialTechniques,
     negativeTraits: dataNegativeTraits,
     martialSkills: dataMartialSkills,
     specialTechniques: dataSpecialTechniques,
@@ -705,7 +713,7 @@ export default {
   methods: {
     animateMessage() {
       let i = 0
-      const originalMessage = this.registerMessage
+      const originalMessage = this.originalMessage
 
       interval = setInterval(() => {
         if (i < 3) {
@@ -817,7 +825,7 @@ export default {
         const valorPoints = this.calculateValorPoints()
         const formData = new FormData()
         const { referenceImages } = this.data.extraInfos
-        
+
         this.animateMessage()
         this.registerDialog = true
 
@@ -888,6 +896,7 @@ export default {
         }
 
         this.registerDialog = false
+        this.registerMessage = 'ENVIANDO'
         clearInterval(interval)
 
         if (this.response.status != 'error') {
@@ -1003,70 +1012,50 @@ export default {
     menu(val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
     },
-    'data.valorPoints'(valors) {
-      if (this.firstTimeValors) {
-        const { noblePhantasms } = this.data
-        if (noblePhantasms) {
-          this.firstTimeValors = false
-        }
-      }
-    },
     'data.stratagems'(stratagems) {
       if (this.firstTimeStratagems) {
         this.firstTimeStratagems = false
-        this.backupStratagems = stratagems
-        return
+        this.backupStratagems = this.bStratagems
       }
 
-      if (!this.firstTimeStratagems) {
-        this.backupStratagems = this.decideMeritsOperation(
-          stratagems,
-          this.backupStratagems
-        )
-      }
+      this.backupStratagems = this.decideMeritsOperation(
+        stratagems,
+        this.backupStratagems
+      )
     },
     'data.martialSkills'(martialSkills) {
       if (this.firstTimeMartialSkills) {
         this.firstTimeMartialSkills = false
-        this.backupMartialSkills = martialSkills
-        return
+        this.backupMartialSkills = this.bMartialSkills
       }
 
-      if (!this.firstTimeMartialSkills) {
-        this.backupMartialSkills = this.decideMeritsOperation(
-          martialSkills,
-          this.backupMartialSkills
-        )
-      }
+      this.backupMartialSkills = this.decideMeritsOperation(
+        martialSkills,
+        this.backupMartialSkills
+      )
     },
     'data.specialTechniques'(specialTechniques) {
       if (this.firstTimeSpecialTechs) {
         this.firstTimeSpecialTechs = false
-        this.backupSpecialTechniques = specialTechniques
-        return
+        this.backupSpecialTechniques = this.bSpecialTechniques
       }
 
-      if (!this.firstTimeSpecialTechs) {
-        this.backupSpecialTechniques = this.decideMeritsOperation(
-          specialTechniques,
-          this.backupSpecialTechniques
-        )
-      }
+      this.backupSpecialTechniques = this.decideMeritsOperation(
+        specialTechniques,
+        this.backupSpecialTechniques
+      )
     },
     'data.negativeTraits'(negativeTraits) {
       if (this.firstTimeNegativeTraits) {
         this.firstTimeNegativeTraits = false
-        this.backupNegativeTraits = negativeTraits
-        return
+        this.backupNegativeTraits = this.bNegativeTraits
       }
 
-      if (!this.firstTimeNegativeTraits) {
-        this.backupNegativeTraits = this.decideMeritsOperationNegativeTraits(
-          negativeTraits,
-          this.backupNegativeTraits
-        )
-        this.isNegative = false
-      }
+      this.backupNegativeTraits = this.decideMeritsOperationNegativeTraits(
+        negativeTraits,
+        this.backupNegativeTraits
+      )
+      this.isNegative = false
     },
   },
 }

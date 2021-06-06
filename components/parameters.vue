@@ -6,7 +6,7 @@
           A zoeira está sem limites hein?!
         </v-card-title>
         <v-card-text>
-          Você não pode ser tão proficiente assim, porque a vida é INJUSTA.
+          Você não pode ser tão proficiente assim porque a vida é INJUSTA.
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -100,13 +100,14 @@ export default {
             .length > 0)
       )
 
+      if (!isCounter) {
+        this.attribute.rank = this.attribute.rank.replace('-', '')
+        this.isNegative = false
+      }
+
       if (this.attribute.rank.lastIndexOf('-') > 0) {
         this.isNegative = true
       }
-
-      // if (isCounter) {
-      //   this.$emit('updateMeritPoints', this.initialMeritPoints)
-      // }
 
       return isCounter
     },
@@ -160,6 +161,7 @@ export default {
     turnToProficient() {
       const { rank } = this.attribute
       let proficiencyPoints = this.proficiencyPoints
+      console.log('POINTS', proficiencyPoints)
 
       if ((rank.match(/[+]/g) || []).length >= 2) {
         this.dialogProf = true
@@ -179,7 +181,6 @@ export default {
     turnToDeficient() {
       const p = this.baseParams
       const i = this.index
-      const merits = this.meritPoints
 
       if (!this.isNegative) {
         const newParam = `${p[i]}-`
