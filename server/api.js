@@ -178,8 +178,6 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       level,
       exp,
       funds,
-      proficiencyPoints,
-      statusPoints,
       species,
       sex,
       age,
@@ -193,9 +191,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       dislikes,
       abstract,
       talents,
-      valorPoints,
-      userRoleId,
-      meritPoints
+      userRoleId
     } = player
 
     const parameters = await attributeRepository(db).getParametersByPlayerId(id)
@@ -210,7 +206,6 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     const npEffectsRepo = npEffectRepository(db)
     const categories = await categoryRepository(db).getCategoriesByPlayerId(id)
     let unitAge = 'anos'
-    const valorsArray = []
 
     if (age == 1) {
       unitAge = 'ano'
@@ -230,21 +225,6 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       }))
     }
 
-    let negativeTraitsSum = 0
-    if (negativeTraits.length > 0) {
-      negativeTraitsSum = negativeTraits.map(trait => trait.merits).reduce((acc, merit) => acc + merit)
-    }
-
-    let npLength = noblePhantasms.length > 1 ? noblePhantasms.length : 0
-    const meritsList =
-      stratagems.concat(martialSkills)
-        .concat(specialTechniques)
-        .concat(noblePhantasms.length > 1 ? noblePhantasms : [])
-        .map(el => el.merits)
-    const totalMerits =
-      meritsList.length < 1 ? 0 :
-        meritsList.reduce((acc, merit) => acc + merit) - (negativeTraitsSum + npLength)
-
     const npStructure = await noblePhantasms.map(async np => ({
       ...np,
       type: await npTypeRepo.getNoblePhantasmTypeByNpId(np.id),
@@ -253,17 +233,6 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     }))
 
     const npResults = await Promise.all(npStructure)
-    npResults.forEach(np => {
-      const npeLength = np.effects.length
-
-      if (npeLength > 0) {
-        valorsArray.push(np.effects.map(e => e.valors)
-          .reduce((acc, valor) => acc + valor))
-      }
-    })
-
-    valorsArray.push(valorPoints)
-
     const currentClass = player['class']
     const user = {
       id,
@@ -274,12 +243,8 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       level,
       exp,
       funds,
-      meritPoints: totalMerits,
-      statusPoints,
       parameters,
-      valorPoints: valorsArray,
       noblePhantasms: npResults,
-      proficiencyPoints,
       currentClass,
       stratagems,
       negativeTraits,

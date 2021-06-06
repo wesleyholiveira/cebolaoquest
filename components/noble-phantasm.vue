@@ -179,7 +179,7 @@ export default {
         result = this.calculateValorsFromArray(v)
       }
 
-      if (v.length > 0 && result > cap) {
+      if (v.length > 0 && (result > cap || this.valors < 0)) {
         this.isOverloaded = true
         this.dmgDown = Math.abs(10 * (result - cap))
       } else {

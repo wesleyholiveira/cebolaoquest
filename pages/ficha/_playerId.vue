@@ -19,14 +19,15 @@ export default {
       principle: '',
       alignment: '',
       currentClass: '',
+      loading: true,
       level: 1,
       exp: 0,
       funds: 0,
-      meritPoints: 4,
-      statusPoints: 1,
-      proficiencyPoints: 1,
+      meritPoints: 0,
+      statusPoints: 0,
+      proficiencyPoints: 0,
       parameters: [],
-      valorPoints: [],
+      valorPoints: [0],
       noblePhantasms: [],
       extraInfos: {
         species: '',
@@ -83,12 +84,14 @@ export default {
 
         if (data) {
           this.data = {
+            ...this.data,
             ...user,
             extraInfos: {
               ...user.extraInfos,
               referenceImages,
             },
             id: playerId,
+            loading: false
           }
         }
       }
@@ -98,9 +101,9 @@ export default {
         message: 'Usuário não encontrado',
         statusCode: 404,
         statusMessage: 'error',
+        loading: false
       }
     }
   },
-  fetchOnServer: false,
 }
 </script>

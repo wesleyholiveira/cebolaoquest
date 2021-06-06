@@ -167,6 +167,24 @@
               <v-row>
                 <v-col cols="12">
                   <v-dialog
+                    v-model="data.loading"
+                    max-width="200"
+                    class="loader"
+                  >
+                    <v-card>
+                      <v-card-text class="loader--body">
+                        <span class="d-block loader--body--text">Carregando...</span>
+                        <v-progress-circular
+                          :size="70"
+                          :width="7"
+                          color="cyan darken-1"
+                          indeterminate
+                          class="text-center"
+                        ></v-progress-circular>
+                      </v-card-text>
+                    </v-card>
+                  </v-dialog>
+                  <v-dialog
                     v-model="registerDialog"
                     max-width="200"
                     class="loader"
@@ -989,22 +1007,12 @@ export default {
       if (this.firstTimeValors) {
         const { noblePhantasms } = this.data
         if (noblePhantasms) {
-          noblePhantasms.forEach((np, i) => {
-            if (np.effects && np.effects.length > 0) {
-              np.effects.forEach((e) => {
-                this.data.valorPoints[i] -= e.valors
-              })
-            }
-          })
           this.firstTimeValors = false
         }
       }
     },
     'data.stratagems'(stratagems) {
       if (this.firstTimeStratagems) {
-        if (stratagems.length > 0) {
-          stratagems.forEach((el) => this.decrementMerits(el))
-        }
         this.firstTimeStratagems = false
         this.backupStratagems = stratagems
         return
@@ -1019,10 +1027,6 @@ export default {
     },
     'data.martialSkills'(martialSkills) {
       if (this.firstTimeMartialSkills) {
-        if (martialSkills.length > 0) {
-          martialSkills.forEach((el) => this.decrementMerits(el))
-        }
-
         this.firstTimeMartialSkills = false
         this.backupMartialSkills = martialSkills
         return
@@ -1037,10 +1041,6 @@ export default {
     },
     'data.specialTechniques'(specialTechniques) {
       if (this.firstTimeSpecialTechs) {
-        if (specialTechniques.length > 0) {
-          specialTechniques.forEach((el) => this.decrementMerits(el))
-        }
-
         this.firstTimeSpecialTechs = false
         this.backupSpecialTechniques = specialTechniques
         return
@@ -1055,10 +1055,6 @@ export default {
     },
     'data.negativeTraits'(negativeTraits) {
       if (this.firstTimeNegativeTraits) {
-        if (negativeTraits.length > 0) {
-          negativeTraits.forEach((el) => this.incrementMerits(el))
-        }
-
         this.firstTimeNegativeTraits = false
         this.backupNegativeTraits = negativeTraits
         return
