@@ -13,6 +13,12 @@ import error from '~/layouts/error.vue'
 export default {
   components: { error },
 
+  head() {
+    return {
+      title: `Cebolão Quest - ${this.data.name}`
+    }
+  },
+
   mounted() {
     let referenceImages = []
     if (this.data.extraInfos.referenceImages) {
@@ -87,7 +93,6 @@ export default {
         })
 
         const user = data.user
-
         if (data) {
           this.data = {
             ...this.data,

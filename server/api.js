@@ -143,12 +143,13 @@ app.delete('/api/player/:userId', async (req, res) => {
 app.get('/api/player/:playerId/user/:userId', async (req, res) => {
 
   try {
-    const { playerId, userId } = req.params
+    const { playerId } = req.params
+    const uid = req.params.userId
 
     const token = req.headers['authorization'].split(' ')[1]
     const { isAdmin } = decode(token)
 
-    if (!playerId || !userId) {
+    if (!playerId || !uid) {
       return res.status(404).json({
         message: 'Usuário não encontrado',
         statusMessage: 'error'
@@ -159,7 +160,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     if (isAdmin) {
       results = await playerRepository(db).getAllByPlayer(playerId)
     } else {
-      results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId })
+      results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId: uid })
     }
     
     if (results.length < 1) {
@@ -193,7 +194,8 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       dislikes,
       abstract,
       talents,
-      userRoleId
+      userRoleId,
+      user_id
     } = player
 
     const parameters = await attributeRepository(db).getParametersByPlayerId(id)
@@ -254,6 +256,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       negativeTraits,
       martialSkills,
       specialTechniques,
+      userId: user_id,
       extraInfos: {
         species: species || '',
         sex,
@@ -279,7 +282,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
         abstract: abstract || '',
         talents: talents || '',
         stories,
-        referenceImages
+        referenceImages,
       }
     }
 
@@ -307,7 +310,6 @@ app.post('/api/register', async (req, res) => {
     )
   
     if (!data.success) {
-      console.log('entrou aqui ó')
       return res.status(401).json({
         message: 'Recaptcha inválido',
         statusMessage: 'invalidCaptcha'
@@ -470,7 +472,7 @@ app.get('/api/player/:id', async (req, res) => {
     likes,
     dislikes,
     abstract,
-    talents
+    talents,
   } = player
 
   const parameters = await attributeRepository(db).getParametersByPlayerId(id)
@@ -486,7 +488,6 @@ app.get('/api/player/:id', async (req, res) => {
   const categories = await categoryRepository(db).getCategoriesByPlayerId(id)
 
   let unitAge = 'anos'
-
   if (age < 2) {
     unitAge = 'ano'
   }

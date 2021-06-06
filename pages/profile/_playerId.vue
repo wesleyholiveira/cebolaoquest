@@ -14,6 +14,12 @@ export default {
   components: { error },
   auth: false,
 
+  head() {
+    return {
+      title: `Cebolão Quest - ${this.data.name}`
+    }
+  },
+
   data: () => ({
     data: {},
   }),

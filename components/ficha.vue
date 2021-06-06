@@ -711,16 +711,16 @@ export default {
     specialTechniques: dataSpecialTechniques,
   }),
   methods: {
-    animateMessage() {
+    animateMessage(msg) {
       let i = 0
-      const originalMessage = this.originalMessage
+      this.registerMessage = msg
 
+      clearInterval(interval)
       interval = setInterval(() => {
         if (i < 3) {
           this.registerMessage = this.registerMessage + '.'
           i++
         } else {
-          this.registerMessage = originalMessage
           i = 0
         }
       }, 450)
@@ -826,7 +826,7 @@ export default {
         const formData = new FormData()
         const { referenceImages } = this.data.extraInfos
 
-        this.animateMessage()
+        this.animateMessage('ENVIANDO')
         this.registerDialog = true
 
         if (referenceImages) {
@@ -835,7 +835,7 @@ export default {
           }
         }
 
-        const { token, id } = this.$auth.user
+        const { token } = this.$auth.user
         const { data } = await this.$axios.post(
           '/api/player',
           {
@@ -857,7 +857,7 @@ export default {
             specialTechniques: this.data.specialTechniques,
             noblePhantasms: this.data.noblePhantasms,
             valorPoints,
-            userId: id,
+            userId: this.data.userId,
             extraInfos: this.data.extraInfos,
           },
           {
@@ -873,9 +873,7 @@ export default {
         }
 
         if (referenceImages && data.statusMessage != 'error') {
-          clearInterval(interval)
-          this.registerMessage = 'ENVIANDO AS FOTOS'
-          this.animateMessage()
+          this.animateMessage('ENVIANDO AS FOTOS')
 
           const uploadResponse = await this.$axios({
             method: 'post',
@@ -896,9 +894,6 @@ export default {
         }
 
         this.registerDialog = false
-        this.registerMessage = 'ENVIANDO'
-        clearInterval(interval)
-
         if (this.response.status != 'error') {
           // this.backupStratagems = []
           // this.backupNegativeTraits = []
@@ -921,8 +916,9 @@ export default {
           // this.noblePhantasms = []
           // this.$refs.form.reset()
           // this.$refs.extraInfosForm.reset()
-          goTo(0)
         }
+
+        goTo(0)
       } else {
         this.dialog = false
         this.step = 1
