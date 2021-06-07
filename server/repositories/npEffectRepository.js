@@ -1,6 +1,7 @@
 const insertMultiValuesQuery = require("../utils/insertMultiValuesQuery")
+const db = require('../config/mysql')
 
-module.exports = (db) => ({
+module.exports = {
     getNoblePhantasmEffectsByNpId: async (id) => {
         const query = 'SELECT * FROM player_noble_phantasm_effects WHERE np_id = ?'
         return new Promise((resolve, reject) => {
@@ -32,6 +33,8 @@ module.exports = (db) => ({
         console.log(query)
         return new Promise((resolve, reject) => {
             db.query(query, (err, result) => {
+                
+
                 if (err) return reject(err)
 
                 console.log('A new noble phantasm effect was inserted successfully')
@@ -39,4 +42,4 @@ module.exports = (db) => ({
             })
         })
     }
-})
+}

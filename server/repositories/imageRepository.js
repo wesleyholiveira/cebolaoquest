@@ -1,12 +1,15 @@
 const insertMultiValuesQuery = require("../utils/insertMultiValuesQuery")
+const db = require('../config/mysql')
 
-module.exports = (db) => ({
+module.exports = {
     getImagesByPlayerId: async (id) => {
+        
         const query = 'SELECT * FROM player_images WHERE player_id = ?'
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(results)
             })
         })
@@ -17,8 +20,9 @@ module.exports = (db) => ({
         const query = 'DELETE FROM player_images WHERE id = ?'
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(results)
             })
         })
@@ -29,8 +33,9 @@ module.exports = (db) => ({
         const query = 'DELETE FROM player_images WHERE player_id = ?'
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(results)
             })
         })
@@ -43,6 +48,8 @@ module.exports = (db) => ({
         const query = insertMultiValuesQuery('player_images', imageModels)
         return new Promise((resolve, reject) => {
             db.query(query, (err, result) => {
+                
+
                 if (err) return reject(err)
 
                 console.log('Some new images were inserted successfully')
@@ -50,4 +57,4 @@ module.exports = (db) => ({
             })
         })
     }
-})
+}

@@ -1,4 +1,6 @@
-module.exports = (db) => ({
+const db = require('../config/mysql')
+
+module.exports = {
     insert: async (userRole) => {
         console.log(`Inserting a new user_roles:`)
         console.log(userRole)
@@ -23,6 +25,8 @@ module.exports = (db) => ({
                 userRole.userId,
                 userRole.roleId
             ], (err, result) => {
+                
+
                 if (err) {
                     console.log(q.sql)
                     console.log(err)
@@ -34,4 +38,4 @@ module.exports = (db) => ({
             })
         })
     }
-})
+}

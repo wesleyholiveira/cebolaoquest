@@ -113,10 +113,10 @@ app.get('/api/player/name/user/:userId', async (req, res) => {
     const { isAdmin } = decode(token)
 
     if (isAdmin) {
-      return res.json({ data: await playerRepository(db).getName() })
+      return res.json({ data: await playerRepository.getName() })
     }
 
-    return res.json({ data: await playerRepository(db).getNameByUserId(userId) })
+    return res.json({ data: await playerRepository.getNameByUserId(userId) })
 
   } catch (err) {
     console.log(err)
@@ -127,7 +127,7 @@ app.get('/api/player/name/user/:userId', async (req, res) => {
 app.delete('/api/player/:userId', async (req, res) => {
   const { userId } = req.params
   try {
-    await playerRepository(db).deleteById(userId)
+    await playerRepository.deleteById(userId)
     return res.json({
       message: 'Usuário excluido com sucesso',
       statusMessage: 'success'
@@ -158,9 +158,9 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
 
     let results
     if (isAdmin) {
-      results = await playerRepository(db).getAllByPlayer(playerId)
+      results = await playerRepository.getAllByPlayer(playerId)
     } else {
-      results = await playerRepository(db).getAllByPlayerAndUserID({ playerId, userId: uid })
+      results = await playerRepository.getAllByPlayerAndUserID({ playerId, userId: uid })
     }
     
     if (results.length < 1) {
@@ -198,17 +198,17 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       user_id
     } = player
 
-    const parameters = await attributeRepository(db).getParametersByPlayerId(id)
-    const stratagems = await stratagemRepository(db).getStratagemsByPlayerId(id)
-    const negativeTraits = await negativeTraitsRepository(db).getNegativeTraitsByPlayerId(id)
-    const martialSkills = await martialSkillRepository(db).getMartialSKillsByPlayerId(id)
-    const specialTechniques = await specialTechniqueRepository(db).getSpecialTechniquesByPlayerId(id)
-    const noblePhantasms = await npRepository(db).getNoblePhantasmsByPlayerId(id)
-    const referenceImages = await imageRepository(db).getImagesByPlayerId(id)
-    const npTypeRepo = npTypeRepository(db)
-    const npSpecialSkRepo = npSpecialStrikeRepository(db)
-    const npEffectsRepo = npEffectRepository(db)
-    const categories = await categoryRepository(db).getCategoriesByPlayerId(id)
+    const parameters = await attributeRepository.getParametersByPlayerId(id)
+    const stratagems = await stratagemRepository.getStratagemsByPlayerId(id)
+    const negativeTraits = await negativeTraitsRepository.getNegativeTraitsByPlayerId(id)
+    const martialSkills = await martialSkillRepository.getMartialSKillsByPlayerId(id)
+    const specialTechniques = await specialTechniqueRepository.getSpecialTechniquesByPlayerId(id)
+    const noblePhantasms = await npRepository.getNoblePhantasmsByPlayerId(id)
+    const referenceImages = await imageRepository.getImagesByPlayerId(id)
+    const npTypeRepo = npTypeRepository
+    const npSpecialSkRepo = npSpecialStrikeRepository
+    const npEffectsRepo = npEffectRepository
+    const categories = await categoryRepository.getCategoriesByPlayerId(id)
     let unitAge = 'anos'
 
     if (age == 1) {
@@ -331,8 +331,8 @@ app.post('/api/register', async (req, res) => {
       email: email.trim()
     })
 
-    const userId = await userRepository(db).insert(user)
-    await userRoleRepository(db).insert({
+    const userId = await userRepository.insert(user)
+    await userRoleRepository.insert({
       id: null,
       userId,
       roleId: 1
@@ -405,7 +405,7 @@ app.post('/api/login', async (req, res) => {
   try {
     if ((username && password) && username.length > 0 && password.length > 0) {
       const encryptedPwd = createHash('sha512').update(password.trim() + SECRET).digest('hex')
-      const users = await userRepository(db).getUserByUsernameAndPassword(username.trim(), encryptedPwd)
+      const users = await userRepository.getUserByUsernameAndPassword(username.trim(), encryptedPwd)
       if (users.length > 0) {
         const result = users.flatMap(el => ({
           userId: el.id,
@@ -444,7 +444,7 @@ app.get('/api/player/:id', async (req, res) => {
     })
   }
 
-  const results = await playerRepository(db).getAllByPlayer(id)
+  const results = await playerRepository.getAllByPlayer(id)
   if (!results || results.length < 1) {
     return res.status(404).json({
       message: 'Usuário não encontrado',
@@ -475,17 +475,17 @@ app.get('/api/player/:id', async (req, res) => {
     talents,
   } = player
 
-  const parameters = await attributeRepository(db).getParametersByPlayerId(id)
-  const stratagems = await stratagemRepository(db).getStratagemsByPlayerId(id)
-  const negativeTraits = await negativeTraitsRepository(db).getNegativeTraitsByPlayerId(id)
-  const martialSkills = await martialSkillRepository(db).getMartialSKillsByPlayerId(id)
-  const specialTechniques = await specialTechniqueRepository(db).getSpecialTechniquesByPlayerId(id)
-  const noblePhantasms = await npRepository(db).getNoblePhantasmsByPlayerId(id)
-  const referenceImages = await imageRepository(db).getImagesByPlayerId(id)
-  const npTypeRepo = npTypeRepository(db)
-  const npSpecialSkRepo = npSpecialStrikeRepository(db)
-  const npEffectsRepo = npEffectRepository(db)
-  const categories = await categoryRepository(db).getCategoriesByPlayerId(id)
+  const parameters = await attributeRepository.getParametersByPlayerId(id)
+  const stratagems = await stratagemRepository.getStratagemsByPlayerId(id)
+  const negativeTraits = await negativeTraitsRepository.getNegativeTraitsByPlayerId(id)
+  const martialSkills = await martialSkillRepository.getMartialSKillsByPlayerId(id)
+  const specialTechniques = await specialTechniqueRepository.getSpecialTechniquesByPlayerId(id)
+  const noblePhantasms = await npRepository.getNoblePhantasmsByPlayerId(id)
+  const referenceImages = await imageRepository.getImagesByPlayerId(id)
+  const npTypeRepo = npTypeRepository
+  const npSpecialSkRepo = npSpecialStrikeRepository
+  const npEffectsRepo = npEffectRepository
+  const categories = await categoryRepository.getCategoriesByPlayerId(id)
 
   let unitAge = 'anos'
   if (age < 2) {
@@ -585,7 +585,7 @@ app.post('/api/player', async (req, res) => {
     extraInfos,
   } = req.body
 
-  const playerRepo = playerRepository(db)
+  const playerRepo = playerRepository
   const player = playerModel({
     id,
     name,
@@ -615,13 +615,13 @@ app.post('/api/player', async (req, res) => {
     userId
   })
 
-  const attributeRepo = attributeRepository(db)
-  const stratagemRepo = stratagemRepository(db)
-  const negativeTraitRepo = negativeTraitsRepository(db)
-  const martialSkillRepo = martialSkillRepository(db)
-  const specialTechRepo = specialTechniqueRepository(db)
-  const npEffectsRepo = npEffectRepository(db)
-  const categoriesRepo = categoryRepository(db)
+  const attributeRepo = attributeRepository
+  const stratagemRepo = stratagemRepository
+  const negativeTraitRepo = negativeTraitsRepository
+  const martialSkillRepo = martialSkillRepository
+  const specialTechRepo = specialTechniqueRepository
+  const npEffectsRepo = npEffectRepository
+  const categoriesRepo = categoryRepository
 
   const playerPromise = playerRepo.insert(player)
   return playerPromise.then(async data => {
@@ -685,7 +685,7 @@ app.post('/api/player', async (req, res) => {
     if (noblePhantasms) {
       const noblePhantasmsModels = map(noblePhantasms, createModel(npModel))
       if (noblePhantasmsModels.length > 0) {
-        const npIds = await npRepository(db).insertAll(noblePhantasmsModels)
+        const npIds = await npRepository.insertAll(noblePhantasmsModels)
         const npTypes = noblePhantasms.map(el => el.type)
         const npSpecialStrikes = noblePhantasms.map(el => el.specialStrike)
         const npEffects = noblePhantasms.flatMap((el, i) => ({
@@ -701,7 +701,7 @@ app.post('/api/player', async (req, res) => {
             np_id: npIds[i]
           }))
 
-          npTypeRepository(db).insertAll(npTypeModels)
+          npTypeRepository.insertAll(npTypeModels)
         }
 
         if (npSpecialStrikes.length > 0) {
@@ -710,7 +710,7 @@ app.post('/api/player', async (req, res) => {
             np_id: npIds[i]
           }))
 
-          npSpecialStrikeRepository(db).insertAll(npSpecialStrikeModels)
+          npSpecialStrikeRepository.insertAll(npSpecialStrikeModels)
         }
 
         const npEffectModels = npEffects.flatMap(e => e.effect.map(ef => npEffectModel({
@@ -730,7 +730,7 @@ app.post('/api/player', async (req, res) => {
 
         npEffectsDeletionPromise.then(() => {
           if (npeLength > 0) {
-            npEffectRepository(db).insertAll(npEffectModels)
+            npEffectRepository.insertAll(npEffectModels)
           }
         })
       }
@@ -776,10 +776,10 @@ app.post('/api/player', async (req, res) => {
 app.post('/api/upload/:playerId', async (req, res) => {
   let playerId = null
   const form = new IncomingForm({ multiples: true })
-  const imageRepo = imageRepository(db)
+  const imageRepo = imageRepository
 
   if ({ playerId } = req.params) {
-    const result = await playerRepository(db).getById(playerId)
+    const result = await playerRepository.getById(playerId)
 
     if (result.length < 1) {
       return res.status(400).json({

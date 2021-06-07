@@ -1,4 +1,6 @@
-module.exports = (db) => ({
+const db = require('../config/mysql')
+
+module.exports = {
     getById: async (id) => {
         const query = `
             SELECT 
@@ -18,8 +20,9 @@ module.exports = (db) => ({
             ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(result)
             })
         })
@@ -44,8 +47,9 @@ module.exports = (db) => ({
         ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(result)
             })
         })
@@ -68,8 +72,9 @@ module.exports = (db) => ({
         ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.query(query, (err, result) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(result)
             })
         })
@@ -80,8 +85,9 @@ module.exports = (db) => ({
         const query = 'DELETE FROM players WHERE id = ?'
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(results)
             })
         })
@@ -106,8 +112,9 @@ module.exports = (db) => ({
             LIMIT 1`;
         return new Promise((resolve, reject) => {
             db.query(query, [playerId], (err, results) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(results)
             })
         })
@@ -135,8 +142,9 @@ module.exports = (db) => ({
             LIMIT 1`;
         return new Promise((resolve, reject) => {
             db.query(query, [playerId, userId], (err, results) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(results)
             })
         })
@@ -259,7 +267,7 @@ module.exports = (db) => ({
                 playerModel.abstract,
                 playerModel.userId
             ], (err, result) => {
-                console.log(err)
+                
                 if (err) return reject(err)
 
                 console.log('A new player was inserted successfully')
@@ -270,4 +278,4 @@ module.exports = (db) => ({
         })
 
     }
-})
+}

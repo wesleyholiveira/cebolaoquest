@@ -1,12 +1,14 @@
 const insertMultiValuesQuery = require("../utils/insertMultiValuesQuery")
+const db = require('../config/mysql')
 
-module.exports = (db) => ({
+module.exports = {
     getStratagemsByPlayerId: async (id) => {
         const query = 'SELECT * FROM player_stratagems WHERE player_id = ?';
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(results)
             })
         })
@@ -16,6 +18,8 @@ module.exports = (db) => ({
         console.log(`Removing (IF EXISTS) all stratagems for player_id = ${id}`)
         const query = 'DELETE FROM player_stratagems WHERE player_id = ?'
         return new Promise((resolve, reject) => {
+            
+
             db.query(query, [id], (err, results) => {
                 if (err) return reject(err)
 
@@ -32,10 +36,12 @@ module.exports = (db) => ({
         console.log(query)
         return new Promise((resolve, reject) => {
             db.query(query, (err, result) => {
+                
+
                 if (err) return reject(err)
 
                 return resolve(stratagemModels)
             })
         })
     }
-})
+}

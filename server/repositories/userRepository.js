@@ -1,4 +1,6 @@
-module.exports = (db) => ({
+const db = require('../config/mysql')
+
+module.exports = {
     getUserByUsernameAndPassword: async (username, password) => {
         const query = `
             SELECT
@@ -17,8 +19,9 @@ module.exports = (db) => ({
                 username = ? AND password = ?`;
         return new Promise((resolve, reject) => {
             db.query(query, [username, password], (err, result) => {
-                if (err) return reject(err)
+                
 
+                if (err) return reject(err)
                 return resolve(result)
             })
         })
@@ -44,6 +47,8 @@ module.exports = (db) => ({
                 userModel.email,
                 userModel.password
             ], (err, result) => {
+                
+
                 if (err) {
                     if (err.sqlState == "23000") return reject('Usuário já cadastrado com este email/ou usuário')
                     if (err) return reject(err)
@@ -55,4 +60,4 @@ module.exports = (db) => ({
             })
         })
     }
-})
+}
