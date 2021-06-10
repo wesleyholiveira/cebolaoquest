@@ -90,7 +90,10 @@ export default {
 
   created() {
     this.valorSkills = this.data.valorSkills
-    this.valors = this.valorPoints[this.index]
+    this.valors =
+      this.np.effects.length > 0
+        ? this.calculateValorsFromArray(this.np.effects)
+        : this.valorCap
     this.valorCapData = this.valorCap
     this.backupEffects = this.np.effects
   },
@@ -216,7 +219,7 @@ export default {
         return
       }
 
-      this.valors += removedItem.valors
+      this.valors += removedItem.valors || this.valorCap
       valorPoints[this.index] = this.valors
       valorPoints = [...valorPoints]
 

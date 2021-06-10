@@ -22,7 +22,7 @@
             :meritPoints="data.meritPoints"
             :statusPoints="data.statusPoints"
             :proficiencyPoints="data.proficiencyPoints"
-            :valorPoints="calculateValorPoints()"
+            :valorPoints="calculateValorPoints"
             class="mt-5"
           />
           <v-stepper-content step="1">
@@ -546,10 +546,18 @@ export default {
     hasPointsNotSpent() {
       return (
         this.data.meritPoints > 0 ||
-        this.calculateValorPoints() > 0 ||
+        this.calculateValorPoints > 0 ||
         this.data.statusPoints > 0 ||
         this.data.proficiencyPoints > 0
       )
+    },
+
+    calculateValorPoints() {
+      if (this.data.valorPoints.length > 0) {
+        return this.calculateValorsFromArray(this.data.valorPoints)
+      }
+
+      return 0
     },
   },
 
@@ -819,109 +827,115 @@ export default {
     },
 
     async validate() {
-      if (this.$refs.form.validate()) {
-        const params = this.data.parameters || []
+      try {
+        if (this.$refs.form.validate()) {
+          const params = this.data.parameters || []
 
-        const valorPoints = this.calculateValorPoints()
-        const formData = new FormData()
-        const { referenceImages } = this.data.extraInfos
+          const valorPoints = this.calculateValorPoints
+          const formData = new FormData()
+          const { referenceImages } = this.data.extraInfos
 
-        this.animateMessage('ENVIANDO')
-        this.registerDialog = true
+          this.animateMessage('ENVIANDO')
+          this.registerDialog = true
 
-        if (referenceImages) {
-          for (const ref of referenceImages) {
-            formData.append('referenceImages', ref)
-          }
-        }
-
-        const { token } = this.$auth.user
-        const { data } = await this.$axios.post(
-          '/api/player',
-          {
-            id: this.data.id || null,
-            name: this.data.name,
-            job: this.data.currentClass,
-            level: this.data.level,
-            exp: this.data.exp,
-            funds: this.data.funds,
-            meritPoints: 0,
-            statusPoints: 0,
-            proficiencyPoints: 0,
-            alignment: this.data.alignment,
-            principle: this.data.principle,
-            attributes: params,
-            stratagems: this.data.stratagems,
-            negativeTraits: this.data.negativeTraits,
-            martialSkills: this.data.martialSkills,
-            specialTechniques: this.data.specialTechniques,
-            noblePhantasms: this.data.noblePhantasms,
-            valorPoints,
-            userId: this.data.userId,
-            extraInfos: this.data.extraInfos,
-          },
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        )
-
-        this.response = {
-          status: data.statusMessage,
-          text: data.data,
-        }
-
-        if (referenceImages && data.statusMessage != 'error') {
-          this.animateMessage('ENVIANDO AS FOTOS')
-
-          const uploadResponse = await this.$axios({
-            method: 'post',
-            url: `/api/upload/${data.playerId}`,
-            data: formData,
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: token,
-            },
-          })
-
-          if (uploadResponse.statusMessage != 'success') {
-            this.response = {
-              status: data.statusMessage,
-              text: data.data,
+          if (referenceImages) {
+            for (const ref of referenceImages) {
+              formData.append('referenceImages', ref)
             }
           }
-        }
 
+          const { token } = this.$auth.user
+          const { data } = await this.$axios.post(
+            '/api/player',
+            {
+              id: this.data.id || null,
+              name: this.data.name,
+              job: this.data.currentClass,
+              level: this.data.level,
+              exp: this.data.exp,
+              funds: this.data.funds,
+              meritPoints: 0,
+              statusPoints: 0,
+              proficiencyPoints: 0,
+              alignment: this.data.alignment,
+              principle: this.data.principle,
+              attributes: params,
+              stratagems: this.data.stratagems,
+              negativeTraits: this.data.negativeTraits,
+              martialSkills: this.data.martialSkills,
+              specialTechniques: this.data.specialTechniques,
+              noblePhantasms: this.data.noblePhantasms,
+              valorPoints,
+              userId: this.data.userId,
+              extraInfos: this.data.extraInfos,
+            },
+            {
+              headers: {
+                Authorization: token,
+              },
+            }
+          )
+
+          this.response = {
+            status: data.statusMessage,
+            text: data.data,
+          }
+
+          if (referenceImages && data.statusMessage != 'error') {
+            this.animateMessage('ENVIANDO AS FOTOS')
+
+            const uploadResponse = await this.$axios({
+              method: 'post',
+              url: `/api/upload/${data.playerId}`,
+              data: formData,
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: token,
+              },
+            })
+
+            if (uploadResponse.statusMessage != 'success') {
+              this.response = {
+                status: data.statusMessage,
+                text: data.data,
+              }
+            }
+          }
+
+          this.registerDialog = false
+          if (this.response.status != 'error') {
+            // this.backupStratagems = []
+            // this.backupNegativeTraits = []
+            // this.backupMartialSkills = []
+            // this.backupSpecialTechniques = []
+            // this.capMerits = 0
+            // this.name = '',
+            // this.currentClass = '',
+            // this.merits = this.defaultMerits
+            // this.valorPoints = [this.defaultValorPoints]
+            // this.statusPoints = this.defaultStatusPoints
+            // this.proficiencyPoints = this.defaultProficiencyPoints
+            // this.alignment = []
+            // this.principle = []
+            // this.parameters = this.attributes
+            // this.selectedStratagems = []
+            // this.selectedNegativeTraits = []
+            // this.selectedMartialSkills = []
+            // this.selectedSpecialTechniques = []
+            // this.noblePhantasms = []
+            // this.$refs.form.reset()
+            // this.$refs.extraInfosForm.reset()
+          }
+
+          goTo(0)
+        } else {
+          this.dialog = false
+          this.step = 1
+        }
+      } catch (err) {
+        console.log(err)
         this.registerDialog = false
-        if (this.response.status != 'error') {
-          // this.backupStratagems = []
-          // this.backupNegativeTraits = []
-          // this.backupMartialSkills = []
-          // this.backupSpecialTechniques = []
-          // this.capMerits = 0
-          // this.name = '',
-          // this.currentClass = '',
-          // this.merits = this.defaultMerits
-          // this.valorPoints = [this.defaultValorPoints]
-          // this.statusPoints = this.defaultStatusPoints
-          // this.proficiencyPoints = this.defaultProficiencyPoints
-          // this.alignment = []
-          // this.principle = []
-          // this.parameters = this.attributes
-          // this.selectedStratagems = []
-          // this.selectedNegativeTraits = []
-          // this.selectedMartialSkills = []
-          // this.selectedSpecialTechniques = []
-          // this.noblePhantasms = []
-          // this.$refs.form.reset()
-          // this.$refs.extraInfosForm.reset()
-        }
-
-        goTo(0)
-      } else {
-        this.dialog = false
-        this.step = 1
+        clearInterval(interval)
       }
     },
 
@@ -933,13 +947,6 @@ export default {
       data.map((el) => el.merits).reduce((acc, merit) => acc + merit),
     calculateValorsFromArray: (data) =>
       data.map((el) => el).reduce((acc, valor) => acc + valor),
-    calculateValorPoints() {
-      if (this.data.valorPoints.length > 0) {
-        return this.calculateValorsFromArray(this.data.valorPoints)
-      }
-
-      return 0
-    },
 
     validateMaxPoints(v, cap) {
       let validation =

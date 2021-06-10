@@ -455,7 +455,7 @@ export default {
             `
           },
           {
-            name: 'Coração Valenta',
+            name: 'Coração Valente',
             valors: 1,
             effect: `Seu escudo transfere energia para a arma na sua outra mão após defender um ataque; seus dois armamentos são como um só, ajudando na sua proteção.<br />
             Após realizar uma <i>Manobra Defensiva: "Bloquear"</i>, sua <i>Manobra Defensiva: "Aparar"</i> ganha um adicional de <strong>+5/+10/+20</strong>,
