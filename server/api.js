@@ -10,7 +10,6 @@ import { IncomingForm } from 'formidable'
 const app = express()
 
 import map from './utils/mapModel'
-import db from './config/mysql'
 import attributeModel from './models/attribute'
 import playerModel from './models/player'
 import negativeTraitModel from './models/negativeTrait'
@@ -76,7 +75,7 @@ app.use(function (req, res, next) {
     try {
       token = token.split(' ')[1]
       const jwtDecoded = verify(token, process.env.SECRET)
-      console.log(jwtDecoded)
+      console.log(req.path, jwtDecoded)
     } catch (err) {
       console.log(err)
       return res.status(401).json({
@@ -93,6 +92,7 @@ app.use(function (req, res, next) {
 })
 
 app.get('/api/user', async (req, res) => {
+  console.log('ENDUSER')
   const token = req.headers['authorization'].split(' ')[1]
   const { userId, username, isAdmin } = decode(token)
 
@@ -107,20 +107,21 @@ app.get('/api/user', async (req, res) => {
 })
 
 app.get('/api/player/name/user/:userId', async (req, res) => {
+  console.log('CONSULTANDO DADOS LISTAGEM')
   const { userId } = req.params
   try {
     const token = req.headers['authorization'].split(' ')[1]
     const { isAdmin } = decode(token)
 
     if (isAdmin) {
-      return res.json({ data: await playerRepository.getName() })
+      return res.json({ data: await playerRepository.getName() }).end()
     }
 
-    return res.json({ data: await playerRepository.getNameByUserId(userId) })
+    return res.json({ data: await playerRepository.getNameByUserId(userId) }).end()
 
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ err })
+    return res.status(500).json({ err }).end()
   }
 })
 
@@ -143,6 +144,7 @@ app.delete('/api/player/:userId', async (req, res) => {
 app.get('/api/player/:playerId/user/:userId', async (req, res) => {
 
   try {
+    console.log('CONSULTANDO DADOS INDIVIDUAIS')
     const { playerId } = req.params
     const uid = req.params.userId
 
@@ -436,6 +438,7 @@ app.post('/api/login', async (req, res) => {
 })
 
 app.get('/api/player/:id', async (req, res) => {
+  console.log('CONSULTANDO DADOS INDIVIDUAIS [PROFILE]')
   const { id } = req.params
   if (!id) {
     return res.status(400).json({

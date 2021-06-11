@@ -99,11 +99,7 @@ export default {
 
       if (id && token) {
         const url = `/api/player/${playerId}/user/${id}`
-        const { data } = await this.$axios.get(url, {
-          headers: {
-            Authorization: token,
-          },
-        })
+        const { data } = await this.$axios.get(url)
 
         const user = data.user
         if (data) {

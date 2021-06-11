@@ -232,7 +232,6 @@ export default {
   methods: {
     async sendLogin() {
       try {
-        console.log('ENTROU ACÁ')
         let recaptchaToken
         try {
           recaptchaToken = await this.$recaptcha.getResponse(this.widgetIdLogin)
@@ -247,9 +246,7 @@ export default {
           },
         })
 
-        const { userId, username, token, isAdmin } = response.data
         this.$refs.formLogin.reset()
-        this.$auth.setUser({ id: userId, username, token, isAdmin })
       } catch (err) {
         console.log(err)
         const {

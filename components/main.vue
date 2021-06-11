@@ -1,5 +1,5 @@
 <template>
   <v-container class="myContainer">
-    <Nuxt keep-alive />
+    <Nuxt />
   </v-container>
 </template>

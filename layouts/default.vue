@@ -69,7 +69,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-container class="myContainer">
-      <Nuxt keep-alive />
+      <Nuxt />
     </v-container>
   </v-app>
 </template>
