@@ -24,11 +24,13 @@ export default {
         : 'Usuário não forneceu um resumo sobre a sua ficha.'
     return {
       title,
-      meta: [{
-        hid: 'description',
-        name: 'description',
-        content: description
-      }]
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: description,
+        },
+      ],
     }
   },
 
@@ -69,6 +71,10 @@ export default {
       meritPoints: 0,
       statusPoints: 0,
       proficiencyPoints: 0,
+      maxHp: 100,
+      maxSp: 100,
+      hp: 0,
+      sp: 0,
       parameters: [],
       valorPoints: [0],
       noblePhantasms: [],
@@ -100,7 +106,7 @@ export default {
       if (id && token) {
         const url = `/api/player/${playerId}/user/${id}`
         const { data } = await this.$axios.get(url)
-
+        
         const user = data.user
         if (data) {
           this.data = {

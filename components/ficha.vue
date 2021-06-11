@@ -844,7 +844,7 @@ export default {
             }
           }
 
-          const { token } = this.$auth.user
+          const { id, token } = this.$auth.user
           const { data } = await this.$axios.post(
             '/api/player',
             {
@@ -866,8 +866,12 @@ export default {
               specialTechniques: this.data.specialTechniques,
               noblePhantasms: this.data.noblePhantasms,
               valorPoints,
-              userId: this.data.userId,
+              userId: this.data.userId || id,
               extraInfos: this.data.extraInfos,
+              hp: this.data.hp,
+              sp: this.data.sp,
+              maxHp: this.data.maxHp,
+              maxSp: this.data.maxSp
             },
             {
               headers: {

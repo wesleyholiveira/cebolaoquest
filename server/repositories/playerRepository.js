@@ -96,7 +96,8 @@ module.exports = {
     getAllByPlayer: async (playerId) => {
         const query = `
             SELECT
-                players.*, DATE_FORMAT(birthday, '%Y-%m-%d') as birthday, user_roles.id as userRoleId
+                players.*, DATE_FORMAT(birthday, '%Y-%m-%d') as birthday, user_roles.id as userRoleId,
+                max_hp as maxHp, max_sp as maxSp
             FROM
                 players
             JOIN
@@ -124,7 +125,8 @@ module.exports = {
     getAllByPlayerAndUserID: async ({ userId, playerId }) => {
         const query = `
             SELECT
-                players.*, DATE_FORMAT(birthday, '%Y-%m-%d') as birthday, user_roles.id as userRoleId
+                players.*, DATE_FORMAT(birthday, '%Y-%m-%d') as birthday, user_roles.id as userRoleId,
+                max_hp as maxHp, max_sp as maxSp
             FROM
                 players
             JOIN
@@ -180,8 +182,16 @@ module.exports = {
                 likes,
                 dislikes,
                 abstract,
-                user_id
+                user_id,
+                hp,
+                sp,
+                max_hp,
+                max_sp
             ) VALUES (
+                ?,
+                ?,
+                ?,
+                ?,
                 ?,
                 ?,
                 ?,
@@ -235,7 +245,11 @@ module.exports = {
                 likes = new.likes,
                 dislikes = new.dislikes,
                 abstract = new.abstract,
-                user_id = new.user_id
+                user_id = new.user_id,
+                hp = new.hp,
+                sp = new.sp,
+                max_hp = new.max_hp,
+                max_sp = new.max_sp
         `
 
         return new Promise((resolve, reject) => {
@@ -265,7 +279,11 @@ module.exports = {
                 playerModel.likes,
                 playerModel.dislikes,
                 playerModel.abstract,
-                playerModel.userId
+                playerModel.userId,
+                playerModel.hp,
+                playerModel.sp,
+                playerModel.maxHp,
+                playerModel.maxSp
             ], (err, result) => {
                 
                 if (err) return reject(err)

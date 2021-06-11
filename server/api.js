@@ -197,7 +197,11 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       abstract,
       talents,
       userRoleId,
-      user_id
+      user_id,
+      hp,
+      sp,
+      maxHp,
+      maxSp
     } = player
 
     const parameters = await attributeRepository.getParametersByPlayerId(id)
@@ -259,6 +263,10 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       martialSkills,
       specialTechniques,
       userId: user_id,
+      hp,
+      sp,
+      maxHp,
+      maxSp,
       extraInfos: {
         species: species || '',
         sex,
@@ -476,6 +484,10 @@ app.get('/api/player/:id', async (req, res) => {
     dislikes,
     abstract,
     talents,
+    hp,
+    sp,
+    maxHp,
+    maxSp
   } = player
 
   const parameters = await attributeRepository.getParametersByPlayerId(id)
@@ -533,6 +545,10 @@ app.get('/api/player/:id', async (req, res) => {
     negativeTraits,
     martialSkills,
     specialTechniques,
+    hp,
+    sp,
+    maxHp,
+    maxSp,
     extraInfos: {
       species: species || '',
       sex,
@@ -586,6 +602,10 @@ app.post('/api/player', async (req, res) => {
     noblePhantasms,
     userId,
     extraInfos,
+    hp,
+    sp,
+    maxHp,
+    maxSp
   } = req.body
 
   const playerRepo = playerRepository
@@ -615,7 +635,11 @@ app.post('/api/player', async (req, res) => {
     likes: extraInfos.likes,
     dislikes: extraInfos.dislikes,
     abstract: extraInfos.abstract,
-    userId
+    userId,
+    hp,
+    sp,
+    maxHp,
+    maxSp
   })
 
   const attributeRepo = attributeRepository

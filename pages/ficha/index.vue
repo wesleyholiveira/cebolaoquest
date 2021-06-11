@@ -1,8 +1,5 @@
 <template>
-  <ficha
-    :data="data"
-    :editable="false"
-  />
+  <ficha :data="data" :editable="false" />
 </template>
 
 <script>
@@ -20,37 +17,48 @@ export default {
       meritPoints: 4,
       statusPoints: 1,
       proficiencyPoints: 1,
-      parameters: [{
-        id: null,
-        name: 'STR',
-        rank: 'D',
-        player_id: null,
-      }, {
-        id: null,
-        name: 'AGI',
-        rank: 'D',
-        player_id: null,
-      }, {
-        id: null,
-        name: 'END',
-        rank: 'D',
-        player_id: null,
-      }, {
-        id: null,
-        name: 'LUK',
-        rank: 'D',
-        player_id: null,
-      }, {
-        id: null,
-        name: 'NP',
-        rank: 'D',
-        player_id: null,
-      }, {
-        id: null,
-        name: 'MAN',
-        rank: 'D',
-        player_id: null,
-      }],
+      maxHp: 100,
+      maxSp: 100,
+      hp: 100,
+      sp: 100,
+      parameters: [
+        {
+          id: null,
+          name: 'STR',
+          rank: 'D',
+          player_id: null,
+        },
+        {
+          id: null,
+          name: 'AGI',
+          rank: 'D',
+          player_id: null,
+        },
+        {
+          id: null,
+          name: 'END',
+          rank: 'D',
+          player_id: null,
+        },
+        {
+          id: null,
+          name: 'LUK',
+          rank: 'D',
+          player_id: null,
+        },
+        {
+          id: null,
+          name: 'NP',
+          rank: 'D',
+          player_id: null,
+        },
+        {
+          id: null,
+          name: 'MAN',
+          rank: 'D',
+          player_id: null,
+        },
+      ],
       valorPoints: [],
       stratagems: [],
       noblePhantasms: [],
@@ -74,9 +82,9 @@ export default {
             children: [],
           },
         ],
-        referenceImages: []
-      }
+        referenceImages: [],
+      },
     },
-  })
+  }),
 }
 </script>

@@ -24,5 +24,9 @@ module.exports = (player) => ({
     likes: player.likes,
     dislikes: player.dislikes,
     abstract: player.abstract,
-    userId: player.userId
+    userId: player.userId,
+    hp: player.hp,
+    sp: player.sp,
+    maxHp: player.maxHp,
+    maxSp: player.maxSp
 })
