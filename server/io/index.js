@@ -24,11 +24,12 @@ export default function (socket, io) {
       })
     },
 
-    roll({ username, dices }) {
+    roll({ username, dices, reroll }) {
       io.of('index').emit('data', {
         username,
         dices,
-        type: 'roll'
+        reroll,
+        type: 'roll',
       })
     },
   })

@@ -2,6 +2,42 @@
   <v-container class="chat-container" fluid>
     <v-row>
       <v-col style="padding: 0">
+        <div
+          id="ThreeJS"
+          :class="{ 'visible-roller': visibleRoller, roller: true }"
+        >
+          <v-container class="dialog">
+            <v-row>
+              <v-col>
+                RESULTADO: {{backupDices}}
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-btn
+                  block
+                  color="green"
+                  @click="
+                    visibleRoller = false
+                    backupDices = null
+                  "
+                  >Voltar ao chat!</v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-btn
+                  block
+                  depressed
+                  @click="
+                    roll(backupDices, true)
+                  "
+                  >Reroll</v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-container>
+        </div>
         <div class="chat-messages" ref="chat">
           <div v-for="(msg, i) in messages" :key="i">
             <pre v-if="msg.type && msg.type == 'system'" class="chat--pre">
@@ -116,14 +152,7 @@
                             <v-btn
                               block
                               color="green"
-                              @click="
-                                socket.emit('roll', {
-                                  username,
-                                  dices,
-                                })
-                                resetDices()
-                                dialog = false
-                              "
+                              @click="roll({ username, dices })"
                               >ROLL!</v-btn
                             >
                           </v-col>
@@ -157,6 +186,9 @@ export default {
       messages: [],
       message: '',
       typing: [],
+      visibleRoller: false,
+      backupDices: null,
+      diceRoller: null,
       dialog: false,
       dices: {
         d6: [],
@@ -186,18 +218,39 @@ export default {
 
   mounted() {
     const { username } = this.$auth.user
-
     this.username = username
     this.socket = this.$nuxtSocket({
       channel: '/index',
       reconnection: false,
     })
 
+    const threeJS = document.getElementById('ThreeJS')
+    this.diceRoller = this.$dice(threeJS)
+
     this.socket.emit('whenUserEnter', username)
 
     this.socket.on('data', (res) => {
       this.messages.push(res)
       setTimeout(() => (this.$refs['chat'].scrollTop += 99999), 30)
+
+      if (res) {
+        this.backupDices = res
+      }
+
+      const { type, dices } = res
+      if (type && type == 'roll') {
+        const dicesThrower = Object.keys(dices).flatMap((k) =>
+          dices[k].flatMap((value) => ({
+            value,
+            type: k,
+          }))
+        )
+
+        console.log(dicesThrower)
+        this.diceRoller.resetRoll()
+        this.diceRoller.randomDiceThrow(dicesThrower)
+        this.visibleRoller = true
+      }
     })
 
     this.socket.on('typing', (res) => {
@@ -225,9 +278,21 @@ export default {
       return 0
     },
 
+    roll({ username, dices }, isReroll = false) {
+      this.socket.emit('roll', {
+        username,
+        dices,
+        reroll: isReroll,
+      })
+
+      this.resetDices()
+      this.dialog = false
+    },
+
     formatRollMessage(data) {
-      const { username, dices } = data
-      let msg = `${username} rolou `
+      const { username, dices, reroll } = data
+      const rerollStr = reroll ? 're' : ''
+      let msg = `${username} ${rerollStr}rolou `
 
       for (const k of Object.keys(dices)) {
         const values = dices[k]
@@ -299,6 +364,26 @@ export default {
 .myContainer {
   margin-top: 50px;
   padding-bottom: 0px;
+}
+.roller {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 300;
+  opacity: 0.8;
+  visibility: hidden;
+}
+.roller .dialog {
+  max-width: 200px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 20px;
+}
+.visible-roller {
+  visibility: visible !important;
 }
 .chat--field .v-textarea textarea {
   max-width: 92%;
