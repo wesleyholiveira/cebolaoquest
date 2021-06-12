@@ -21,6 +21,7 @@
     "@tiptap/extension-text-align": "^2.0.0-beta.17",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
+    "cannon": "^0.6.2",
     "core-js": "^3.13.1",
     "cors": "^2.8.5",
     "dotenv-safe": "^8.2.0",
@@ -37,6 +38,8 @@
     "socket.io": "^4.1.2",
     "socket.io-client": "^4.1.2",
     "sqlstring": "^2.3.2",
+    "three": "^0.90.0",
+    "threejs-dice": "^1.1.0",
     "tiptap-vuetify": "^2.24.0"
   },
   "devDependencies": {
