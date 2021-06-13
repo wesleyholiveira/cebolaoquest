@@ -9,7 +9,7 @@
           <v-container class="dialog">
             <v-row>
               <v-col>
-                RESULTADO: {{backupDices}}
+                <span class="result" v-html="sumRolls(playerResult)"></span>
               </v-col>
             </v-row>
             <v-row>
@@ -21,17 +21,13 @@
                     visibleRoller = false
                     backupDices = null
                   "
-                  >Voltar ao chat!</v-btn>
+                  >Voltar ao chat!</v-btn
+                >
               </v-col>
             </v-row>
-            <v-row>
+            <v-row v-if="nextRoll">
               <v-col>
-                <v-btn
-                  block
-                  depressed
-                  @click="
-                    roll(backupDices, true)
-                  "
+                <v-btn block depressed @click="roll(nextRoll, true)"
                   >Reroll</v-btn
                 >
               </v-col>
@@ -182,12 +178,15 @@ let timeout
 export default {
   data() {
     return {
+      webgl: false,
       username: '',
       messages: [],
       message: '',
       typing: [],
       visibleRoller: false,
       backupDices: null,
+      playerResult: null,
+      nextRoll: null,
       diceRoller: null,
       dialog: false,
       dices: {
@@ -224,8 +223,11 @@ export default {
       reconnection: false,
     })
 
-    const threeJS = document.getElementById('ThreeJS')
-    this.diceRoller = this.$dice(threeJS)
+    if (this.$webgl().isWebGLAvailable()) {
+      this.webgl = true
+      const threeJS = document.getElementById('ThreeJS')
+      this.diceRoller = this.$dice(threeJS)
+    }
 
     this.socket.emit('whenUserEnter', username)
 
@@ -233,23 +235,42 @@ export default {
       this.messages.push(res)
       setTimeout(() => (this.$refs['chat'].scrollTop += 99999), 30)
 
-      if (res) {
-        this.backupDices = res
-      }
-
       const { type, dices } = res
       if (type && type == 'roll') {
-        const dicesThrower = Object.keys(dices).flatMap((k) =>
-          dices[k].flatMap((value) => ({
-            value,
-            type: k,
-          }))
-        )
+        if (this.webgl) {
+          if (this.backupDices) {
+            const bDices = this.backupDices.dices
+            this.nextRoll = {
+              ...this.backupDices,
+              dices: {
+                d6: [],
+                d8: [],
+                d10: [],
+                d12: [],
+                d20: [],
+              },
+            }
 
-        console.log(dicesThrower)
-        this.diceRoller.resetRoll()
-        this.diceRoller.randomDiceThrow(dicesThrower)
-        this.visibleRoller = true
+            Object.keys(bDices).forEach((k) => {
+              bDices[k].forEach((d) =>
+                this.nextRoll.dices[k].push(this.generateRNG(1, 6))
+              )
+            })
+          }
+
+          const dicesThrower = Object.keys(dices).flatMap((k) =>
+            dices[k].flatMap((value) => ({
+              value,
+              type: k,
+            }))
+          )
+
+          console.log(dicesThrower)
+          this.diceRoller.resetRoll()
+          this.diceRoller.randomDiceThrow(dicesThrower)
+          this.visibleRoller = true
+          this.socket.emit('visualRoll', this.backupDices)
+        }
       }
     })
 
@@ -262,6 +283,12 @@ export default {
         }
       }
     })
+
+    if (this.webgl) {
+      this.socket.on('visualRoll', (res) => {
+        this.playerResult = res
+      })
+    }
   },
 
   methods: {
@@ -278,15 +305,37 @@ export default {
       return 0
     },
 
-    roll({ username, dices }, isReroll = false) {
-      this.socket.emit('roll', {
-        username,
-        dices,
-        reroll: isReroll,
-      })
+    roll({ username, dices }, reroll = false) {
+      const existsDices = Object.keys(dices).filter((k) => dices[k].length > 0)
+      if (username && existsDices.length > 0) {
+        this.socket.emit('roll', {
+          username: this.username,
+          dices,
+          reroll,
+        })
 
-      this.resetDices()
-      this.dialog = false
+        this.resetDices()
+        this.dialog = false
+        this.backupDices = {
+          username: this.username,
+          dices,
+          reroll,
+        }
+      }
+    },
+
+    sumRolls(data) {
+      if (data) {
+        const { dices } = data
+        const rolls = Object.keys(dices).flatMap((k) =>
+          dices[k].flatMap((e) => e)
+        )
+        const rollsSum = rolls.reduce((acc, value) => acc + value)
+
+        return `${rolls.join(' + ')} = <strong style="color: red">${rollsSum}</strong>`
+      }
+
+      return []
     },
 
     formatRollMessage(data) {
@@ -366,6 +415,8 @@ export default {
   padding-bottom: 0px;
 }
 .roller {
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -381,6 +432,11 @@ export default {
   margin-left: auto;
   margin-right: auto;
   bottom: 20px;
+}
+.roller .dialog .result {
+  text-align: center;
+  display: block;
+  font-size: 32px;
 }
 .visible-roller {
   visibility: visible !important;

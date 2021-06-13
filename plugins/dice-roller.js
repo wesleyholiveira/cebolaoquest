@@ -98,31 +98,31 @@ class DiceRoller {
       switch (d.type) {
         case 'd8':
           dice = {
-            dice: new DiceD8({ size: 1.2, backColor: '#ffff00' }),
+            dice: new DiceD8({ size: 1.2, backColor: '#1976d2', fontColor: '#ffffff' }),
             value: d.value,
           }
           break;
         case 'd10':
           dice = {
-            dice: new DiceD10({ size: 1.2, backColor: '#ffff00' }),
+            dice: new DiceD10({ size: 1.2, backColor: '#E53935', fontColor: '#ffffff' }),
             value: d.value,
           }
           break;
         case 'd12':
           dice = {
-            dice: new DiceD12({ size: 1.2, backColor: '#ffff00' }),
+            dice: new DiceD12({ size: 1.2, backColor: '#00bcd4', fontColor: '#ffffff' }),
             value: d.value,
           }
           break;
         case 'd20':
           dice = {
-            dice: new DiceD20({ size: 1.2, backColor: '#ffff00' }),
+            dice: new DiceD20({ size: 1.2, backColor: '#43A047', fontColor: '#ffffff' }),
             value: d.value,
           }
           break;
         default:
           dice = {
-            dice: new DiceD6({ size: 1.2, backColor: '#ffff00' }),
+            dice: new DiceD6({ size: 1.2, backColor: '#f9a825', fontColor: '#ffffff' }),
             value: d.value,
           }
           break;

@@ -32,5 +32,14 @@ export default function (socket, io) {
         type: 'roll',
       })
     },
+
+    visualRoll({ username, dices, reroll }) {
+      io.of('index').emit('visualRoll', {
+        username,
+        dices,
+        reroll,
+        type: 'roll',
+      })
+    },
   })
 }
