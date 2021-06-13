@@ -89,7 +89,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['vuetify/lib', 'tiptap-vuetify', 'threejs-dice'],
+    transpile: ['vuetify/lib', 'tiptap-vuetify', 'threejs-dice', 'rpg-dice-roller'],
     // parallel: true,
     cache: true,
     // hardSource: true,

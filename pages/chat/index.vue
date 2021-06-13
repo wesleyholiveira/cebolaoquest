@@ -174,6 +174,7 @@
 </template>
 
 <script>
+import { NumberGenerator } from 'rpg-dice-roller'
 let timeout
 export default {
   data() {
@@ -223,6 +224,12 @@ export default {
       reconnection: false,
     })
 
+    const engines = NumberGenerator.engines
+    const generator = NumberGenerator.generator
+    generator.engine = engines.browserCrypto
+
+    this.generator = generator
+
     if (this.$webgl().isWebGLAvailable()) {
       this.webgl = true
       const threeJS = document.getElementById('ThreeJS')
@@ -265,7 +272,6 @@ export default {
             }))
           )
 
-          console.log(dicesThrower)
           this.diceRoller.resetRoll()
           this.diceRoller.randomDiceThrow(dicesThrower)
           this.visibleRoller = true
@@ -293,7 +299,7 @@ export default {
 
   methods: {
     generateRNG(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min
+      return this.generator.integer(min, max)
     },
 
     getDice(diceKey) {
@@ -332,7 +338,9 @@ export default {
         )
         const rollsSum = rolls.reduce((acc, value) => acc + value)
 
-        return `${rolls.join(' + ')} = <strong style="color: red">${rollsSum}</strong>`
+        return `${rolls.join(
+          ' + '
+        )} = <strong style="color: red">${rollsSum}</strong>`
       }
 
       return []
