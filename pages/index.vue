@@ -39,6 +39,11 @@ export default {
   auth: true,
   data: () => ({
     items: [
+      'Adicionado campos de HP/Max SP e SP/Max SP na ficha e nas informações do usuário (profile)',
+      'Adicionado sistema de rerolagem',
+      'Adicionado botões para rerolagem/sair da tela de rolagem',
+      'Criado roll de dados utilizando threejs-dice',
+      'Adicionado campos de HP/Max HP e SP/Max SP no banco de dados e nos modelos',
       'Adicionado outro modelo para validar individualmente login e registro (login)',
       'Adicionado nome do jogador ao titulo da página (profile/ficha)',
       'Correção no dialog da ficha (ficha)',
