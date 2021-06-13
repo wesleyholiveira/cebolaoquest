@@ -8,9 +8,9 @@
       <h3 class="ficha-content--header">
         {{ story.name }}
       </h3>
-      <v-divider v-show="!subcategory"></v-divider>
+      <v-divider v-if="!subcategory"></v-divider>
       <p
-        v-show="
+        v-if="
           story.content &&
           story.content.length > 0 &&
           story.content != '<p></p>'

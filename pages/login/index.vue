@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-alert
           :type="response.type"
-          v-show="!!response.message && response.message.length > 0"
+          v-if="!!response.message && response.message.length > 0"
         >
           {{ response.message }}
         </v-alert>

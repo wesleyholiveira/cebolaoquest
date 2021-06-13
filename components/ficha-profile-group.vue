@@ -1,6 +1,6 @@
 <template>
   <div
-    v-show="items && items.length > 0"
+    v-if="items && items.length > 0"
     :class="{
       'profile-group': true,
       'remove-margin': group,
@@ -9,7 +9,7 @@
       inline,
     }"
   >
-    <v-list-group no-action v-show="group" v-model="profileGroup">
+    <v-list-group no-action v-if="group" v-model="profileGroup">
       <template v-slot:activator>
         <v-list-item-title class="text-center">{{groupTitle}}</v-list-item-title>
       </template>
@@ -27,14 +27,14 @@
             <template v-slot:item="itemProps">
               <slot name="item" v-bind="itemProps"></slot>
             </template>
-            <template v-slot:divider v-show="i == items.length - 1">
+            <template v-slot:divider v-if="i == items.length - 1">
               <span></span>
             </template>
           </ficha-profile-item>
         </div>
       </v-list>
     </v-list-group>
-    <template v-show="!group">
+    <template v-if="!group">
       <ficha-profile-item
         v-for="(item, i) in items"
         :label="item.label"
@@ -43,7 +43,7 @@
         :key="i"
         :inline="inline"
       >
-        <template v-slot:divider v-show="i == items.length - 1">
+        <template v-slot:divider v-if="i == items.length - 1">
           <span></span>
         </template>
       </ficha-profile-item>

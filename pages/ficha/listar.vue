@@ -3,7 +3,7 @@
     <v-col cols="12">
       <h1 class="text-center">Minhas Fichas</h1>
     </v-col>
-    <v-col cols="12" v-show="players.length > 0">
+    <v-col cols="12" v-if="players.length > 0">
       <v-dialog v-model="dialog" dark max-width="350">
         <v-card>
           <v-card-title class="headline">
@@ -56,7 +56,7 @@
                     <v-row>
                       <v-col>
                         <v-btn
-                          v-show="loading"
+                          v-if="loading"
                           :loading="loading"
                           depressed
                           color="cyan darken-4"
@@ -101,7 +101,7 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </v-col>
-    <v-list class="custom-row" v-show="players.length < 1">
+    <v-list class="custom-row" v-if="players.length < 1">
       <v-list-item-group>
         <v-list-item href="/ficha" class="add">
           <v-tooltip bottom>

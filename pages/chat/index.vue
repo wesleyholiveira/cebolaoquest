@@ -25,7 +25,7 @@
                 >
               </v-col>
             </v-row>
-            <v-row v-show="nextRoll">
+            <v-row v-if="nextRoll">
               <v-col>
                 <v-btn block depressed @click="roll(nextRoll, true)"
                   >Reroll</v-btn
@@ -36,16 +36,16 @@
         </div>
         <div class="chat-messages" ref="chat">
           <div v-for="(msg, i) in messages" :key="i">
-            <pre v-show="msg.type && msg.type == 'system'" class="chat--pre">
+            <pre v-if="msg.type && msg.type == 'system'" class="chat--pre">
               <strong>{{msg.username}}</strong> entrou na sessão.
             </pre>
             <span
-              v-show="msg.type && msg.type == 'roll'"
+              v-if="msg.type && msg.type == 'roll'"
               class="chat--roll"
               v-html="formatRollMessage(msg)"
             ></span>
             <pre
-              v-show="!msg.type"
+              v-if="!msg.type"
               class="chat--pre"
             ><strong>{{msg.username}}:</strong> {{msg.message}}</pre>
           </div>
@@ -72,7 +72,7 @@
                 v-on:keydown.13="sendMessage($event)"
                 ref="chatMessage"
               ></v-textarea>
-              <span class="chat--typing" v-show="usersTyping">{{
+              <span class="chat--typing" v-if="usersTyping">{{
                 usersTyping
               }}</span>
               <div class="chat--buttons">
@@ -351,19 +351,17 @@ export default {
       const rerollStr = reroll ? 're' : ''
       let msg = `${username} ${rerollStr}rolou `
 
-      if (dices) {
-        for (const k of Object.keys(dices)) {
-          const values = dices[k]
-  
-          if (values.length > 0) {
-            msg = `${msg}<strong>${
-              values.length
-            }x${k.toUpperCase()}</strong> (${values}), `
-          }
+      for (const k of Object.keys(dices)) {
+        const values = dices[k]
+
+        if (values.length > 0) {
+          msg = `${msg}<strong>${
+            values.length
+          }x${k.toUpperCase()}</strong> (${values}), `
         }
-  
-        return msg.substring(0, msg.lastIndexOf(','))
       }
+
+      return msg.substring(0, msg.lastIndexOf(','))
     },
 
     resetDices() {

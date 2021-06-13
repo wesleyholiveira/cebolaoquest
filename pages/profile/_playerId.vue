@@ -2,9 +2,9 @@
   <div>
     <error
       :error="data"
-      v-show="data.statusMessage && data.statusMessage == 'error'"
+      v-if="data.statusMessage && data.statusMessage == 'error'"
     />
-    <ficha-profile :player="data" v-show="!data.statusMessage" />
+    <ficha-profile :player="data" v-if="!data.statusMessage" />
   </div>
 </template>
 

@@ -36,7 +36,7 @@
         </v-col>
         <v-col cols="12" lg="6" sm="12" style="text-align: left">
           <v-combobox
-            v-show="!isOverloaded"
+            v-if="!isOverloaded"
             v-model="np.effects"
             :rules="rules.effect"
             :items="dataValorSkills"
@@ -51,7 +51,7 @@
             "
           />
           <v-combobox
-            v-show="isOverloaded"
+            v-if="isOverloaded"
             v-model="np.effects"
             :rules="rules.effect"
             :items="dataValorSkills"
@@ -67,7 +67,7 @@
             "
           />
 
-          <span v-show="isOverloaded" class="warn">
+          <span v-if="isOverloaded" class="warn">
             Você está sobrecarregado e como consequência seu armamento lendário
             terá: {{ dmgDown }} a menos de dano
           </span>
