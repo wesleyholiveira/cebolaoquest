@@ -125,6 +125,14 @@ export default {
       if (player) {
         return [
           {
+            label: 'HP',
+            value: `${player.hp} / ${player.maxHp}`
+          },
+          {
+            label: 'SP',
+            value: `${player.sp} / ${player.maxSp}`
+          },
+          {
             label: 'Level:',
             value: `${player.level}`,
           },

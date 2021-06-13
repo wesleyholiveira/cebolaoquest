@@ -49,6 +49,18 @@
                     label="Classe *"
                   />
                 </v-col>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-text-field v-model="data.hp" label="HP" :rules="hpRules" />
+                </v-col>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-text-field v-model="data.maxHp" label="Max HP" :rules="hpMaxRules" />
+                </v-col>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-text-field v-model="data.sp" label="SP" :rules="spRules" />
+                </v-col>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-text-field v-model="data.maxSp" label="Max SP" :rules="spMaxRules" />
+                </v-col>
                 <v-col cols="12" lg="4" sm="12">
                   <v-text-field v-model="data.level" label="Level" />
                 </v-col>
@@ -637,6 +649,22 @@ export default {
         v.length <= instance.maxCharsName ||
         `Este campo excedeu o limite máximo de: ${instance.maxCharsName} caracteres`,
     ],
+    hpRules: [
+      (v) => !!v || 'Este campo é obrigatório',
+      (v) => v <= instance.data.maxHp || 'Seu HP não pode ser maior do que seu HP máximo'
+    ],
+    spRules: [
+      (v) => !!v || 'Este campo é obrigatório',
+      (v) => v <= instance.data.maxSp || 'Seu SP não pode ser maior do que seu SP máximo'
+    ],
+    hpMaxRules: [
+      (v) => !!v || 'Este campo é obrigatório',
+      (v) => v >= instance.data.hp || 'Seu HP máximo não pode ser menor do que seu HP'
+    ],
+    spMaxRules: [
+      (v) => !!v || 'Este campo é obrigatório',
+      (v) => v >= instance.data.sp || 'Seu SP máximo não pode ser menor do que seu SP'
+    ],
     classRules: [
       (v) => !!v || 'Este campo é obrigatório',
       (v) => instance.classes.includes(v) || 'Esta classe não existe',
@@ -871,7 +899,7 @@ export default {
               hp: this.data.hp,
               sp: this.data.sp,
               maxHp: this.data.maxHp,
-              maxSp: this.data.maxSp
+              maxSp: this.data.maxSp,
             },
             {
               headers: {

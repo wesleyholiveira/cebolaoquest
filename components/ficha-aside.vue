@@ -36,7 +36,6 @@
       <v-col cols="12" style="margin: 0; padding: 0">
         <ficha-profile-group
           :items="characterItems"
-          inline
           v-on:updateProfile="
             skills = $event
             dialog = true
