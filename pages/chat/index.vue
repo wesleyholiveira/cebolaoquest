@@ -351,17 +351,21 @@ export default {
       const rerollStr = reroll ? 're' : ''
       let msg = `${username} ${rerollStr}rolou `
 
-      for (const k of Object.keys(dices)) {
-        const values = dices[k]
-
-        if (values.length > 0) {
-          msg = `${msg}<strong>${
-            values.length
-          }x${k.toUpperCase()}</strong> (${values}), `
+      if (dices) {
+        for (const k of Object.keys(dices)) {
+          const values = dices[k]
+  
+          if (values.length > 0) {
+            msg = `${msg}<strong>${
+              values.length
+            }x${k.toUpperCase()}</strong> (${values}), `
+          }
         }
+  
+        return msg.substring(0, msg.lastIndexOf(','))
       }
 
-      return msg.substring(0, msg.lastIndexOf(','))
+      return ''
     },
 
     resetDices() {
