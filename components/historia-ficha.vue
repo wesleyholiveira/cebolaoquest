@@ -11,7 +11,7 @@
                 ></v-switch>
                 <div class="pr-2" style="float: right">
                     <v-btn
-                        v-if="stories.length > 1"
+                        v-show="stories.length > 1"
                         title="Remover História"
                         :color="removeColor"
                         @click="removeStory()"

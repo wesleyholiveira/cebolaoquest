@@ -1,15 +1,15 @@
 <template>
   <v-app>
     <v-app-bar dark absolute>
-      <v-badge bordered color="error" icon="mdi-lock" overlap v-if="isAdmin">
+      <v-badge bordered color="error" icon="mdi-lock" overlap v-show="isAdmin">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       </v-badge>
       <v-app-bar-nav-icon
         @click="drawer = !drawer"
-        v-if="!isAdmin"
+        v-show="!isAdmin"
       ></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
-      <v-btn icon v-if="$auth.user" @click="$auth.logout()">
+      <v-btn icon v-show="$auth.user" @click="$auth.logout()">
         <v-icon>mdi-exit-to-app</v-icon>
       </v-btn>
     </v-app-bar>
@@ -26,7 +26,7 @@
         <v-list-group
           no-action
           prepend-icon="mdi-clipboard-list"
-          v-if="$auth.user"
+          v-show="$auth.user"
         >
           <template v-slot:activator>
             <v-list-item-title>Ficha</v-list-item-title>
@@ -49,7 +49,7 @@
           </v-list-item>
         </v-list-group>
 
-        <div v-if="$auth.user">
+        <div v-show="$auth.user">
           <v-list-item href="/chat">
             <v-list-item-icon>
               <v-icon>mdi-tooltip-outline</v-icon>

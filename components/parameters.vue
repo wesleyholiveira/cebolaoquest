@@ -21,7 +21,7 @@
     <a @click="resetAttrModifiers()">
       <v-badge icon="mdi-reload" class="badge reload"></v-badge>
     </a>
-    <a @click="turnToDeficient()" v-if="isCounterSynergy">
+    <a @click="turnToDeficient()" v-show="isCounterSynergy">
       <v-badge content="-" color="red darken-1" class="badge minus"></v-badge>
     </a>
     <v-btn @click="addAttribute()" color="transparent" depressed>+</v-btn>

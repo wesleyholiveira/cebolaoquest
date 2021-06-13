@@ -2,7 +2,7 @@
   <div>
     <error
       :error="data"
-      v-if="data.statusMessage && data.statusMessage == 'error'"
+      v-show="data.statusMessage && data.statusMessage == 'error'"
     />
     <ficha :data="data" />
   </div>

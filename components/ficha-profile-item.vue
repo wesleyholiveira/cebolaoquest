@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ group: group && inline }" v-if="label && (value || effect)">
+  <div :class="{ group: group && inline }" v-show="label && (value || effect)">
     
     <div :class="{ 'infos--item': true, 'add-margin': group, inline }">
       <span :class="{ 'infos--item--label': true, inline }">
@@ -7,7 +7,7 @@
       </span>
       <span :class="{ 'infos--item--value': true, inline }">{{ value }}</span>
       <v-tooltip
-        v-if="effect !== undefined && effect.length <= 200"
+        v-show="effect !== undefined && effect.length <= 200"
         max-width="400"
         color="cyan darken-1"
         bottom
@@ -17,7 +17,7 @@
             class="infos--item--link"
             v-bind="attrs"
             v-on="on"
-            v-if="effect"
+            v-show="effect"
             @click="sendToProfileGroup()"
           >
             Efeito (?)
@@ -27,14 +27,14 @@
       </v-tooltip>
       <a
         class="infos--item--link"
-        v-if="effect && effect.length > 200"
+        v-show="effect && effect.length > 200"
         @click="sendToProfileGroup()"
       >
         Efeito (?)
       </a>
     </div>
     <slot name="divider">
-      <v-divider class="infos--divider" v-if="!inline"></v-divider>
+      <v-divider class="infos--divider" v-show="!inline"></v-divider>
     </slot>
   </div>
 </template>

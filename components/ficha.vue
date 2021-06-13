@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <v-alert :type="response.status" v-if="response.status != undefined">
+      <v-alert :type="response.status" v-show="response.status != undefined">
         {{ response.text }}
       </v-alert>
     </v-col>
@@ -242,7 +242,7 @@
                     </v-card>
                   </v-dialog>
                   <v-btn
-                    v-if="data.noblePhantasms.length > 0"
+                    v-show="data.noblePhantasms.length > 0"
                     style="right: 90px"
                     title="Remover Fantasma Nobre"
                     right
@@ -471,7 +471,7 @@
                   <div class="text-center">
                     <v-btn class="mr-4" @click="step = 1"> Voltar </v-btn>
                     <v-dialog
-                      v-if="hasPointsNotSpent"
+                      v-show="hasPointsNotSpent"
                       v-model="dialog"
                       persistent
                       max-width="350"
@@ -519,7 +519,7 @@
                       </v-card>
                     </v-dialog>
                     <v-btn
-                      v-if="!hasPointsNotSpent"
+                      v-show="!hasPointsNotSpent"
                       :disabled="!valid"
                       color="green darken-1"
                       class="mr-4"
