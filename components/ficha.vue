@@ -7,7 +7,7 @@
     </v-col>
     <v-col cols="12">
       <v-stepper v-model="step">
-        <v-stepper-header>
+        <v-stepper-header :class="{ 'hidden-sm-and-down': true, fixed }">
           <v-stepper-step step="1" :complete="step > 1" :rules="[() => valid]">
             Cadastro da Ficha
           </v-stepper-step>
@@ -15,16 +15,52 @@
           <v-stepper-step step="2" :complete="step > 2">
             Informações do Personagem
           </v-stepper-step>
-        </v-stepper-header>
-
-        <v-stepper-items>
           <ficha-info
+            ref="fichaInfo"
             :meritPoints="data.meritPoints"
             :statusPoints="data.statusPoints"
             :proficiencyPoints="data.proficiencyPoints"
             :valorPoints="calculateValorPoints()"
             class="mt-5"
           />
+        </v-stepper-header>
+        <client-only>
+          <v-stepper-header :class="{ 'hidden-md-and-up mobile': true, fixed }">
+            <v-stepper-step
+              step="1"
+              :complete="step > 1"
+              :rules="[() => valid]"
+            >
+              Cadastro da Ficha
+            </v-stepper-step>
+            <v-divider></v-divider>
+            <v-stepper-step step="2" :complete="step > 2">
+              Informações do Personagem
+            </v-stepper-step>
+
+            <v-expansion-panels v-model="panel">
+              <v-expansion-panel>
+                <v-expansion-panel-header>
+                  <v-app-bar dark absolute>
+                    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+                  </v-app-bar>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content style="overflow-y: auto">
+                  <ficha-info
+                    ref="fichaInfo"
+                    :meritPoints="data.meritPoints"
+                    :statusPoints="data.statusPoints"
+                    :proficiencyPoints="data.proficiencyPoints"
+                    :valorPoints="calculateValorPoints()"
+                    class="mt-5"
+                  />
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </v-stepper-header>
+        </client-only>
+
+        <v-stepper-items>
           <v-stepper-content step="1">
             <v-form
               ref="form"
@@ -53,13 +89,21 @@
                   <v-text-field v-model="data.hp" label="HP" :rules="hpRules" />
                 </v-col>
                 <v-col cols="12" lg="6" sm="12">
-                  <v-text-field v-model="data.maxHp" label="Max HP" :rules="hpMaxRules" />
+                  <v-text-field
+                    v-model="data.maxHp"
+                    label="Max HP"
+                    :rules="hpMaxRules"
+                  />
                 </v-col>
                 <v-col cols="12" lg="6" sm="12">
                   <v-text-field v-model="data.sp" label="SP" :rules="spRules" />
                 </v-col>
                 <v-col cols="12" lg="6" sm="12">
-                  <v-text-field v-model="data.maxSp" label="Max SP" :rules="spMaxRules" />
+                  <v-text-field
+                    v-model="data.maxSp"
+                    label="Max SP"
+                    :rules="spMaxRules"
+                  />
                 </v-col>
                 <v-col cols="12" lg="4" sm="12">
                   <v-text-field v-model="data.level" label="Level" />
@@ -554,6 +598,16 @@ export default {
     },
   },
 
+  created() {
+    if (process.client) {
+      window.addEventListener('scroll', this.handleScroll)
+    }
+  },
+
+  mounted() {
+    this.body = document.body.getBoundingClientRect()
+  },
+
   computed: {
     hasPointsNotSpent() {
       return (
@@ -567,6 +621,8 @@ export default {
 
   data: (instance) => ({
     step: 1,
+    panel: [],
+    fixed: false,
     content: '',
     registerMessage: 'ENVIANDO',
     sexs: ['Masculino', 'Feminino'],
@@ -643,19 +699,27 @@ export default {
     ],
     hpRules: [
       (v) => !!v || 'Este campo é obrigatório',
-      (v) => v <= instance.data.maxHp || 'Seu HP não pode ser maior do que seu HP máximo'
+      (v) =>
+        v <= instance.data.maxHp ||
+        'Seu HP não pode ser maior do que seu HP máximo',
     ],
     spRules: [
       (v) => !!v || 'Este campo é obrigatório',
-      (v) => v <= instance.data.maxSp || 'Seu SP não pode ser maior do que seu SP máximo'
+      (v) =>
+        v <= instance.data.maxSp ||
+        'Seu SP não pode ser maior do que seu SP máximo',
     ],
     hpMaxRules: [
       (v) => !!v || 'Este campo é obrigatório',
-      (v) => v >= instance.data.hp || 'Seu HP máximo não pode ser menor do que seu HP'
+      (v) =>
+        v >= instance.data.hp ||
+        'Seu HP máximo não pode ser menor do que seu HP',
     ],
     spMaxRules: [
       (v) => !!v || 'Este campo é obrigatório',
-      (v) => v >= instance.data.sp || 'Seu SP máximo não pode ser menor do que seu SP'
+      (v) =>
+        v >= instance.data.sp ||
+        'Seu SP máximo não pode ser menor do que seu SP',
     ],
     classRules: [
       (v) => !!v || 'Este campo é obrigatório',
@@ -739,6 +803,20 @@ export default {
     specialTechniques: dataSpecialTechniques,
   }),
   methods: {
+    handleScroll(e) {
+      const bodyTop = this.body.top
+      const el = this.$refs.fichaInfo.$el
+
+      if (el) {
+        const { bottom } = el.getBoundingClientRect()
+        if (window.scrollY > (bodyTop - (bottom + 72)) && window.scrollY != 0) {
+          this.fixed = true
+        } else {
+          this.fixed = false
+        }
+      }
+    },
+
     calculateValorPoints() {
       if (this.data.valorPoints.length > 0) {
         return this.calculateValorsFromArray(this.data.valorPoints)
@@ -746,7 +824,7 @@ export default {
 
       return 0
     },
-    
+
     animateMessage(msg) {
       let i = 0
       this.registerMessage = msg
@@ -998,11 +1076,11 @@ export default {
         if (backup.length > data.length) {
           const tmpData = data.map((el) => el.name)
           let diff = backup.filter((el) => !tmpData.includes(el.name))
-  
+
           this.incrementMerits(diff[0])
           return data
         }
-  
+
         const tmpData = backup.map((el) => el.name)
         const diff = data.filter((el) => !tmpData.includes(el.name))
         this.decrementMerits(diff[0])
@@ -1015,11 +1093,11 @@ export default {
         if (backup.length > data.length) {
           const tmpData = data.map((el) => el.name)
           let diff = backup.filter((el) => !tmpData.includes(el.name))
-  
+
           this.decrementMerits(diff[0])
           return data
         }
-  
+
         const tmpData = backup.map((el) => el.name)
         const diff = data.filter((el) => !tmpData.includes(el.name))
         this.incrementMerits(diff[0])
@@ -1097,11 +1175,39 @@ export default {
       this.isNegative = false
     },
   },
+  destroyed() {
+    if (process.client) {
+      window.removeEventListener('scroll', this.handleScroll)
+    }
+  },
 }
 </script>
 <style>
 .v-application .grey.lighten-4 {
   background-color: #303030 !important;
+}
+.v-stepper__header.mobile {
+  margin-bottom: 50px;
+}
+.v-stepper__header {
+  margin-bottom: 120px;
+}
+.v-stepper__header.fixed {
+  margin-bottom: 0;
+  padding-bottom: 220px;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 3;
+}
+.v-stepper__header.fixed .ficha-info {
+  margin-top: 0 !important;
+  top: -25px;
+}
+.v-stepper__header.mobile.fixed {
+  margin-bottom: 0;
+  padding-bottom: 0 !important;
 }
 </style>
 <style scoped>

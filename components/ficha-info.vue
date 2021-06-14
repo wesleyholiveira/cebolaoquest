@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row justify="center">
-            <v-col cols="12" lg="3" md="4" sm="12">
+            <v-col cols="12" lg="3" md="3" sm="12">
                 <v-card 
                     rounded 
                     color="primary"
@@ -13,7 +13,7 @@
                     <v-card-text>{{meritPoints}}</v-card-text>
                 </v-card>
             </v-col>
-            <v-col cols="12" lg="3" md="4" sm="12">
+            <v-col cols="12" lg="3" md="3" sm="12">
                 <v-card 
                     rounded 
                     color="secondary"
@@ -25,7 +25,7 @@
                     <v-card-text>{{statusPoints}}</v-card-text>
                 </v-card>
             </v-col>
-            <v-col cols="12" lg="3" md="4" sm="12">
+            <v-col cols="12" lg="3" md="3" sm="12">
                 <v-card 
                     rounded 
                     color="green"
@@ -37,7 +37,7 @@
                     <v-card-text>{{proficiencyPoints}}</v-card-text>
                 </v-card>
             </v-col>
-            <v-col cols="12" lg="3" md="4" sm="12">
+            <v-col cols="12" lg="3" md="3" sm="12">
                 <v-card 
                     rounded 
                     color="red"
@@ -68,7 +68,7 @@ export default {
   text-align: center;
 }
 .ficha-info .v-card__title {
-  font-size: 30px;
+  font-size: 1.5rem;
   display: block;
 }
 .ficha-info .v-card__text {
