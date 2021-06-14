@@ -139,7 +139,7 @@ export default {
     const title = `Cebolão Quest Busca - ${this.searchBy}`
     const content = `As ${
       this.searchBy
-    } que estão sendo procuradas são: ${this.itemSearch.map((i) => i.name)}`
+    } que estão sendo procuradas são: ${this.itemSearch.map((i) => i.name).join(',')}`
     return {
       title,
       meta: [
@@ -226,7 +226,7 @@ export default {
   methods: {
     randomizeColor() {
       return this.ColorLuminance(
-        `#${((Math.random() * 0xffffff) << 0).toString(16)}`,
+        `#${Math.floor((Math.random() * 0xffffff)).toString(16)}`,
         -0.4
       )
     },
