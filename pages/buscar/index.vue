@@ -15,6 +15,7 @@
                   @change="
                     itemSearch = [data[searchBy][0]]
                     updateItemSearch()
+                    onChangeRandomizeColors()
                   "
                 />
               </v-col>
@@ -33,13 +34,22 @@
                   small-chips
                   multiple
                   clearable
+                  @click:clear="resetColors()"
                   @change="
                     if (!orderBy) {
                       orderBy = orderByItems[0]
                     }
+
                     updateItemSearch()
+                    onChangeRandomizeColors()
                   "
-                />
+                >
+                  <template v-slot:selection="{ item, index }">
+                    <v-chip @click.stop="handleGotoCard(index)">
+                      <span>{{ item.name }}</span>
+                    </v-chip>
+                  </template>
+                </v-combobox>
               </v-col>
               <v-col
                 cols="12"
@@ -56,7 +66,10 @@
                       :items="orderByItems"
                       item-text="title"
                       item-value="key"
-                      @change="updateItemSearch()"
+                      @change="
+                        updateItemSearch()
+                        onChangeRandomizeColors()
+                      "
                     />
                   </v-col>
                   <v-col cols="12" lg="4" sm="12">
@@ -65,7 +78,10 @@
                       name="orderByModifier"
                       label="Ordem:"
                       :items="['ASC', 'DESC']"
-                      @change="updateItemSearch()"
+                      @change="
+                        updateItemSearch()
+                        onChangeRandomizeColors()
+                      "
                     />
                   </v-col>
                 </v-row>
@@ -75,11 +91,21 @@
         </v-form>
       </v-col>
       <v-col cols="12">
+        <v-breadcrumbs :items="itemSearchBreadcrumb" divider="/">
+          <template v-slot:item="{ item }">
+            <v-btn
+              text
+              :color="ColorLuminance(randomizedColors[item.index], 0.5)"
+              @click="handleGotoCard(item.index)"
+              >{{ item.text }}</v-btn
+            >
+          </template>
+        </v-breadcrumbs>
         <div v-if="visibleCards">
           <v-card
             v-for="(item, i) in itemSearch"
             :key="i"
-            :color="randomizeColor()"
+            :color="randomizedColors[i]"
             class="mb-10"
             :id="`card-${i + 1}`"
           >
@@ -125,6 +151,8 @@
 </template>
 
 <script>
+import goTo from 'vuetify/es5/services/goto'
+
 import stratagems from '~/mock/stratagems'
 import negativeTraits from '~/mock/negativeTraits'
 import martialSkills from '~/mock/martialSkills'
@@ -138,7 +166,9 @@ export default {
     const title = `Cebolão Quest Busca - ${this.searchBy}`
     const content = `As ${
       this.searchBy
-    } que estão sendo procuradas são: ${this.itemSearch.map((i) => i.name).join(',')}`
+    } que estão sendo procuradas são: ${this.itemSearch
+      .map((i) => i.name)
+      .join(',')}`
     return {
       title,
       meta: [
@@ -170,6 +200,7 @@ export default {
   },
 
   data: () => ({
+    randomizedColors: [],
     tooltip: false,
     valid: false,
     searchBy: '',
@@ -220,13 +251,26 @@ export default {
     searchByLabel() {
       return Object.keys(this.data)
     },
+
+    itemSearchBreadcrumb() {
+      const { itemSearch } = this
+      if (itemSearch && itemSearch.length > 0) {
+        return itemSearch.map((i, index) => ({
+          text: i.name,
+          disabled: false,
+          index,
+        }))
+      }
+
+      return []
+    },
   },
 
   methods: {
-    randomizeColor() {
+    randomizeColor(brightness = -0.5) {
       return this.ColorLuminance(
-        `#${Math.floor((Math.random() * 0xffffff)).toString(16)}`,
-        -0.4
+        '#' + ((Math.random() * 0xffffff) << 0).toString(16),
+        brightness
       )
     },
 
@@ -295,6 +339,23 @@ export default {
         }
         return 0
       })
+    },
+
+    resetColors() {
+      if (this.itemSearch && this.itemSearch.length < 1) {
+        this.randomizedColorsCard = []
+      }
+    },
+
+    handleGotoCard(index) {
+      const el = document.querySelector(`#card-${index + 1}`)
+      if (el) {
+        goTo(el.getBoundingClientRect().top + window.scrollY)
+      }
+    },
+
+    onChangeRandomizeColors() {
+      this.randomizedColors = this.itemSearch.map(() => this.randomizeColor())
     },
 
     onSubmit() {
