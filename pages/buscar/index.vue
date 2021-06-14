@@ -15,7 +15,6 @@
                   @change="
                     itemSearch = [data[searchBy][0]]
                     updateItemSearch()
-                    onChangeRandomizeColors()
                   "
                 />
               </v-col>
@@ -68,7 +67,6 @@
                       item-value="key"
                       @change="
                         updateItemSearch()
-                        onChangeRandomizeColors()
                       "
                     />
                   </v-col>
@@ -80,7 +78,6 @@
                       :items="['ASC', 'DESC']"
                       @change="
                         updateItemSearch()
-                        onChangeRandomizeColors()
                       "
                     />
                   </v-col>
@@ -95,7 +92,7 @@
           <template v-slot:item="{ item }">
             <v-btn
               text
-              :color="ColorLuminance(randomizedColors[item.index], 0.5)"
+              :color="ColorLuminance(randomizedColors[item.index], 1)"
               @click="handleGotoCard(item.index)"
               >{{ item.text }}</v-btn
             >
@@ -268,8 +265,9 @@ export default {
 
   methods: {
     randomizeColor(brightness = -0.5) {
+      const result = (Math.random() * 0xffffff) << 0
       return this.ColorLuminance(
-        '#' + ((Math.random() * 0xffffff) << 0).toString(16),
+        '#' + result.toString(16),
         brightness
       )
     },
