@@ -12,11 +12,7 @@
                   label="Buscar por:"
                   name="searchBy"
                   :items="searchByLabel"
-                  :rules="searchByRules"
                   @change="
-                    if (!orderBy) {
-                      orderBy = orderByItems[0].key
-                    }
                     itemSearch = [data[searchBy][0]]
                     updateItemSearch()
                   "
@@ -33,7 +29,6 @@
                   name="itemSearch"
                   :label="searchBy"
                   :items="data[searchBy]"
-                  :rules="searchByRules"
                   item-text="name"
                   small-chips
                   multiple
@@ -60,7 +55,6 @@
                       name="orderBy"
                       label="Ordenar por:"
                       :items="orderByItems"
-                      :rules="orderByRules"
                       item-text="title"
                       item-value="key"
                       @change="updateItemSearch()"
@@ -141,7 +135,24 @@ import np from '~/mock/np'
 export default {
   auth: false,
 
-  mounted() {
+  head() {
+    const title = `Cebolão Quest Busca - ${this.searchBy}`
+    const content = `As ${
+      this.searchBy
+    } que estão sendo procuradas são: ${this.itemSearch.map((i) => i.name)}`
+    return {
+      title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content,
+        },
+      ],
+    }
+  },
+
+  async fetch() {
     const { searchBy, itemSearch, orderBy, orderByModifier } = this.$route.query
 
     if (searchBy && itemSearch && orderBy) {
@@ -164,7 +175,7 @@ export default {
     valid: false,
     searchBy: '',
     itemSearch: [],
-    orderBy: null,
+    orderBy: 'name',
     orderByModifierText: 'ASC',
     orderByModifier: 1,
     visibleCards: true,
@@ -205,21 +216,6 @@ export default {
     itemSearchRules: [(v) => !!v || 'Este campo é obrigatório'],
     orderByRules: [(v) => !!v || 'Este campo é obrigatório'],
   }),
-
-  head() {
-    const title = `Cebolão Quest Busca - ${this.searchBy}`
-    const content = `As ${this.searchBy} que estão sendo procuradas são: ${this.itemSearch}`
-    return {
-      title,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content,
-        },
-      ],
-    }
-  },
 
   computed: {
     searchByLabel() {
