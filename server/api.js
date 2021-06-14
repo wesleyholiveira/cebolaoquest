@@ -92,7 +92,6 @@ app.use(function (req, res, next) {
 })
 
 app.get('/api/user', async (req, res) => {
-  console.log('ENDUSER')
   const token = req.headers['authorization'].split(' ')[1]
   const { userId, username, isAdmin } = decode(token)
 
@@ -164,7 +163,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     } else {
       results = await playerRepository.getAllByPlayerAndUserID({ playerId, userId: uid })
     }
-    
+
     if (results.length < 1) {
       return res.status(404).json({
         message: 'Usuário não encontrado',
@@ -201,7 +200,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       hp,
       sp,
       maxHp,
-      maxSp
+      maxSp,
     } = player
 
     const parameters = await attributeRepository.getParametersByPlayerId(id)
@@ -318,7 +317,7 @@ app.post('/api/register', async (req, res) => {
     const { data } = await axios.get(
       `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_PRIVATEKEY}&response=${recaptchaToken}`
     )
-  
+
     if (!data.success) {
       return res.status(401).json({
         message: 'Recaptcha inválido',
@@ -708,6 +707,9 @@ app.post('/api/player', async (req, res) => {
         }
       })
     }
+
+    // const currentNps = await npRepository.getNoblePhantasmsByPlayerId(playerId)
+    await npRepository.deleteByPlayerId(playerId)
 
     if (noblePhantasms) {
       const noblePhantasmsModels = map(noblePhantasms, createModel(npModel))

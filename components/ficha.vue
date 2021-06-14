@@ -22,7 +22,7 @@
             :meritPoints="data.meritPoints"
             :statusPoints="data.statusPoints"
             :proficiencyPoints="data.proficiencyPoints"
-            :valorPoints="calculateValorPoints"
+            :valorPoints="calculateValorPoints()"
             class="mt-5"
           />
           <v-stepper-content step="1">
@@ -558,18 +558,10 @@ export default {
     hasPointsNotSpent() {
       return (
         this.data.meritPoints > 0 ||
-        this.calculateValorPoints > 0 ||
+        this.calculateValorPoints() > 0 ||
         this.data.statusPoints > 0 ||
         this.data.proficiencyPoints > 0
       )
-    },
-
-    calculateValorPoints() {
-      if (this.data.valorPoints.length > 0) {
-        return this.calculateValorsFromArray(this.data.valorPoints)
-      }
-
-      return 0
     },
   },
 
@@ -747,6 +739,14 @@ export default {
     specialTechniques: dataSpecialTechniques,
   }),
   methods: {
+    calculateValorPoints() {
+      if (this.data.valorPoints.length > 0) {
+        return this.calculateValorsFromArray(this.data.valorPoints)
+      }
+
+      return 0
+    },
+    
     animateMessage(msg) {
       let i = 0
       this.registerMessage = msg
@@ -859,7 +859,7 @@ export default {
         if (this.$refs.form.validate()) {
           const params = this.data.parameters || []
 
-          const valorPoints = this.calculateValorPoints
+          // const valorPoints = this.calculateValorPoints()
           const formData = new FormData()
           const { referenceImages } = this.data.extraInfos
 
@@ -893,7 +893,7 @@ export default {
               martialSkills: this.data.martialSkills,
               specialTechniques: this.data.specialTechniques,
               noblePhantasms: this.data.noblePhantasms,
-              valorPoints,
+              valorPoints: 0,
               userId: this.data.userId || id,
               extraInfos: this.data.extraInfos,
               hp: this.data.hp,
@@ -994,33 +994,37 @@ export default {
     },
 
     decideMeritsOperation(data, backup) {
-      if (backup.length > data.length) {
-        const tmpData = data.map((el) => el.name)
-        let diff = backup.filter((el) => !tmpData.includes(el.name))
-
-        this.incrementMerits(diff[0])
-        return data
-      }
-
-      const tmpData = backup.map((el) => el.name)
-      const diff = data.filter((el) => !tmpData.includes(el.name))
-      this.decrementMerits(diff[0])
-      return data
-    },
-
-    decideMeritsOperationNegativeTraits(data, backup) {
-      if (backup.length > data.length) {
-        const tmpData = data.map((el) => el.name)
-        let diff = backup.filter((el) => !tmpData.includes(el.name))
-
+      if (data && backup) {
+        if (backup.length > data.length) {
+          const tmpData = data.map((el) => el.name)
+          let diff = backup.filter((el) => !tmpData.includes(el.name))
+  
+          this.incrementMerits(diff[0])
+          return data
+        }
+  
+        const tmpData = backup.map((el) => el.name)
+        const diff = data.filter((el) => !tmpData.includes(el.name))
         this.decrementMerits(diff[0])
         return data
       }
+    },
 
-      const tmpData = backup.map((el) => el.name)
-      const diff = data.filter((el) => !tmpData.includes(el.name))
-      this.incrementMerits(diff[0])
-      return data
+    decideMeritsOperationNegativeTraits(data, backup) {
+      if (data && backup) {
+        if (backup.length > data.length) {
+          const tmpData = data.map((el) => el.name)
+          let diff = backup.filter((el) => !tmpData.includes(el.name))
+  
+          this.decrementMerits(diff[0])
+          return data
+        }
+  
+        const tmpData = backup.map((el) => el.name)
+        const diff = data.filter((el) => !tmpData.includes(el.name))
+        this.incrementMerits(diff[0])
+        return data
+      }
     },
 
     incrementMerits(removedItem) {

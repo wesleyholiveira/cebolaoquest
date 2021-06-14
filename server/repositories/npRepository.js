@@ -36,5 +36,18 @@ module.exports = {
                 }))
             })
         })
-    }
+    },
+
+    deleteByPlayerId: async (id) => {
+        console.log(`Removing (IF EXISTS) all nps for the player_id = ${id}`)
+        const query = 'DELETE FROM player_noble_phantasms WHERE player_id = ?'
+        return new Promise((resolve, reject) => {
+            db.query(query, [id], (err, results) => {
+                
+
+                if (err) return reject(err)
+                return resolve(results)
+            })
+        })
+    },
 }

@@ -19,6 +19,7 @@
                 id: specialStrike ? specialStrike.id : null,
                 name: dataSpecialStrike[0] ? dataSpecialStrike[0].name : null,
               }
+              np.effects = []
             "
           />
         </v-col>
@@ -39,7 +40,7 @@
             v-if="!isOverloaded"
             v-model="np.effects"
             :rules="rules.effect"
-            :items="dataValorSkills"
+            :items="getValorSkillItems()"
             chips
             item-text="name"
             label="Efeitos"
@@ -54,7 +55,7 @@
             v-if="isOverloaded"
             v-model="np.effects"
             :rules="rules.effect"
-            :items="dataValorSkills"
+            :items="getValorSkillItems()"
             chips
             item-text="name"
             label="Efeitos"
@@ -91,8 +92,8 @@ export default {
   created() {
     this.valorSkills = this.data.valorSkills
     this.valors =
-      this.np.effects &&this.np.effects.length > 0
-        ? this.calculateValorsFromArray(this.np.effects)
+      this.np.effects && this.np.effects.length > 0
+        ? 0
         : this.valorCap
     this.valorCapData = this.valorCap
     this.backupEffects = this.np.effects
@@ -142,22 +143,6 @@ export default {
   }),
 
   computed: {
-    dataValorSkills() {
-      const valorSkills = this.data.valorSkills
-      if (this.np.type) {
-        const type = this.data.type.filter((el) => el.name == this.np.type.name)
-
-        if (type[0]) {
-          const typeValors = type[0].valorSkills
-
-          if (typeValors) {
-            return valorSkills.concat(typeValors)
-          }
-        }
-      }
-      return valorSkills
-    },
-
     dataSpecialStrike() {
       if (this.type) {
         const typeSpecialStrikes = this.data.type.filter(
@@ -182,13 +167,23 @@ export default {
         result = this.calculateValorsFromArray(v)
       }
 
-      if (v.length > 0 && (result > cap || this.valors < 0)) {
+      if (v.length > 0 && (result > cap || this.valorPoints[this.index] < 0)) {
         this.isOverloaded = true
         this.dmgDown = Math.abs(10 * (result - cap))
       } else {
         this.isOverloaded = false
       }
       return true
+    },
+
+    getValorSkillItems() {
+      const valorSkills = this.data.valorSkills
+      if (this.np.type) {
+        const type = this.data.type.filter((el) => el.name == this.np.type.name)
+
+        return valorSkills.concat(type.flatMap(t => t.valorSkills))
+      }
+      return valorSkills
     },
 
     decideValorsOperation(data, backup) {
