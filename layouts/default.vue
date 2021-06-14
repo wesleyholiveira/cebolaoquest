@@ -58,6 +58,14 @@
             <v-list-item-title>Chat</v-list-item-title>
           </v-list-item>
 
+          <v-list-item href="/buscar">
+            <v-list-item-icon>
+              <v-icon>mdi-magnify</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-title>Database</v-list-item-title>
+          </v-list-item>
+
           <v-list-item @click="$auth.logout()">
             <v-list-item-icon>
               <v-icon>mdi-exit-to-app</v-icon>

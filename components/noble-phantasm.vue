@@ -91,7 +91,7 @@ export default {
   created() {
     this.valorSkills = this.data.valorSkills
     this.valors =
-      this.np.effects.length > 0
+      this.np.effects &&this.np.effects.length > 0
         ? this.calculateValorsFromArray(this.np.effects)
         : this.valorCap
     this.valorCapData = this.valorCap

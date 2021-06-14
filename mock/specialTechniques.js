@@ -212,11 +212,6 @@ export default [
         `
     },
     {
-        name: 'Kara no Kyoukai - Jardim dos Pecadores',
-        merits: 1,
-        rarity: 'blue'
-    },
-    {
         name: 'Liberação do nome Verdadeiro',
         merits: 1,
         rarity: 'red',
