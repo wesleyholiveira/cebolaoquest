@@ -33,7 +33,6 @@
                   small-chips
                   multiple
                   clearable
-                  cache-items
                   @change="
                     if (!orderBy) {
                       orderBy = orderByItems[0]
