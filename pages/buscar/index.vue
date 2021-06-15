@@ -14,6 +14,8 @@
                   :items="searchByLabel"
                   @change="
                     itemSearch = [data[searchBy][0]]
+
+                    randomizedColors.push(randomizeColor())
                     updateItemSearch()
                   "
                 />
@@ -38,9 +40,6 @@
                     if (!orderBy) {
                       orderBy = orderByItems[0]
                     }
-
-                    updateItemSearch()
-                    onChangeRandomizeColors()
                   "
                 >
                   <template v-slot:selection="{ item, index }">
@@ -65,9 +64,7 @@
                       :items="orderByItems"
                       item-text="title"
                       item-value="key"
-                      @change="
-                        updateItemSearch()
-                      "
+                      @change="updateItemSearch()"
                     />
                   </v-col>
                   <v-col cols="12" lg="4" sm="12">
@@ -76,9 +73,7 @@
                       name="orderByModifier"
                       label="Ordem:"
                       :items="['ASC', 'DESC']"
-                      @change="
-                        updateItemSearch()
-                      "
+                      @change="updateItemSearch()"
                     />
                   </v-col>
                 </v-row>
@@ -200,12 +195,14 @@ export default {
     randomizedColors: [],
     tooltip: false,
     valid: false,
+    ignoreColor: false,
+    visibleCards: true,
+    backupItem: [],
     searchBy: '',
     itemSearch: [],
     orderBy: 'name',
     orderByModifierText: 'ASC',
     orderByModifier: 1,
-    visibleCards: true,
     data: {
       'Características Negativas': negativeTraits.sort((a, b) =>
         a.name > b.name ? 1 : -1
@@ -266,10 +263,7 @@ export default {
   methods: {
     randomizeColor(brightness = -0.5) {
       const result = (Math.random() * 0xffffff) << 0
-      return this.ColorLuminance(
-        '#' + result.toString(16),
-        brightness
-      )
+      return this.ColorLuminance('#' + result.toString(16), brightness)
     },
 
     ColorLuminance(hex, lum) {
@@ -337,12 +331,12 @@ export default {
         }
         return 0
       })
+
+      this.ignoreColor = true
     },
 
     resetColors() {
-      if (this.itemSearch && this.itemSearch.length < 1) {
-        this.randomizedColorsCard = []
-      }
+      this.randomizedColorsCard = []
     },
 
     handleGotoCard(index) {
@@ -378,6 +372,23 @@ export default {
       }
 
       this.valid = false
+    },
+  },
+
+  watch: {
+    itemSearch: function (item) {
+      if (!this.ignoreColor) {
+        if (
+          item.slice(0, item.length - 1).length == this.backupItem.length &&
+          item.length > this.backupItem.length
+        ) {
+          this.randomizedColors.push(this.randomizeColor())
+        } else {
+          this.onChangeRandomizeColors()
+        }
+      }
+      this.ignoreColor = false
+      this.backupItem = item
     },
   },
 }
