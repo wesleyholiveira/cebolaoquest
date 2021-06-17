@@ -83,7 +83,11 @@
         </v-form>
       </v-col>
       <v-col cols="12">
-        <v-breadcrumbs :items="itemSearchBreadcrumb" divider="/">
+        <v-breadcrumbs
+          :items="itemSearchBreadcrumb"
+          divider="/"
+          class="text-center justify-center"
+        >
           <template v-slot:item="{ item }">
             <v-btn
               text
