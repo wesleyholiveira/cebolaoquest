@@ -5,16 +5,22 @@
       'profile-group': true,
       'remove-margin': group,
       'group-inline': group && inline,
-      'np': noblePhantasm,
+      np: noblePhantasm,
       inline,
     }"
   >
     <v-list-group no-action v-if="group" v-model="profileGroup">
       <template v-slot:activator>
-        <v-list-item-title class="text-center">{{groupTitle}}</v-list-item-title>
+        <v-list-item-title class="text-center">{{
+          groupTitle
+        }}</v-list-item-title>
       </template>
       <v-list style="background-color: transparent; margin-top: 5px">
-        <div v-for="(item, i) in items" :key="i" :class="{'inline-flex': inline}">
+        <div
+          v-for="(item, i) in items"
+          :key="i"
+          :class="{ 'inline-flex': inline }"
+        >
           <slot name="noble-phantasm" v-bind:item="item"></slot>
           <ficha-profile-item
             :label="item.label"
@@ -122,12 +128,17 @@ export default {
 }
 .profile-group .v-list-item .v-list-item__title,
 .v-list-item .v-list-item__subtitle {
+  width: 100%;
   color: #fff;
+  left: 0;
+  position: absolute;
 }
 .profile-group
   .v-list-group
   .v-list-group__header
   .v-list-item__icon.v-list-group__header__append-icon {
   min-width: auto;
+  right: 12px;
+  position: absolute;
 }
 </style>
