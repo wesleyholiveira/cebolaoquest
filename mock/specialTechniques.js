@@ -338,7 +338,7 @@ export default [
         `
     },
 ].sort((a, b) => {
-    if (a.rarity > b.rarity)
+    if (a.name > b.name)
         return 1;
 
     return -1;

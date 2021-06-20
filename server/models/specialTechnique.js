@@ -3,5 +3,6 @@ module.exports = (specialTechnique) => ({
     name: specialTechnique.name,
     merits: specialTechnique.merits,
     effect: specialTechnique.effect,
+    rarity: specialTechnique.rarity,
     player_id: specialTechnique.player_id
 })
