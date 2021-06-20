@@ -39,6 +39,13 @@ export default {
   auth: true,
   data: () => ({
     items: [
+      'Adicionado nova coluna para special_techniques para poder salvar o nível de raridade',
+      'Removido o botão de negativar um atributo',
+      'Adicionado porcentagem de crítico na label do campo de LUK',
+      'Adicionado restrição que impede do usuário pagar rank caso seu nível for inferior a 10',
+      'Atualizado o máximo de HP/SP para 90 e não mais 100',
+      'Adicionado novas badges para indicar se o usuário pode usar algum Burst de seu respectivo atributo',
+      'Adicionado nova coluna na tabela de atributos para comportar o valor númerico de cada atributo (parameters component)',
       'Adicionado campos de HP/Max SP e SP/Max SP na ficha e nas informações do usuário (profile)',
       'Adicionado sistema de rerolagem',
       'Adicionado botões para rerolagem/sair da tela de rolagem',
