@@ -136,6 +136,8 @@
                 <template v-for="(attribute, i) in data.parameters">
                   <v-col :key="i" cols="12" lg="4" md="6" sm="12">
                     <parameters
+                      :maxHp="data.maxHp"
+                      :maxSp="data.maxSp"
                       :attribute="attribute"
                       :playerLevel="data.level"
                       :statusPoints="data.statusPoints"
@@ -143,6 +145,9 @@
                       :negativeTraits="data.negativeTraits"
                       :proficiencyPoints="data.proficiencyPoints"
                       :defaultProficiencyPoints="defaultProficiencyPoints"
+                      :defaultStatusPoints="defaultStatusPoints"
+                      v-on:updateMaxHp="data.maxHp = $event"
+                      v-on:updateMaxSp="data.maxSp = $event"
                       v-on:updateParameters="data.parameters[i] = $event"
                       v-on:updateStatusPoints="data.statusPoints = $event"
                       v-on:updateMeritPoints="data.meritPoints = $event"
@@ -199,12 +204,22 @@
                     :items="specialTechniques"
                     :rules="specialTechniquesRules"
                     item-text="name"
-                    attach
                     chips
                     label="Técnicas Especiais"
                     multiple
-                    deletable-chips
-                  />
+                  >
+                    <template v-slot:selection="{ item, index }">
+                      <v-chip
+                        close
+                        :color="item.rarity"
+                        @click:close="
+                          data.specialTechniques = data.specialTechniques.filter((e, i) => i !== index)
+                        "
+                      >
+                        <span>{{ item.name }}</span>
+                      </v-chip>
+                    </template>
+                  </v-combobox>
                 </v-col>
               </v-row>
               <template v-for="(item, key) in data.noblePhantasms">
@@ -659,7 +674,7 @@ export default {
     dialog: false,
     valid: true,
     extraInfosValid: true,
-    isNegative: false,
+    // isNegative: false,
     date: null,
     menu: false,
     response: {},
@@ -809,7 +824,7 @@ export default {
 
       if (el) {
         const { bottom } = el.getBoundingClientRect()
-        if (window.scrollY > (bodyTop - (bottom + 72)) && window.scrollY != 0) {
+        if (window.scrollY > bodyTop - (bottom + 72) && window.scrollY != 0) {
           this.fixed = true
         } else {
           this.fixed = false
@@ -1172,7 +1187,6 @@ export default {
         negativeTraits,
         this.backupNegativeTraits
       )
-      this.isNegative = false
     },
   },
   destroyed() {

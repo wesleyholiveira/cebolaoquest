@@ -14,16 +14,87 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-text-field v-model="attribute.rank" :label="attribute.name" disabled />
-    <a @click="turnToProficient()">
-      <v-badge content="+" color="green darken-1" class="badge plus"></v-badge>
-    </a>
-    <a @click="resetAttrModifiers()">
-      <v-badge icon="mdi-reload" class="badge reload"></v-badge>
-    </a>
-    <a @click="turnToDeficient()" v-if="isCounterSynergy">
+    <v-dialog v-model="dialogUnderLevel" max-width="370">
+      <v-card>
+        <v-card-title class="headline">
+          Você não tem nível suficiente para esta ação
+        </v-card-title>
+        <v-card-text>
+          Para você conseguir subir um <strong>PARÂMETRO</strong> acima de
+          <strong>B</strong> você deve estar pelo menos no
+          <strong>nível 10</strong>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="dialogUnderLevel = false"> Sair </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-text-field v-model="attribute.rank" :label="attributeName" disabled />
+    <div class="badges">
+      <v-tooltip bottom v-if="attribute.name == 'AGI'">
+        <template v-slot:activator="{ on, attrs }">
+          <a v-on="on" v-bind="attrs"
+            ><v-badge
+              content="Burst of Speed"
+              left
+              color="orange darken-1"
+            ></v-badge
+          ></a>
+        </template>
+        <span
+          v-html="
+            index == 0
+              ? 'Você não pode usar o Burst of Speed'
+              : `Você pode usar o Burst of Speed <strong>${index}</strong> vez(es)`
+          "
+        >
+        </span>
+      </v-tooltip>
+      <v-tooltip bottom v-if="attribute.name == 'NP'">
+        <template v-slot:activator="{ on, attrs }">
+          <a v-on="on" v-bind="attrs"
+            ><v-badge content="Checkmate" left></v-badge
+          ></a>
+        </template>
+        <span
+          v-html="
+            index == 0
+              ? 'Você não pode usar o Checkmate'
+              : `Você pode usar o Checkmate <strong>${index}</strong> vez(es)`
+          "
+        >
+        </span>
+      </v-tooltip>
+      <v-tooltip bottom v-if="attribute.name == 'LUK'">
+        <template v-slot:activator="{ on, attrs }">
+          <a v-on="on" v-bind="attrs"
+            ><v-badge
+              content="Burst of Power"
+              color="red darken-1"
+              left
+            ></v-badge
+          ></a>
+        </template>
+        <span
+          v-html="
+            index == 0
+              ? 'Você não pode usar o Burst of Power'
+              : `Você pode usar o Burst of Power <strong>${index}</strong> vez(es)`
+          "
+        >
+        </span>
+      </v-tooltip>
+      <v-btn @click="turnToProficient()" text color="green darken-1">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+      <v-btn @click="resetAttrModifiers()" text color="primary darken-1">
+        <v-icon>mdi-reload</v-icon>
+      </v-btn>
+    </div>
+    <!-- <a @click="turnToDeficient()" v-if="isCounterSynergy">
       <v-badge content="-" color="red darken-1" class="badge minus"></v-badge>
-    </a>
+    </a> -->
     <v-btn @click="addAttribute()" color="transparent" depressed>+</v-btn>
     <v-btn @click="subAttribute()" color="transparent" depressed>-</v-btn>
   </div>
@@ -33,7 +104,10 @@
 export default {
   props: {
     attribute: Object,
+    defaultStatusPoints: Number,
     defaultProficiencyPoints: Number,
+    maxHp: Number,
+    maxSp: Number,
     proficiencyPoints: Number,
     meritPoints: Number,
     statusPoints: Number,
@@ -43,91 +117,142 @@ export default {
 
   data: () => ({
     // backupMerit: 0,
-    isNegative: false,
+    // isNegative: false,
     dialogProf: false,
+    dialogUnderLevel: false,
     index: 0,
-    defaultStatusPoints: 0,
     negativeRuleErrorClass: '',
-    baseParams: ['D', 'C', 'B', 'A', 'S'],
-    parameters: [{
+    baseParams: [
+      { rank: 'D', value: 6, extra: 0 },
+      { rank: 'C', value: 8, extra: 10 },
+      { rank: 'B', value: 10, extra: 25 },
+      { rank: 'A', value: 12, extra: 30 },
+      { rank: 'S', value: 20, extra: 45 },
+    ],
+    parameters: [
+      {
         id: null,
         name: 'STR',
         rank: 'D',
+        value: 6,
         player_id: null,
-      }, {
+      },
+      {
         id: null,
         name: 'AGI',
         rank: 'D',
+        value: 6,
         player_id: null,
-      }, {
+      },
+      {
         id: null,
         name: 'END',
         rank: 'D',
+        value: 6,
         player_id: null,
-      }, {
+      },
+      {
         id: null,
         name: 'LUK',
         rank: 'D',
+        value: 6,
         player_id: null,
-      }, {
+      },
+      {
         id: null,
         name: 'NP',
         rank: 'D',
+        value: 6,
         player_id: null,
-      }, {
+      },
+      {
         id: null,
         name: 'MAN',
         rank: 'D',
+        value: 6,
         player_id: null,
-      }],
+      },
+    ],
     negativeRules: [],
     backup: [],
   }),
 
-  created: function () {
+  mounted: function () {
+    const index = this.baseParams
+      .map((e) => e.rank)
+      .indexOf(this.attribute.rank.replace(/[\-\+]/, ''))
+
     this.parameters = { ...this.attribute }
-    this.index = this.baseParams.indexOf(this.attribute.rank.replace(/[\-\+]/, ''))
+    this.index = index > -1 ? index : 0
     this.initialProficiencyPoints = this.proficiencyPoints
     this.initialMeritPoints = this.meritPoints
-    this.defaultStatusPoints = this.statusPoints
   },
 
   computed: {
-    isCounterSynergy() {
-      const isCounter = (
-        (this.negativeTraits &&
-          this.negativeTraits.filter((e) => e.name == 'Contra-sinergia')
-            .length > 0)
-      )
+    attributeName() {
+      const { index } = this
+      const { name, value } = this.attribute
+      let lukBonus = ''
 
-      if (!isCounter) {
-        this.attribute.rank = this.attribute.rank.replace('-', '')
-        this.isNegative = false
+      if (name == 'LUK' && index > 0) {
+        lukBonus = ` +${index * 25}% CRIT`
       }
 
-      if (this.attribute.rank.lastIndexOf('-') > 0) {
-        this.isNegative = true
+      if (name) {
+        return `${name}: (${value})${lukBonus}`
       }
 
-      return isCounter
+      return ''
     },
+    // isCounterSynergy() {
+    //   const isCounter = (
+    //     (this.negativeTraits &&
+    //       this.negativeTraits.filter((e) => e.name == 'Contra-sinergia')
+    //         .length > 0)
+    //   )
+    //   if (!isCounter) {
+    //     this.attribute.rank = this.attribute.rank.replace('-', '')
+    //     this.isNegative = false
+    //   }
+    //   if (this.attribute.rank.lastIndexOf('-') > 0) {
+    //     this.isNegative = true
+    //   }
+    //   return isCounter
+    // },
   },
 
   methods: {
     resetAttrModifiers() {
-      const proficiencyPoints = this.initialProficiencyPoints
+      const statusPoints =
+        this.initialStatusPoints > 0
+          ? this.initialStatusPoints
+          : this.defaultStatusPoints
 
-      this.attribute.rank = this.baseParams[0]
-      this.isNegative = false
+      const proficiencyPoints =
+        this.initialProficiencyPoints > 0
+          ? this.initialProficiencyPoints
+          : this.defaultProficiencyPoints
+
+      this.index = 0
+      this.attribute.rank = this.baseParams[0].rank
+      this.attribute.value = this.baseParams[0].value
+      // this.isNegative = false
       this.$emit('updateProficiencyPoints', proficiencyPoints)
+      this.$emit('updateStatusPoints', statusPoints)
     },
 
     addAttribute() {
       let p = this.baseParams
       let i = this.index
+
       let statusPoints = this.statusPoints
 
       if (statusPoints > 0) {
+        if (i >= 2 && this.playerLevel < 10) {
+          this.dialogUnderLevel = true
+          return
+        }
+
         if (i >= p.length - 1) {
           return
         }
@@ -136,22 +261,44 @@ export default {
         statusPoints -= 1
 
         this.index = i
-        this.attribute.rank = this.baseParams[i]
+        this.attribute.rank = p[i].rank
+        this.attribute.value = p[i].value
+
+        if (this.attribute.name == 'END') {
+          this.$emit('updateMaxHp', this.maxHp + p[i].extra)
+        }
+
+        if (this.attribute.name == 'MAN') {
+          this.$emit('updateMaxSp', this.maxSp + p[i].extra)
+        }
+
+        this.$emit('updateProficiencyPoints', this.defaultProficiencyPoints)
         this.$emit('updateStatusPoints', statusPoints)
       }
     },
 
     subAttribute() {
+      let p = this.baseParams
       let i = this.index
 
       let statusPoints = this.statusPoints
-      if (i > 0 && statusPoints < this.playerLevel) {
+      if (i > 0) {
+        if (this.attribute.name == 'END') {
+          this.$emit('updateMaxHp', this.maxHp - p[i].extra)
+        }
+
+        if (this.attribute.name == 'MAN') {
+          this.$emit('updateMaxSp', this.maxSp - p[i].extra)
+        }
+
         i -= 1
         statusPoints += 1
 
         this.index = i
-        this.attribute.rank = this.baseParams[i]
+        this.attribute.rank = p[i].rank
+        this.attribute.value = p[i].value
 
+        this.$emit('updateProficiencyPoints', this.defaultProficiencyPoints)
         this.$emit('updateStatusPoints', statusPoints)
         return
       }
@@ -159,11 +306,13 @@ export default {
     },
 
     turnToProficient() {
-      const { rank } = this.attribute
+      const { rank, value } = this.attribute
+      let profSize = (rank.match(/[+]/g) || []).length
       let proficiencyPoints = this.proficiencyPoints
-      console.log('POINTS', proficiencyPoints)
 
-      if ((rank.match(/[+]/g) || []).length >= 2) {
+      profSize = profSize == 0 ? 1 : profSize
+
+      if (profSize >= 2) {
         this.dialogProf = true
         return
       }
@@ -174,21 +323,24 @@ export default {
         proficiencyPoints -= 1
 
         this.attribute.rank = newParam
+        this.attribute.value = Math.floor(
+          value + this.baseParams[this.index].value * 0.5
+        )
         this.$emit('updateProficiencyPoints', proficiencyPoints)
       }
     },
 
-    turnToDeficient() {
-      const p = this.baseParams
-      const i = this.index
+    // turnToDeficient() {
+    //   const p = this.baseParams
+    //   const i = this.index
 
-      if (!this.isNegative) {
-        const newParam = `${p[i]}-`
-        this.attribute.rank = newParam
-  
-        this.isNegative = true
-      }
-    },
+    //   if (!this.isNegative) {
+    //     const newParam = `${p[i]}-`
+    //     this.attribute.rank = newParam
+
+    //     this.isNegative = true
+    //   }
+    // },
   },
 }
 </script>
@@ -199,19 +351,10 @@ export default {
   align-items: center;
   position: relative;
 }
-.parameters .badge {
-  top: 15px;
-  left: 0;
-  cursor: pointer;
+.parameters .badges {
+  font-size: 0.4rem;
+  top: -10px;
+  right: 0px;
   position: absolute;
-}
-.parameters .badge.plus {
-  left: 35px;
-}
-.parameters .badge.reload {
-  left: 70px;
-}
-.parameters .badge.minus {
-  left: 108px;
 }
 </style>
