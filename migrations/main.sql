@@ -166,3 +166,8 @@ ALTER TABLE players ADD sp SMALLINT NOT NULL DEFAULT 0;
 ALTER TABLE players ADD active TINYINT NOT NULL DEFAULT 0;
 
 UPDATE players SET max_hp = 100, max_sp = 100, hp = 100, sp = 100 WHERE id > 0;
+
+ALTER TABLE player_attributes ADD value SMALLINT NOT NULL DEFAULT 6;
+UPDATE players SET max_hp = 90, max_sp = 90 WHERE id > 0;
+
+ALTER TABLE player_special_techniques ADD rarity CHAR(20) NOT NULL;
