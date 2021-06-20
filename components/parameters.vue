@@ -223,11 +223,6 @@ export default {
 
   methods: {
     resetAttrModifiers() {
-      const statusPoints =
-        this.initialStatusPoints > 0
-          ? this.initialStatusPoints
-          : this.defaultStatusPoints
-
       const proficiencyPoints =
         this.initialProficiencyPoints > 0
           ? this.initialProficiencyPoints
@@ -238,7 +233,6 @@ export default {
       this.attribute.value = this.baseParams[0].value
       // this.isNegative = false
       this.$emit('updateProficiencyPoints', proficiencyPoints)
-      this.$emit('updateStatusPoints', statusPoints)
     },
 
     addAttribute() {
