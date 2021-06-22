@@ -18,7 +18,6 @@ import martialSkillModel from './models/martialSkill'
 import stratagemModel from './models/stratagem'
 import npModel from './models/np'
 import npTypeModel from './models/np_type'
-import npSpecialStrikeModel from './models/np_special_strike'
 import npEffectModel from './models/np_effect'
 import userModel from './models/user'
 
@@ -30,7 +29,6 @@ import martialSkillRepository from './repositories/martialSkillRepository'
 import stratagemRepository from './repositories/stratagemRepository'
 import npRepository from './repositories/npRepository'
 import npTypeRepository from './repositories/npTypeRepository'
-import npSpecialStrikeRepository from './repositories/npSpecialStrikeRepository'
 import npEffectRepository from './repositories/npEffectRepository'
 import userRepository from './repositories/userRepository'
 import image from './models/image'
@@ -211,7 +209,6 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     const noblePhantasms = await npRepository.getNoblePhantasmsByPlayerId(id)
     const referenceImages = await imageRepository.getImagesByPlayerId(id)
     const npTypeRepo = npTypeRepository
-    const npSpecialSkRepo = npSpecialStrikeRepository
     const npEffectsRepo = npEffectRepository
     const categories = await categoryRepository.getCategoriesByPlayerId(id)
     let unitAge = 'anos'
@@ -237,7 +234,6 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     const npStructure = await noblePhantasms.map(async np => ({
       ...np,
       type: await npTypeRepo.getNoblePhantasmTypeByNpId(np.id),
-      specialStrike: await npSpecialSkRepo.getNoblePhantasmSpecialStrikesByNpId(np.id),
       effects: await npEffectsRepo.getNoblePhantasmEffectsByNpId(np.id)
     }))
 
@@ -497,7 +493,6 @@ app.get('/api/player/:id', async (req, res) => {
   const noblePhantasms = await npRepository.getNoblePhantasmsByPlayerId(id)
   const referenceImages = await imageRepository.getImagesByPlayerId(id)
   const npTypeRepo = npTypeRepository
-  const npSpecialSkRepo = npSpecialStrikeRepository
   const npEffectsRepo = npEffectRepository
   const categories = await categoryRepository.getCategoriesByPlayerId(id)
 
@@ -523,7 +518,6 @@ app.get('/api/player/:id', async (req, res) => {
   const npStructure = await noblePhantasms.map(async np => ({
     ...np,
     type: await npTypeRepo.getNoblePhantasmTypeByNpId(np.id),
-    specialStrike: await npSpecialSkRepo.getNoblePhantasmSpecialStrikesByNpId(np.id),
     effects: await npEffectsRepo.getNoblePhantasmEffectsByNpId(np.id)
   }))
 
@@ -716,7 +710,6 @@ app.post('/api/player', async (req, res) => {
       if (noblePhantasmsModels.length > 0) {
         const npIds = await npRepository.insertAll(noblePhantasmsModels)
         const npTypes = noblePhantasms.map(el => el.type)
-        const npSpecialStrikes = noblePhantasms.map(el => el.specialStrike)
         const npEffects = noblePhantasms.flatMap((el, i) => ({
           id: el.id || null,
           effect: el.effects,
@@ -731,15 +724,6 @@ app.post('/api/player', async (req, res) => {
           }))
 
           npTypeRepository.insertAll(npTypeModels)
-        }
-
-        if (npSpecialStrikes.length > 0) {
-          const npSpecialStrikeModels = npSpecialStrikes.map((s, i) => npSpecialStrikeModel({
-            ...s,
-            np_id: npIds[i]
-          }))
-
-          npSpecialStrikeRepository.insertAll(npSpecialStrikeModels)
         }
 
         const npEffectModels = npEffects.flatMap(e => e.effect.map(ef => npEffectModel({
