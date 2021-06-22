@@ -85,12 +85,12 @@
         >
         </span>
       </v-tooltip>
-      <v-btn @click="turnToProficient()" text color="green darken-1">
+      <!-- <v-btn @click="turnToProficient()" text color="green darken-1">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
       <v-btn @click="resetAttrModifiers()" text color="primary darken-1">
         <v-icon>mdi-reload</v-icon>
-      </v-btn>
+      </v-btn> -->
     </div>
     <!-- <a @click="turnToDeficient()" v-if="isCounterSynergy">
       <v-badge content="-" color="red darken-1" class="badge minus"></v-badge>
@@ -228,7 +228,7 @@ export default {
           ? this.initialProficiencyPoints
           : this.defaultProficiencyPoints
 
-      this.index = 0
+      // this.index = 0
       this.attribute.rank = this.baseParams[0].rank
       this.attribute.value = this.baseParams[0].value
       // this.isNegative = false
@@ -347,7 +347,7 @@ export default {
 }
 .parameters .badges {
   font-size: 0.4rem;
-  top: -10px;
+  top: 0px;
   right: 0px;
   position: absolute;
 }

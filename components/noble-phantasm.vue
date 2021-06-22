@@ -14,28 +14,10 @@
             :items="data.type"
             item-text="name"
             label="Tipo"
-            @change="
-              specialStrike = {
-                id: specialStrike ? specialStrike.id : null,
-                name: dataSpecialStrike[0] ? dataSpecialStrike[0].name : null,
-              }
-              np.effects = []
-            "
+            @change="np.effects = []"
           />
         </v-col>
-        <v-col cols="12" lg="6" sm="12">
-          <v-combobox
-            v-model="specialStrike"
-            :items="dataSpecialStrike"
-            item-text="name"
-            label="Golpe Especial"
-          >
-            <template v-slot:no-data>
-              Nenhum tipo de fantasma nobre foi selecionado.
-            </template>
-          </v-combobox>
-        </v-col>
-        <v-col cols="12" lg="6" sm="12" style="text-align: left">
+        <v-col cols="12" lg="12" sm="12" style="text-align: left">
           <v-combobox
             v-if="!isOverloaded"
             v-model="np.effects"
@@ -67,7 +49,6 @@
               backupEffects = decideValorsOperation(np.effects, backupEffects)
             "
           />
-
           <span v-if="isOverloaded" class="warn">
             Você está sobrecarregado e como consequência seu armamento lendário
             terá: {{ dmgDown }} a menos de dano
@@ -92,9 +73,7 @@ export default {
   created() {
     this.valorSkills = this.data.valorSkills
     this.valors =
-      this.np.effects && this.np.effects.length > 0
-        ? 0
-        : this.valorCap
+      this.np.effects && this.np.effects.length > 0 ? 0 : this.valorCap
     this.valorCapData = this.valorCap
     this.backupEffects = this.np.effects
   },
@@ -110,11 +89,52 @@ export default {
     valorEffects: 0,
     valors: 0,
     type: instance.np.type,
-    specialStrike: instance.np.specialStrike,
     forbiddenSequence: {
       'Rugidos de Rubi': ['Sonhos de Safira', 'Emanações de Esmeralda'],
       'Sonhos de Safira': ['Rugidos de Rubi', 'Emanações de Esmeralda'],
       'Emanações de Esmeralda': ['Rugidos de Rubi', 'Sonhos de Safira'],
+      'Destruidor de Falanges': [
+        'Revelador de Ilusões',
+        'Apagador de Fantasmas',
+      ],
+      'Apagador de Fantasmas': [
+        'Destruidor de Falanges',
+        'Revelador de Ilusões',
+      ],
+      'Revelador de Ilusões': [
+        'Destruidor de Falanges',
+        'Apagador de Fantasmas',
+      ],
+      'Vingadora Sagrada': [
+        'Matadora de Dragões',
+        'Nemesis',
+        'Finda-Deus',
+        'Marca dos Ancestrais',
+      ],
+      'Matadora de Dragões': [
+        'Vingadora Sagrada',
+        'Nemesis',
+        'Finda-Deus',
+        'Marca dos Ancestrais',
+      ],
+      Nemesis: [
+        'Matadora de Dragões',
+        'Vingadora Sagrada',
+        'Finda-Deus',
+        'Marca dos Ancestrais',
+      ],
+      'Finda-Deus': [
+        'Matadora de Dragões',
+        'Nemesis',
+        'Vingadora Sagrada',
+        'Marca dos Ancestrais',
+      ],
+      'Marca dos Ancestrais': [
+        'Matadora de Dragões',
+        'Nemesis',
+        'Vingadora Sagrada',
+        'Finda-Deus',
+      ],
     },
     rules: {
       effect: [
@@ -142,20 +162,7 @@ export default {
     },
   }),
 
-  computed: {
-    dataSpecialStrike() {
-      if (this.type) {
-        const typeSpecialStrikes = this.data.type.filter(
-          (el) => el.name == this.type.name
-        )
-        if (typeSpecialStrikes.length > 0) {
-          return typeSpecialStrikes[0].specialStrikes
-        }
-        return this.type.specialStrikes
-      }
-      return []
-    },
-  },
+  computed: {},
 
   methods: {
     calculateValorsFromArray: (data) =>
@@ -181,7 +188,15 @@ export default {
       if (this.np.type) {
         const type = this.data.type.filter((el) => el.name == this.np.type.name)
 
-        return valorSkills.concat(type.flatMap(t => t.valorSkills))
+        return valorSkills
+          .concat(type.flatMap((t) => t.valorSkills))
+          .sort((a, b) => {
+            if (a.name > b.name) {
+              return 1
+            }
+
+            return -1
+          })
       }
       return valorSkills
     },
@@ -288,14 +303,6 @@ export default {
       this.np.type = {
         ...old,
         name: newType.name,
-      }
-    },
-    specialStrike: function (newSpecialStrike) {
-      let old = this.np.specialStrike
-
-      this.np.specialStrike = {
-        ...old,
-        name: newSpecialStrike.name,
       }
     },
   },

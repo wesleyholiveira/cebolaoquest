@@ -227,18 +227,10 @@ export default {
             effect: e.effect,
           })),
           type: np.type ? np.type.name : '',
-          specialStrike:
-            np.specialStrike && np.specialStrike.name != '0'
-              ? np.specialStrike.name
-              : 'Nenhum',
         }))
 
         npItems.forEach((np) => {
           np.infos.unshift(
-            {
-              label: 'Golpe Especial:',
-              value: np.specialStrike,
-            },
             {
               label: 'Tipo de Armamento Lendário:',
               value: np.type,
