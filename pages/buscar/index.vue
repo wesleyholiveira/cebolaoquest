@@ -13,8 +13,6 @@
                   name="searchBy"
                   :items="searchByLabel"
                   @change="
-                    itemSearch = [data[searchBy][0]]
-
                     randomizedColors.push(randomizeColor())
                     updateItemSearch()
                   "
@@ -30,17 +28,12 @@
                   v-model="itemSearch"
                   name="itemSearch"
                   :label="searchBy"
-                  :items="data[searchBy]"
+                  :items="dataSearchOrdered"
                   item-text="name"
                   small-chips
                   multiple
                   clearable
                   @click:clear="resetColors()"
-                  @change="
-                    if (!orderBy) {
-                      orderBy = orderByItems[0]
-                    }
-                  "
                 >
                   <template v-slot:selection="{ item, index }">
                     <v-chip @click.stop="handleGotoCard(index)">
@@ -61,7 +54,11 @@
                       v-model="orderBy"
                       name="orderBy"
                       label="Ordenar por:"
-                      :items="orderByItems"
+                      :items="
+                        orderByItems.filter(
+                          (i) => i.name == searchBy || i.name == 'General'
+                        )
+                      "
                       item-text="title"
                       item-value="key"
                       @change="updateItemSearch()"
@@ -111,10 +108,11 @@
 
             <v-card-actions>
               <v-btn text>
-                Custo: {{ item.merits || item.valors }}&nbsp;
+                Custo: {{ item.merits || item.valors || item.cost }}&nbsp;
                 <small style="color: #f6f6f6">
                   <span v-if="item.merits"> méritos </span>
                   <span v-if="item.valors"> valors </span>
+                  <span v-if="item.cost"> PE<small>s</small> </span>
                 </small>
               </v-btn>
             </v-card-actions>
@@ -154,6 +152,7 @@ import negativeTraits from '~/mock/negativeTraits'
 import martialSkills from '~/mock/martialSkills'
 import specialTechniques from '~/mock/specialTechniques'
 import np from '~/mock/np'
+import spells from '~/mock/spells'
 
 export default {
   auth: false,
@@ -219,6 +218,7 @@ export default {
             .flatMap((type) => type.valorSkills)
         )
         .sort((a, b) => (a.name > b.name ? 1 : -1)),
+      Feitiços: spells.sort((a, b) => (a.name > b.name ? 1 : -1)),
       'Habilidades Marciais': martialSkills.sort((a, b) =>
         a.name > b.name ? 1 : -1
       ),
@@ -228,16 +228,39 @@ export default {
     },
     orderByItems: [
       {
+        name: 'General',
         title: 'Título',
         key: 'name',
       },
       {
+        name: 'Características Negativas',
         title: 'Méritos',
         key: 'merits',
       },
       {
+        name: 'Estratagemas',
+        title: 'Méritos',
+        key: 'merits',
+      },
+      {
+        name: 'Habilidades Marciais',
+        title: 'Méritos',
+        key: 'merits',
+      },
+      {
+        name: 'Técnicas Especiais',
+        title: 'Méritos',
+        key: 'merits',
+      },
+      {
+        name: 'Fantasmas Nobres',
         title: 'Valors',
         key: 'valors',
+      },
+      {
+        name: 'Feitiços',
+        title: 'Custo',
+        key: 'cost',
       },
     ],
     searchByRules: [(v) => !!v || 'Este campo é obrigatório'],
@@ -248,6 +271,16 @@ export default {
   computed: {
     searchByLabel() {
       return Object.keys(this.data)
+    },
+
+    dataSearchOrdered() {
+      if (this.searchBy) {
+        return this.data[this.searchBy].sort((a, b) =>
+          a[this.orderBy] > b[this.orderBy] ? this.orderByModifier : -this.orderByModifier
+        )
+      }
+
+      return []
     },
 
     itemSearchBreadcrumb() {
@@ -391,6 +424,7 @@ export default {
           this.onChangeRandomizeColors()
         }
       }
+
       this.ignoreColor = false
       this.backupItem = item
     },
