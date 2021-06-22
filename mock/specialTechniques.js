@@ -1,102 +1,118 @@
 export default [
     {
-        name: 'Golpe Explosivo de Mana',
+        name: 'Mana Burst',
         merits: 1,
         rarity: 'green',
-        effect: `Essa técnica invoca o conceito de um <i>“golpe decisivo”</i>, onde um herói aumenta a potência de um golpe invocando sua força de vontade. 
-        Lendas que envolvem histórias sobre heróis que possuem grande poder mágico, mas escolheram o caminho do guerreiro,
-        e são capazes de imbuir seus ataques com tal energia também são encontradas nessa categoria.<br /><br />
-
-        Quando usar essa técnica e seu parâmetro Fantasma Nobre forem iguais a <strong>D</strong> ou <strong>C, você pode atacar <strong>UM</strong> alvo com <strong>1D6 + 1D6</strong>
-        para cada 20 Pontos de Energia que você desejar gastar + 12, até um limite igual ao seu parâmetro <strong>Mana</strong>.<br /><br />
-        Esse ataque não pode ser aparado, e carrega qualquer efeito que seu equipamento possuir, exceto efeitos de ataque múltiplo. Essas rolagens podem causar dano crítico normalmente.<br /><br />
-        Quando usar essa técnica e seu parâmetro Fantasma Nobre for igual a <strong>B</strong> ou <strong>A</strong>,
-        você pode atacar 1 alvo com <strong>1D12 + 1D12</strong> para cada 40 Pontos de Energia que você desejar gastar + 20, até um limite igual ao seu parâmetro <strong>Mana</strong>.<br /><br />
-
-        Quando usar essa técnica e seu parâmetro Fantasma Nobre for igual a <strong>S</strong<, você pode atacar <strong>UM</strong> alvo com <strong>1D20 + 1D20</strong> para cada 80 Pontos de Energia que você desejar gastar + 40,
-        até um limite igual ao seu parâmetro <strong>Mana</strong>.
+        priority: 0,
+        effect: `Essa Técnica Especial é usada por diversos Heróis e Lendas, como uma forma de 
+        manifestar seu imenso poder mágico latente e convertê-lo em puro poder físico.<br />
+        Uma vez que essa energia seja manifestada, um golpe, antes considerado normal, 
+        agora tem a potência da explosão de um míssil, seus movimentos se tornam rápidos deixando 
+        penas uma imagem borrada para trás quando se esquiva ou corre, 
+        e seus reflexos se expandem ao ponto de parecer que você pode prever o futuro.<br /><br />
+        
+        Para usar essa Técnica Especial, você precisa gastar <strong>40 Pontos de Energia</strong> 
+        e encerrar o seu turno; Aumente os <strong>Valores Iniciais</strong> de qualquer 
+        <i>Manobra Ofensiva</i> que você executar em <strong>+20</strong>, a partir do seu próximo turno.<br />
+        Aumente o <strong>Valor Inicial</strong> de qualquer <i><strong>Manobra Evasiva</strong></i> que você 
+        executar em <strong>+20</strong>, já durante essa rodada.<br />
+        Suas <i>Manobras Evasivas</i> podem provocar uma rolagem crítica, seguindo as regras normais. 
+        Aumente seu deslocamento em <strong>5m</strong> por <strong>Rank</strong> no seu Parâmetro 
+        <strong>Fantasma Nobre</strong>.<br /><br />
+        <i>Essa técnica dura até o fim do seu segundo turno após a ativação. 
+        Você pode, como ação livre, gastar o mesmo valor de Pontos de Energia, 
+        e manter o efeito por mais uma rodada.</i>
         `
     },
     {
-        name: 'Contos Sagrados do Paraíso',
+        name: 'Presa Lunar',
         merits: 1,
         rarity: 'green',
-        effect: `Essa Técnica Especial é uma coletânea de diversos contos e lendas sobre homens e mulheres que caminharam os passos da fé e dedicaram as suas vidas a espalhar as palavras de esperança,amor e cura de certas divindades.<br />
-        Para as pessoas comuns, esses atos vieram a ser conhecidos apenas como <i>"milagres"</i>, os momentos na vida desses santos em que seu deus interveio por eles para curar os enfermos e salvar as vidas dos inocentes.<br />
-        Esses contos são capturados na lenda do herói que possui essa origem, e se manifestam na forma de um conjunto de Fantasmas Nobres.<br />
-        São técnicas usadas apenas para cura e proteção, e uma vez que você escolha possuir essa Técnica Especial, você ganha acesso a todas elas.<br />
-        Somente Espíritos Heróicos que pertençam ao alinhamento Bom podem invocar os milagres dessa técnica.<br /><br />
+        priority: 0,
+        effect: `Uma técnica bastante simples, mas efetiva; trata-se de converter a Mana do herói e 
+        dispara-la pela ponta da arma, em variadas formas, que podem ser um pilar horizontal de poder ou 
+        ondas na forma de uma lua crescente.<br />
+        A técnica pode ser uma manifestação de magia, ou simplesmente provocada por quantidades absurdas 
+        de proeza física.<br /><br />
         
-        <span style="font-size: italic">Canto Candidus</span> - O santo declara palavras divinas que invocam o milagre da cura, regenerando os Pontos de Vida de um único alvo aliado.<br />
-        O alvo aliado recupera Pontos de Vida em uma quantidade igual a um dado correspondente ao rank no Parâmetro <strong>Fantasma Nobre</strong> do usuário + <strong>10/20/40</strong> de acordo com esse rank também <strong>(D-C / B-A / S)</strong>.<br /> 
-        O usuário pode amplificar esse efeito e adicionar mais um dado no valor igual ao do seu parâmetro Mana, se desejar. 
-        O custo em <strong>Pontos de Energia</strong> para manifestar esse milagre se torna igual ao valor de <strong>Pontos de Vida regenerados</strong>.
-        Se o usuário não tiver Pontos de Energia para completar o milagre, ele pode escolher cancelar a manifestação, ou perder seus próprios Pontos de Vida no lugar.
-        Esse milagre <strong>NÃO</strong> pode ser usado no próprio conjurador.<br /><br />
+        Essa Técnica Especial é considerada um ataque remoto, e você <strong>NÃO</strong> precisa estar 
+        à distância corpo-a-corpo do alvo para atingi-lo. Essa técnica também pode destruir coberturas 
+        em algumas situações, e ignorá-las, caso o narrador permita. 
+        Ela pode também ser aplicada a queima roupa, embora não se manifeste diferentemente se 
+        você escolher fazer assim.<br /><br /> 
         
-        <span style="font-size: italic">Kyrie Eleison</span> - Clamando pela misericórdia divina o santo irá limpar a mente de seus aliados de qualquer mal através de um pulso de calma divina.<br>
-        Qualquer condição negativa de origem psicológica é removida de todos os aliados do usuário e eles também ganham imunidade a esse tipo de condição por três rodadas.
-        Esse milagre pode ser usado imediatamente como uma Manobra de Reação se caso o usuário sofrer de uma condição psicológica, mesmo atordoamento. O milagre gasta <strong>50 Pontos de Energia</strong> por aliado afetado.<br /><br />
+        O alvo é atingido com o <strong>Valor Inicial</strong> dos seus Parâmetros 
+        <strong>Força, Mana e Fantasma Nobre</strong>; role também <strong>3 dados</strong>, sendo 
+        eles iguais ao <strong>maior</strong> Rank que você possuir, entre esses três Parâmetros.<br />
+        <i>Essa técnica não pode ser <strong>"Aparada"</strong> ou <strong>"Bloqueada"</strong></i>.<br /><br /> 
         
-        <span style="font-size: italic">Aqua Benedicta</span> - O santo recebe, após uma prece, diretamente do seu deus uma garrafa ou cálice contendo água abençoada de propriedades sagradas e curativas. Tomar esse líquido purifica o corpo dos que bebem. 
-        Remova qualquer condição negativa de natureza física de um aliado que você possa alcançar com uma ação de movimento. Eles também ganham imunidade a esse tipo de condição por três rodadas.<br /><br />
-        
-        <span style="font-size: italic">Clementia</span> - É a mais fervorosa das orações, e o pedido mais humilde do santo ao seu deus; nova vida é soprada em um aliado que esteja caído,
-        recuperando seu fôlego e permitindo que ele continue a lutar.<br />
-        Só pode ser usado em um aliado que esteja <strong>inconsciente</strong>; ele pode voltar a agir e tem <strong>50% dos Pontos de Vida</strong> curados.<br />
-        Um valor em Pontos de Energia igual a metade dos Pontos de Vida do aliado afetado precisa ser gasto.
+        <i>Para usar essa Técnica Especial, você precisa gastar <strong>45</strong> Pontos de Energia</i>.        
         `
     },
     {
         name: 'Kara no Kyoukai - Jardim dos Pecadores',
         merits: 1,
         rarity: 'blue',
-        effect: `A base das lendas que formam essa Técnica Especial remete a feitos de velocidade impossível onde um único guerreiro consegue derrotar diversos inimigos em um único flash de movimento,
-        ou um pistoleiro além do comum consegue atirar em vários bandidos aparentemente sem nem fazer mira.<br /><br />
+        priority: 1,
+        effect: `A base das lendas que formam essa Técnica Especial remete a feitos de velocidade impossível 
+        onde um único guerreiro consegue derrotar diversos inimigos em um único flash de movimento, 
+        ou um pistoleiro além do comum consegue atirar em vários 
+        bandidos aparentemente sem nem fazer mira.<br /><br />
 
-        Assim que é ativada, você pode escolher um inimigo para cada <strong>rank</strong> que você possui no seu parâmetro <strong>Fantasma Nobre + 1</strong>; e aplicar um ataque normal contra cada um desses inimigos.<br />
-        Esses ataques <strong>NÃO</strong> podem ser aparados ou esquivados, e possuem qualquer efeito do seu armamento, salvo por golpes múltiplos.<br /><br />
+        Quando você ativa essa técnica, você pode escolher quantos inimigos no seu campo de visão quiser 
+        e gastar <strong>45</strong> Pontos de Energia por alvo escolhido; 
+        aplique <strong>2</strong> ataques normais nos alvos escolhidos, para <strong>cada</strong> Rank no 
+        seu Parâmetro <strong>Fantasma Nobre</strong>.<br />
+        <strong>A quantidade de ataques deve ser dividida entre os alvos escolhidos</strong>.<br /><br />
         
-        A quantidade de Pontos de Energia gasta depende do número de alvos atingidos: 90 pontos para cada alvo.
+        <i>Os alvos não podem se defender com a <strong>Manobra Evasiva: "Esquivar"</strong></i>. 
+        Essa técnica ignora a distância que você está dos alvos</i>.<br />
+        
+        <i>Essa técnica não pode ser usada contra um único alvo</i>.
         `
     },
     {
-        name: 'Chuva de Aço',
+        name: 'Mestre das Miragens',
         merits: 1,
         rarity: 'blue',
-        effect: `Uma famosa técnica, popularizada pelos gloriosos jogos da Grécia: As olimpíadas.<br />
-        Trata-se de arremessar armas que geralmente não são feitas para serem arremessadas, mirando ferir seu inimigo com grande prejuízo.<br />
-        Há porém que nem todos os tipos de equipamentos são favorecidos por essa lenda: <strong>Espadas, tipos Pesados, Arcos e Armas de Fogo, e focus Mágicos</strong> <strong><i>NÃO</i></strong> podem ser utilizados.<br /><br />
-           
-        Ela só pode ser usada, naturalmente, se o Espírito Heroico estiver equipado com uma arma de um dos tipos indicados em uma de suas mãos.
-        O Armamento Lendário é arremessado, tornando-se um ataque remoto que só é limitado pela visão do usuário ou por cobertura, portando todos os seus efeitos,
-        e claro, retorna imediatamente para a mão do seu dono ao final da manobra.<br /><br />
+        priority: 1,
+        effect: `Mais uma famosa anedota, especialmente popular em contos de 
+        origem oriental: O poder de criar ilusões de óptica que consistem de cópias exatas do usuário.<br /> 
+        Tais "clones" não possuem matéria, mas podem ser utilizados para uma infinidade de 
+        manobras inteligentes e estratégicas.<br /><br />
         
-        Quando usada com Armamentos Lendários do tipo: <i>"Adaga"</i>, essa Técnica Especial passa a ser considerada do nível de perigo verde; isso permite que o herói use-a sem restrições.<br />
-        Se caso o Espírito Heroico estiver equipado com dois Armamentos dessa classe, ambos podem ser arremessados no mesmo turno, como parte da mesma técnica.<br />
-        O dano consiste de uma rolagem dos parâmetros Fantasma Nobre + Agilidade + Força. O arremesso ganha também um dano bônus de <strong>+5/10/20</strong>
-        dependendo do parâmetro <strong>Fantasma Nobre</strong> do usuário <strong>(D-C / B-A / S)</strong>.<br /><br />
+        Como <i><strong>Manobra Livre</strong></i> durante seu turno, gastando <strong>25 Pontos de Energia</strong> 
+        para cada cópia que ele desejar fazer, o usuário irá fabricar ou invocar clones ilusórios perfeitos 
+        de si próprio, sendo que o limite de cópias é de <strong>1 (um)</strong> para cada rank 
+        no parâmetro <strong>Fantasma Nobre</strong>.<br /> 
+        Esses clones não possuem nenhuma qualidade física e não passam de ilusões; 
+        mas é impossível discernir eles do conjurador.<br /><br /> 
         
-        <strong>Arremessar uma adaga consome apenas 25 Pontos de Energia.</strong><br /><br />
+        Os clones podem se mover independentemente do conjurador, embora inicialmente tenham seus turnos 
+        obrigatoriamente colocados logo após o turno do original. 
+        Eles podem usar a opção <strong>"Esperar"</strong>, para agir em outros turnos, 
+        como por exemplo logo após um aliado, ou antes do conjurador, na rodada seguinte.<br /><br /> 
         
-        Quando usada com Armamentos Lendários do tipo: <i>"Lança"</i>, essa Técnica causa em dano uma rolagem dos parâmetros
-        <strong>Fantasma Nobre + Agilidade + Força</strong>. O arremesso ganha também um dano bônus de </strong>+10/20/40</strong> dependendo do parâmetro
-        Fantasma Nobre do usuário <strong>(D-C / B-A / S)</strong>.<br /><br />
+        Eles <strong>NÃO</strong> podem usar <strong>Estratagemas</strong>, e os Fantasmas Nobres que 
+        possuem são meras ilusões também, e não conferem nenhum bônus.<br /><br />
         
-        <strong>Arremessar sua Lança consome 100 Pontos de Energia.</strong><br /><br />
+        Enquanto os clones estão presentes, inimigos devem testar para atingir o original com qualquer 
+        ataque que não atinja múltiplos alvos, sendo que o original sempre tem uma chance reduzida 
+        de ser atingido em comparação aos seus clones. 
+        Atingir um clone irá fazer ele desaparecer, mas atingir o original irá fazer <strong>todos</strong> 
+        os clones desaparecerem de uma vez.<br /><br /> 
         
-        Essa Técnica Especial pode ainda ser usada com Armamentos Lendários do tipo: <i>"Escudo"</i>. 
-        O dano causado consiste de uma rolagem nos valores <strong>Fantasma Nobre + Resiliência + Força</strong>.
-        O arremesso ganha também um dano bônus de <strong>+10/20/30</strong> dependendo do parâmetro Fantasma Nobre do usuário <strong>(D-C / B-A / S)</strong>,
-        e em adição o alvo <strong>NÃO</strong> poderá realizar nenhuma Manobra de Movimento até a próxima rodada.<br /><br />
-        
-        <strong>Arremessar seu Escudo consome 100 Pontos de Energia</strong>
+        Os oponentes irão tender a tentar se defender das cópias como se fossem o original; 
+        um oponente irá tentar aparar o ataque de um clone com sua arma e não irá conseguir 
+        usar a <i>Manobra: "Esquivar"</i> se estiver sendo atacado por dois clones que 
+        estejam a distância de um golpe corpo-a-corpo.
         `
     },
     {
         name: 'Vingança Divina de Lugh',
         merits: 1,
         rarity: 'red',
+        priority: 2,
         effect: `Histórias sobre incríveis manobras que derrubaram um vilão no momento em que ele tentava atacar o herói são contidas nessa base: Contra-Ataques que acontecem em um piscar de olhos,
         no momento em que o personagem principal seria derrotado, mas reage e finaliza a batalha em um único movimento mortal quando o adversário está focado em feri-lo.<br /><br />
   
@@ -114,9 +130,73 @@ export default [
         `
     },
     {
+        name: 'Contos Sagrados do Paraíso',
+        merits: 1,
+        rarity: 'green',
+        priority: 0,
+        effect: `Essa Técnica Especial é uma coletânea de diversos contos e lendas sobre homens e mulheres 
+        que caminharam os passos da fé e dedicaram as suas vidas a espalhar as palavras de esperança, 
+        amor e cura de certas divindades.<br />
+        Para as pessoas comuns, esses atos vieram a ser conhecidos apenas como "milagres", os momentos na vida 
+        desses santos em que seu deus interveio por eles para curar os enfermos 
+        e salvar as vidas dos inocentes.<br />
+        Esses contos são capturados na lenda do herói que possui essa origem, e se manifestam na forma de 
+        um conjunto de Fantasmas Nobres.<br />
+        São técnicas usadas <strong>apenas</strong> para cura e proteção, e uma vez que você escolha 
+        possuir essa Técnica Especial, você ganha acesso a todas elas.<br /> 
+        <strong>Somente</strong> Espíritos Heróicos que pertençam ao alinhamento: <strong>"Bom"</strong> 
+        podem invocar os milagres dessa técnica.<br /><br /> 
+        
+        <i><strong>Canto Candidus</strong></i> - O santo declara palavras divinas que invocam o milagre da cura, 
+        regenerando os Pontos de Vida de um único alvo aliado.<br />
+        Escolha 1 Aliado que esteja em seu campo de visão; ele recupera <strong>40</strong> Pontos de Vida 
+        por Rank de Fantasma Nobre que você possua.<br /> 
+        <i>Invocar esse milagre <strong>NÃO</strong> consome Pontos de Energia, mas só pode acontecer 
+        <strong>1 vez por combate</strong></i>.<br /><br />
+        
+        <i><strong>Kyrie Eleison</strong></i> - Clamando pela misericórdia divina o santo irá limpar a mente 
+        de seus aliados de qualquer mal através de um pulso de calma divina.<br />
+        <strong>Todos</strong> os aliados no seu campo de visão tem qualquer condição negativa 
+        de origem psicológica removida, e passam a não mais ser afetados por elas pelo resto desse combate.<br /> 
+        <i>Manifestar esse milagre custa <strong>45</strong> Pontos de Energia</i>.<br /><br />
+        
+        <i><strong>Aqua Benedicta</strong></i> - O santo recebe, após uma prece, diretamente do seu deus 
+        uma garrafa ou cálice contendo água abençoada de propriedades sagradas e curativas. 
+        Tomar esse líquido purifica o corpo dos que bebem.<br />
+        <i>Remova qualquer condição negativa de natureza física de um aliado que você possa alcançar com 
+        uma ação de movimento.<br />
+        Eles também ganham <strong>imunidade</strong> a esse tipo de condição por três rodadas</i>.<br /><br /> 
+        
+        <i><strong>Clementia</strong></i> - É a mais fervorosa das orações, e o pedido mais humilde do santo 
+        ao seu deus; nova vida é soprada em um aliado que esteja caído, recuperando seu fôlego e permitindo 
+        que ele continue a lutar.<br />
+        Só pode ser usado em um aliado que esteja inconsciente; ele pode voltar a agir e tem <strong>50%</strong> 
+        dos Pontos de Vida curados.<br /> 
+        <i>Manifestar esse milagre custa <strong>90</strong> Pontos de Energia</i>. 
+        
+        <i><strong>Lex Divina</strong></i> - O sacerdote clama pela proteção da luz divina. 
+        Ela cobre a si próprio, ou um aliado, com um véu iluminado que reduz ou até anula qualquer 
+        ferimento que um inimigo possa infringir contra eles.<br /> 
+        O aliado escolhido sob o efeito dessa benção <strong>reduz 5 pontos de dano</strong> do dano final 
+        de qualquer <i>Manobra Ofensiva</i> que ele receber, por nível de Fantasma Nobre do <strong>sacerdote</strong>.<br /> 
+        <i>A benção dura por <strong>1 rodada</strong> para cada Rank do Parâmetro <strong>Mana</strong> 
+        do sacerdote, e custa <strong>45</strong> Pontos de Energia</i>.<br /><br />
+         
+        <i><strong>Angelus</strong></i> - O sacerdote sussurra um cântico fervoroso, executando a mais sagrada das 
+        orações; essas preces são tão ardentes que inspiram e imbuem um aliado escolhido com bravura e coragem, 
+        aumentando a potência dos seus ataques.<br /> 
+        O sacerdote pode escolher <strong>a si mesmo</strong> ou <strong>1 aliado</strong> em seu campo de visão; 
+        o aliado escolhido passa agora a somar os <strong>Valores Iniciais de Força + Fantasma Nobre + Mana</strong> 
+        para <strong>todas</strong> as suas rolagens de ataques normais.<br /> 
+        <i>A benção dura por <strong>1 rodada</strong> para cada Rank do Parâmetro 
+        <strong>Mana</strong> do sacerdote, e custa <strong>45</strong> Pontos de Energia</i>.
+        `
+    },
+    {
         name: 'Grito de Guerra',
         merits: 1,
         rarity: 'green',
+        priority: 0,
         effect: `Um exemplo de uma simples ação que se tornou tão famosa e conhecida, que ganhou um efeito praticamente mágico nas mãos de um Servant.<br />
         Embora não passe de uma forma de erguer a moral das tropas, seja usando a própria voz, ou com um chifre de guerra para produzir um poderoso som que anuncia uma carga ou o começo de uma determinada defesa,
         quando usada por um grande herói de reconhecida liderança, seus efeitos são magnificados, criando vantagens não apenas para aquele que a usa, mas também para todos que lutam sob sua bandeira.<br /><br />
@@ -138,10 +218,11 @@ export default [
         name: 'Mestre das Miragens',
         merits: 1,
         rarity: 'blue',
+        priority: 1,
         effect: `Mais uma famosa anedota, especialmente popular em contos de origem oriental: O poder de criar ilusões de óptica que consistem de cópias exatas do usuário.<br />
         Tais <i>"clones"</i> não possuem matéria, mas podem ser utilizados para uma infinidade de manobras inteligentes e estratégicas.<br /><br />
         
-        Como Manobra Livre durante seu turno, gastando 50 Pontos de Energia para cada cópia que ele desejar fazer, o usuário irá fabricar ou invocar clones ilusórios perfeitos de si próprio,
+        Como <i><strong>Manobra Livre</strong></i> durante seu turno, gastando 50 Pontos de Energia para cada cópia que ele desejar fazer, o usuário irá fabricar ou invocar clones ilusórios perfeitos de si próprio,
         sendo que o limite de cópias é de 1 para cada rank no parâmetro <strong>Fantasma Nobre</strong>.<br /> 
         Esses clones <strong>NÃO</strong> possuem nenhuma qualidade física e não passam de ilusões; mas é impossível discernir eles do conjurador.<br /><br />
         
@@ -160,14 +241,15 @@ export default [
         `
     },
     {
-        name: 'Selo Horrendo da Maldição',
+        name: 'Barganha Faustina',
         merits: 1,
-        rarity: 'blue',
+        rarity: 'red',
+        priority: 2,
         effect: `Em muitas lendas e histórias, heróis e vilões possuem a capacidade de esconder um monstro dentro de si.<br />
         Em certas condições, eles podem libertar essa fera interior, modificando seus corpos, suas aparências, e sua psicologia… Em algo mais bestial e descontrolado.<br /><br />
         
-        Como Manobra Livre durante seu turno, você pode zerar seus <strong>Pontos de Energia</strong> e assumir a sua forma bestial.
-        A transformação funciona como uma <i>barganha faustiana</i>; ela irá lhe dar muitas vantagens, mas também irá possuir algumas desvantagens.<br /><br /> 
+        Como <i><strong>Manobra Livre</strong></i> durante seu turno, você pode zerar seus <strong>Pontos de Energia</strong> e assumir a sua forma bestial.
+        A transformação funciona como uma "<i>Barganha Faustiana</i>"; ela irá lhe dar muitas vantagens, mas também irá possuir algumas desvantagens.<br /> 
         
         <strong>Seu alinhamento irá imediatamente se tornar Chaotic/Evil.</strong><br /><br />
         
@@ -175,99 +257,126 @@ export default [
         
         Você não pode usar nenhuma outra <strong>Técnica Especial, Estratagemas ou itens de qualquer tipo</strong>.<br />
         Estratagemas que tinham sido ativadas antes da transformação entram em cooldown.<br />
-        <strong>Você não pode nem mesmo falar normalmente.</strong><br /><br />
+        <strong>Você não pode nem mesmo falar normalmente.</strong><br />
+        <strong>Você deixa de ser considerado <i>"um aliado"</i> 
+        dos seus companheiros e não pode receber efeitos positivos deles</strong>.<br /><br />
         
-        Você deixa de ser considerado <i>"um aliado"</il> dos seus companheiros e não pode receber efeitos positivos deles.<br />
-        
-        Suas rolagens para ataques normais agora usam seus parâmetros <strong>Força + Agilidade + Resiliência</strong>, e os valores rolados são dobrados.<br />
-        Você pode executar até <strong>quatro</strong> deles por <strong>turno</strong>, e caso um alvo seja derrubado antes deles serem finalizados, você pode continuar em um novo alvo.<br /><br />
-        
-        Sua velocidade de movimento é <strong>dobrada</strong>. Você ganha o direito de atacar e se mover depois do ataque.<br /><br />
-        
-        Você pode usar a <i>Manobra Evasiva: "Esquivar"</i> <strong>indefinidamente</strong>. Suas rolagens para essa Manobra também são dobradas.<br />
-        Um inimigo que se aproxime de você para atacar pode ser contra-atacado preventivamente, <strong>UMA</strong> vez por rodada.<br /><br />
-        
-        Seus <strong>Pontos de Vida</strong> se regeneram em <strong>1D6/1D12/1D20</strong> dependendo do seu rank no seu parâmetro <strong>Fantasma Nobre (D-C / B-A / S)</strong>.<br /><br /> 
-        
-        <strong><i>Você pode encerrar a transformação quando quiser durante um combate</i></strong>.
+        Todos os seus ataques normais agora passam a ser calculados com 
+        o Valor Inicial de <strong>Força + Resiliência + Fantasma Nobre</strong>, 
+        todos os dados desses Parâmetros são rolados normalmente, 
+        e você pode realizar até <strong>4 (quatro)</strong> ataques por turno.<br /> 
+        Se reduzir os Pontos de Vida de um inimigo a zero, e ainda tiver ataques a serem realizados, 
+        você pode continuar atacando qualquer inimigo que esteja a menos de <strong>1,5m</strong> 
+        próximo de você.<br /><br /> 
+
+        <i>Você pode se deslocar o <strong>dobro</strong> por ação de movimento 
+        do que se deslocaria normalmente</i>.<br />
+        <i>Você pode usar a <strong>Manobra Evasiva: "Esquivar"</strong> indefinidamente.<br />
+        Essa Manobra também passa a poder provocar uma rolagem crítica</i>. 
         `
     },
     {
-        name: 'Escudo de Energia',
+        name: 'Escudo de Mana',
         merits: 1,
         rarity: 'green',
-        effect: `O poder de criar campos de energia ao redor de si, evitando qualquer dano e afastando qualquer mal que é direcionado a você está contido nessa anedota.<br />
-        Com um estalar de dedos, ou um simples gesto, você é cercado por um escudo circular que reduzirá qualquer ataque lançado contra você.<br /><br />
+        priority: 0,
+        effect: `Essa técnica geralmente é observada sob o comando de feiticeiros e magos; 
+        Trata-se do poder de converter sua energia mágica em um campo de força circular para proteção pessoal.<br />
+        A bolha energética geralmente é resistente o suficiente para anular, ou ao menos reduzir 
+        grandemente os estragos de praticamente qualquer ataque lançado contra o conjurador.<br />
+        Ela é ativada geralmente com um estalar de dedos, um gesto simples ou uma palavra de comando, 
+        e surge imediatamente como reação a um ataque repentino.<br /><br />
         
-        Como <i>"Manobra de Reação"</i>, ao ser alvo de qualquer tipo de dano, você pode ativar essa Técnica Especial.<br /><br />
+        <i>Você pode, como <i><strong>Manobra de Reação</strong></i> incondicional quando for alvo de uma Técnica Especial, 
+        Magia Ofensiva, ou um ataque normal que causou <strong>Dano Crítico</strong>; 
+        usar essa Tecnica Especial</i>.<br /><br /> 
         
-        Reduza o dano que chega a você de acordo com seu parâmetro Fantasma Nobre quando for igual a <strong>D</strong> ou <strong>C</strong>,
-        em <strong>1D6 + 1D6</strong> para cada <strong>20</strong> Pontos de Energia que você desejar gastar + 12, até um limite igual ao seu parâmetro <strong>Mana</strong>.<br /><br />
+        Some os Valores Iniciais dos seus Parâmetros <strong>Agilidade + Resiliencia + Fantasma Nobre</strong>; 
+        Role também <strong>3 dados</strong>, sendo eles iguais ao <strong>maior</strong> Rank que você possuir, 
+        entre esses três Parâmetros.<br /><br /> 
         
-        Reduza o dano que chega a você de acordo com seu parâmetro Fantasma Nobre quando for igual a <strong>B</strong> ou <strong>A</strong>,
-        em <strong>1D12 + 1D12</strong> para cada <strong>40</strong> Pontos de Energia que você desejar gastar + 20, até um limite igual ao seu parâmetro <strong>Mana</strong>.<br /><br />
-        
-        Reduza o dano que chega a você de acordo com seu parâmetro Fantasma Nobre quando for igual a <strong>D</strong> ou <strong>C</strong>,
-        em <strong>1D20 + 1D20</strong> para cada <strong>80</strong> Pontos de Energia que você desejar gastar + 40, até um limite igual ao seu parâmetro <strong>Mana</strong>.
+        <i>Ativar essa técnica consome <strong>45</strong> Pontos de Energia, mas você pode ativá-la 
+        mais de uma vez contra o mesmo ataque, somando os valores dessa nova rolagem, a anterior. 
+        Você pode fazer isso para anular completamente o dano que você iria receber</i>. 
         `
     },
     {
-        name: 'Liberação do nome Verdadeiro',
+        name: 'Marcha das Valquírias',
         merits: 1,
-        rarity: 'red',
-        effect: `É considerada por muitos magos e até por alguns Espíritos Heróicos, a mais <strong>poderosa</strong> de todas as Técnicas Especiais.<br />
-        Trata-se da invocação e despertar de todo o poder e glória de um Armamento Lendário que esteja sendo empunhado por um Espírito Heróico que fez seu nome e sua lenda usando tal construto.<br />
-        É um ataque final e derradeiro, em que toda a energia de um herói é focalizada em sua arma e lançada contra os inimigos, entregando sua identidade a todos que o testemunharem; a cartada final de um Servant.<br /><br />
+        rarity: 'blue',
+        priority: 1,
+        effect: `Essa técnica é raramente vista, e somente guerreiros que não possuem medo, 
+        ou possuem uma plena confiança em suas habilidades, a demonstram.<br />
+        Trata-se da lendária "carga"; o ato de cortar o campo de batalha, sem nenhum medo, 
+        na direção dos inimigos, e correr para o coração da tempestade do combate, 
+        imediatamente travando lâminas contra os opositores.<br /> 
+        Um Espírito Heróico capaz de reviver esse ato glorioso pode invocar essa anedota e 
+        rapidamente iniciar um confronto, sem medo de ser ferido por disparos ou impedido por coberturas<br /><br />. 
         
-        Há maneiras diferentes em que um Armamento Lendário pode despertar seu poder, dependendo da lenda de seu dono, ou da forma pela qual ele foi projetado. Escolha uma dessas formas para a sua Técnica e siga seu formato de dano. 
-        
-        <span style="font-style: italic;font-weight: bold">Anti-Unity</span> - A Técnica é focalizada em um único alvo, provavelmente destruindo ele;
-        ataque esse alvo escolhido com <strong>1d20</strong> para cada rank do seu parâmetro Fantasma Nobre, <strong>dobrando</strong> qualquer resultado rolado,
-        e adicione um dano <strong>bônus de +20</strong> para cada rank de um atributo a sua escolha entre: "Força", "Agilidade" ou "Mana".<br />
-        <strong><i>- Essa liberação consome 50% dos seus Pontos de Energia máximos</i></strong>.<br />
-        <strong><i>- Esse golpe não pode ser Aparado ou Bloqueado, e é afetado por qualquer outra habilidade que o Armamento possua</i></strong>.<br /><br />
+        <i>Você pode usar essa técnica no início de uma cena de combate; 
+        Imediatamente, você se torna o primeiro da ordem de ações dessa cena</i>.<br /><br />
+         
+        <i>Escolha um inimigo que esteja no seu campo de visão; 
+        Você pode executar uma ação de movimento, ignorando a distância e qualquer 
+        efeito de cobertura que ele possuir e atingir ele com um ataque normal</i>.<br /><br />
+         
+        Esse ataque conta com o <strong>Valor Inicial</strong> dos seus Parâmetros 
+        <strong>Força + Agilidade + Fantasma Nobre</strong>, e o dado jogado para esse 
+        ataque <strong>sempre</strong> é 1d20, podendo causar um dano crítico normalmente.<br /> 
+        O ataque também não pode ser <strong>Aparado</strong> ou <strong>Bloqueado</strong>, 
+        e não consome suas ações de <strong>Movimento</strong> ou <strong>Ofensiva</strong>.<br /> 
+        <i><strong>Essa Técnica Especial não consome Pontos de Energia</strong></i>.<br /><br />
 
-        <span style="font-style: italic;font-weight: bold">Anti-Army</span>  -  A Técnica libera uma quantidade absurda de energia e cobre uma área na frente do conjurador, atingindo todos os inimigos que o estão enfrentando.<br />
-        Ataque todos os inimigos com <strong>1d20</strong> para cada rank do seu parâmetro Fantasma Nobre, <strong>dobrando</strong> qualquer resultado rolado,
-        e adicione um dano <strong>bônus de +20</strong> para cada rank de um atributo a sua escolha entre: "Força", "Agilidade" ou "Mana".
-        Essa liberação consome <strong>100% dos seus Pontos de Energia máximos</strong> e portanto só pode ser usada se você não tiver nenhum ponto usado.<br />
-        <strong><i>Esse golpe não pode ser Aparado ou Esquivado, mas não é afetado por nenhum outro efeito do equipamento que foi despertado</i></strong>.<br /><br />
-
-        <span style="font-style: italic;font-weight: bold">Anti-Attack</span> - Essa liberação especial só pode ser usada quando o conjurador estiver equipado com um Fantasma Nobre do tipo: "Escudo" ou "Armadura";
-        você pode usar esse despertar como: "Manobra de Reação Incondicional".<br />
-        Reduza qualquer dano que for receber, de qualquer fonte em <strong>1d20</strong> para cada rank do seu parâmetro Fantasma Nobre,<br />
-        <strong>dobrando</strong> qualquer resultado rolado, e adicione um valor <strong>bônus de +20</strong> para cada rank de um atributo a sua escolha entre: "Resiliência", "Agilidade" ou "Mana".<br />
-        <strong><i>Essa liberação consome 50% dos seus Pontos de Energia máximos e não é afetada por nenhum outro efeito do equipamento que foi despertado</i></strong>.<br /><br />
-        
-        <h2 style="text-decoration: underline;font-weight: bold">REALITY MARBLE</h2>
-        A mais rara forma de taumaturgia, considerado um tabu pela sociedade mágica.<br /> 
-        Trata-se de um feitiço em larga escala, que irá sobrepor a realidade em uma área selecionada, forçando o mundo interior do conjurador sobre o lugar, e criar um <i>"Campo Selado"</i> nesse local.<br />
-        Essa ilusão é tão poderosa, que se torna capaz de impor suas próprias regras sobre aqueles que estiverem cobertos por ela.<br />
-        Uma paisagem totalmente diferente surge, essa baseada na própria natureza mágica do conjurador, com alterações leves vindas de sua psique e experiências.<br /><br />
-        
-        Invocar um Reality Marble irá custar <strong>50% dos Pontos de Energia máximos</strong> do conjurador. Uma vez invocado, o Reality Marble desaparecerá apenas quando o conjurador desejar.<br />
-        <strong><i>A ativação é uma ação livre e só pode ser executada durante o turno dele</i></strong>.<br /><br />
-
-        Todos aqueles que estiverem em um imenso raio ao redor do conjurador são <i>"convidados"</i> para dentro do: <strong>"Campo Selado"</strong>.
-        As coberturas são ignoradas e mesmo inimigos ou aliados que não estão sendo vistos pelo conjurador acabam dentro de seu campo.<br />
-        Escapar de um Reality Marble enquanto ele está sendo invocado é próximo do impossível,
-        já que a gigantesca área se espalha em um clarão luminoso que provavelmente irá desabilitar todos que estão próximos do conjurador por segundos o suficientes para serem envolvidos nele.<br /><br />
-        
-        Os <i>"convidados"</i> são colocados a distâncias e posições similares às que estavam quando a magia foi ativada, porém perderão cobertura e passarão a ficar visiveis para o conjurador e seus aliados.<br /><br />
-        
-        Há pouquíssimos feitiços e itens capazes de <i>"quebrar"</i> a ilusão do <strong>"Campo Selado"</strong> e restaurar a realidade da área a seu estado normal,
-        mas eles existem e são muito procurados pela sua especialidade em combater essa poderosa classe de magias.<br />
-        Outra maneira de escapar do Reality Marble é responder com uma <i>ilusão própria</i>, já que quando um Reality Marble é usado dentro de outro, a ilusão mais recente sobrescreve a anterior imediatamente.<br /><br />
-        
-        Como a realidade é modificada em um raio de vários quarteirões, um Reality Marble tende a chamar a atenção.
-        Embora um inimigo precise sair vivo para manter a informação sobre a identidade do conjurador, outros oponentes que estão fora da área podem conseguir tal informação.<br />
-        <span style="text-decoration: underline"><i>Discrição e cuidado ao usar essas Técnicas são aconselhado</i></span>. 
+        Enquanto está transformado, você também começa a se <strong>regenerar</strong> por conta própria; 
+        No começo de cada um dos seus turnos, recupere <strong>1d10</strong> de pontos de vida para cada 
+        Rank no seu Parâmetro <strong>Fantasma Nobre</strong>.
         `
     },
     {
-        name: 'Potencial Ilimitado',
+        name: 'Liberação do Nome Verdadeiro',
         merits: 1,
         rarity: 'red',
+        priority: 2,
+        effect: `É considerada por muitos magos e até por alguns Espíritos Heróicos, 
+        a mais poderosa de todas as Técnicas Especiais.<br />
+        Trata-se da invocação e despertar de todo o poder da essência da lenda do Servant, 
+        seja através da declaração e canalização do poder de um dos tesouros de seu arsenal espiritual, 
+        ou de uma particular técnica de combate ou anedota que marcou seu nome nas eras.<br />
+        É um ataque final e derradeiro, em que toda a energia de um herói é focalizada nesse 
+        golpe e lançada contra os inimigos, entregando sua identidade a todos que o testemunharem; 
+        a cartada final de um Servant.<br /><br /> 
+        
+        Essa Técnica Especial sempre afetará <strong>todos</strong> os inimigos presentes em um combate. 
+        <i>Efeitos de cobertura são ignorados</i>.<br /><br />
+
+        O Valor Inicial é de <strong>Mana + Fantasma Nobre</strong>, e o herói deve fazer uma rolagem 
+        de <strong>1d20</strong> para cada Rank em <strong>ambos</strong> os Parâmetros.<br />
+        Esses Valores podem ser alterados caso a técnica seja disparada de uma arma que possua 
+        outros Valores Iniciais como valores de ataque.<br /><br />
+         
+        A técnica pode ser lançada remotamente ou a uma distância corpo-a-corpo, 
+        alterando um pouco suas propriedades; Quando lançada remotamente, ela não pode ser 
+        <strong>Aparada</strong> ou <strong>Esquivada</strong>, e quando é lançada a corpo-a-corpo 
+        ela não pode ser <strong>Aparada</strong> ou <strong>Bloqueada</strong>.<br /><br /> 
+        
+        Rolagens que sejam <strong>iguais ou inferiores</strong> a <strong>2 (dois)</strong> 
+        são multiplicadas por <strong>10</strong> no lugar e rolagens que sejam 
+        iguais ou inferiores a <strong>9 (nove)</strong>, mas superiores a <strong>2 (dois)</strong>, 
+        devem ser reroladas.<br /><br />
+        
+        <i>Essa técnica não carrega nenhum efeito que esteja presente em armamentos ou outras 
+        habilidades passivas do herói, salvo quando elas afetam <strong>diretamente</strong>, Técnicas Especiais.<br /><br /> 
+        
+        A liberação do poder máximo de um Espírito Heroico consome <strong>toda</strong> a energia espiritual de um herói; 
+        Seus Pontos de Energia <strong>DEVEM</strong> estar no máximo para ativar essa técnica 
+        e eles são <strong>zerados</strong> após o uso.
+        `
+    },
+    {
+        name: 'Poder Ilimitado',
+        merits: 1,
+        rarity: 'red',
+        priority: 2,
         effect: `Esse modelo base cria uma paisagem de glória, mistério e encanto dentro do campo selado.
         Essa paisagem consiste dos momentos mais incríveis e inspiradores que o conjurador teve em vida, suas conquistas mais virtuosas, deixando-o em um êxtase de inspiração e fervor.<br /> 
         Relembrando seus maiores feitos, ele irá recriar esses momentos no presente e lutar de forma sem igual novamente.<br /><br />
@@ -285,29 +394,37 @@ export default [
         `
     },
     {
-        name: 'Mundo de Dor',
+        name: 'Desolação',
         merits: 1,
         rarity: 'red',
+        priority: 2,
         effect: `O <strong>"Campo Selado"</strong> é preenchido por uma paisagem desolada, preenchida de amedrontadoras imagens de destruição.<br />
         A atmosfera é densa e opressiva, e o espaço é permeado por uma maldição inescapável que irá lentamente danificar e matar aqueles que têm a infelicidade de receberem o convite para dentro desse inferno.<br /><br />
         
         O conjurador deve especificar uma fonte de dano elemental para esse Reality Marble: "Fogo", "Eletricidade", "Gelo" ou "Veneno".<br /><br />
         
-        Todos os inimigos que estiverem dentro do <strong>"Campo Selado"</strong> são afetados por uma condição negativa chamada: "Mundo de Dor";
+        Todos os inimigos que estiverem dentro do <strong>"Campo Selado"</strong> são afetados por uma condição negativa chamada: "Desolação";
         essa condição negativa não pode ser removida por nenhum outro efeito, desaparecendo somente se o Reality Marble for encerrado.<br /><br />
         
-        Esses alvos recebem, em cada um dos seus turnos, um dano igual a <strong>1d6/1d12/1d20</strong> dependendo do parâmetro Fantasma Nobre do conjurador <strong>(D-C / B-A / S)</strong>,
-        <strong>mais um dano fixo de +12/20/40</strong>. Esse dano não pode ser prevenido e afeta os pontos de vida de todos os inimigos diretamente.<br />
-        Inimigos que tenham fraqueza ao elemento que compõe o "Campo Selado" recebem o dano em <strong>dobro</strong>.
-        Igualmente, <strong>resistências e imunidades</strong> a tais elementos também afetam os que estiverem dentro do Reality Marble.<br /><br />
-        
-        Inimigos não ganham nenhum bônus por Descoberta de Nome Verdadeiro enquanto estiverem dentro do Reality Marble.
+        Esses inimigos recebem, <strong>1d20</strong> de dano <strong>direto</strong> aos seus Pontos de Vida 
+        sempre que eles executarem uma <i><strong>Manobra de Movimento</strong></i>, atacarem normalmente, 
+        ativarem uma <strong>Estratagema</strong> ou <strong>Feitiço</strong> ou utilizarem 
+        uma <strong>Técnica Especial</strong>; podendo receber múltiplos danos caso executarem mais 
+        de uma dessas ações durante seus turnos.<br />  
+        Inimigos que tenham fraqueza ao elemento que compõe o "Campo Selado" recebem o dano em <strong>dobro</strong>. 
+        Igualmente, resistências e imunidades a tais elementos também afetam os que estiverem 
+        dentro do Reality Marble.<br /><br />
+
+        <i>Inimigos não ganham nenhum bônus por 
+        <span style="color: red">Descoberta de Nome Verdadeiro</span> 
+        enquanto estiverem dentro do Reality Marble</i>.
         `
     },
     {
         name: 'Esconde-Esconde',
         merits: 1,
         rarity: 'red',
+        priority: 2,
         effect: `Esse Reality Marble pode criar uma estranha paisagem, onde todos são transportados para um lugar em que o conjurador tem facilidade suprema em se esconder e permanecer camuflado,
         atingindo uma invisibilidade perfeita. Dessa forma, ele pode se preparar com calma, e derrubar os inimigos um a um com ataques vindos das sombras.<br /><br />
         
@@ -318,17 +435,26 @@ export default [
         ignorando distância ou cobertura, e esses inimigos não podem se esconder de você.<br /><br />
         
         Todas as suas <i>"Manobras Ofensivas"</i> passam a ignorar <i>"Manobras Evasivas"</i> dos alvos; isso quer dizer que qualquer dano que você causar, atinge os pontos de vida deles, diretamente.<br />
-        Porém, executar uma <i>"Manobra Ofensiva"</i> irá <strong>remover</strong> sua condição intangível. 
+        Porém, executar uma <i>"Manobra Ofensiva"</i> irá <strong>remover</strong> sua condição intangível.<br /><br />
+
+        <i>O conjurador pode escolher não agir durante um dos seus próximos turnos para "se esconder", 
+        e recuperar a condição intangível, e com ela, todos os efeitos positivos</i>.<br /><br /> 
+
+        <i>Inimigos não ganham nenhum bônus por 
+        <span style="color: red">Descoberta de Nome Verdadeiro</span> enquanto 
+        estiverem dentro do Reality Marble</i>.
         `
     },
     {
         name: 'Paredes do Castelo',
         merits: 1,
         rarity: 'red',
+        priority: 2,
         effect: `A magia irá envolver todos aqueles que estão próximos em uma grande e intrincada construção, como um castelo, uma tumba de um grande rei, a torre de um poderoso mago...<br />
         Uma imagem que remete proteção, segurança e que afaste invasores, com o conjurador como centro dela.<br /><br />
         
-        A partir do turno que esse Reality Marble é ativado, o conjurador pode usar a <i>Manobra Evasiva: "Bloquear"</i> mesmo que ele não esteja equipado com um <i>"Armamento Lendário"</i> do tipo <strong>escudo</strong>. 
+        A partir do turno que esse Reality Marble é ativado, o conjurador pode usar a 
+        <i><strong>Manobra Evasiva: "Bloquear"</strong></i> mesmo que ele não esteja equipado com um <i>"Armamento Lendário"</i> do tipo <strong>Escudo</strong>. 
         Nenhuma das suas Manobras Evasivas podem ser ignoradas por outros efeitos.<br /><br />
         
         O conjurador pode também forçar todos os inimigos presentes no <strong>"Campo Selado"</strong> a atacarem ele durante uma rodada, como ação livre;
@@ -338,7 +464,7 @@ export default [
         `
     },
 ].sort((a, b) => {
-    if (a.name > b.name)
+    if (a.priority > b.priority)
         return 1;
 
     return -1;

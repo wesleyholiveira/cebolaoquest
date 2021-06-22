@@ -1,485 +1,815 @@
 export default {
-    valorSkills: [
+  valorSkills: 
+    [
       {
-        name: 'Destruidor de Falanges',
-        valors: 1,
-        effect: `Seu Fantasma Nobre possui a habilidade de ultrapassar escudos e atingir os alvos mesmo através das barreiras de aço que eles estão usando para se defender.<br />
-        Quando atacar um alvo, cause dano <strong>direto</strong> aos pontos de vida dele se caso ele usar a Manobra Evasiva: "Bloquear". 
-        `
-      },
-      {
-        name: 'Revelador de Ilusões',
-        valors: 1,
-        effect: `Seu Fantasma Nobre tem a capacidade de alcançar seus alvos, não importa o quão rápidos eles são ou que tipo de traquinagens para escapar de seus golpes estejam usando.<br />
-        Quando atacar um alvo, cause dano <strong>direto</strong> aos pontos de vida dele se caso ele usar a Manobra Evasiva: "Esquivar".
-        `
-      },
-      {
-        name: 'Apagador de Fantasmas',
-        valors: 1,
-        effect: `Seu Fantasma Nobre consegue alcançar e ferir seus inimigos mesmo que eles sejam habilidosos o suficiente para cruzar lâminas com você.<br />
-        Quando atacar um alvo, cause dano direto aos pontos de vida dele se caso ele usar a Manobra Evasiva: "Aparar". 
-        `
-      },
-      {
-        name: 'Mordida Venenosa',
-        valors: 1,
-        effect: `Seu Fantasma Nobre é naturalmente capaz de infectar os ferimentos que causa com um veneno mortal;
-        talvez tenha sido construído com os restos de um terrível monstro, é encantado somente para essa finalidade ou detém uma horrenda maldição...<br />
-        Quando causar dano através de um <strong>"Golpe Crítico"</strong> usando esse Fantasma Nobre, o alvo irá sofrer a condição negativa <i>"Envenenado"</i>,
-        sem chance de resistir. O veneno irá causar dano ao alvo <strong>todo o início de seu turno</strong> da seguinte forma: <strong>6-8-12-20-40</strong>; não aumentando após isso.
-        `
-      },
-      {
-        name: 'Minimum Maximum',
-        valors: 1,
-        effect: `Seu Fantasma Nobre é encantado com magias que trazem boa sorte; mesmo quando ele parece ter falhado, algo incrível acontece e ele encontra uma maneira de atingir o alvo.<br />
-        Sempre que você rolar uma <strong>rolagem mínima</strong> usando o Fantasma Nobre que possua essa habilidade, multiplique o valor da rolagem por <strong>10</strong>. 
-        `
-      },
-      {
-        name: 'Xadrez com a Morte',
-        valors: 1,
-        effect: `Seu Fantasma Nobre é uma arma incomum, imprevisível, não vista normalmente em um campo de batalha, ou você a empunha de formas particularmente diferentes do normal.
-        Isso faz com que os alvos não sejam capazes de prever a maioria dos  seus ataques e acabam sendo surpreendidos.<br />
-        Todas as suas <i>"Manobras Ofensivas"</i> que podem causar uma <strong>"Rolagem Crítica"</strong>, também causam uma Rolagem Crítica quando você rolar um resultado <strong>"4 (quatro)"</strong> em um dos seus dados.<br />
-        Se um dado correspondente ao <strong>Rank S</strong> for rolado, o número passa a ser <strong>13</strong>.
-        `
-      },
-      {
-        name: 'Saque Mortal',
-        valors: 1,
-        effect: `Seu Fantasma Nobre é particularmente efetivo quando usado para atacar um alvo assim que é sacado de sua bainha ou de uma posição de descanso;
-        um único golpe, no início do combate pode ser tudo que você precisa para derrubar o inimigo.<br />
-        Se você for o primeiro a agir em um combate, adicione <strong>+40 de dano</strong> a qualquer <i>"Manobra Ofensiva"</i> que executar, <strong><i>apenas na primeira rodada</i></strong>.
-        `
-      },
-      {
-        name: 'Arco do Triunfo',
-        valors: 1,
-        effect: `Seu Fantasma Nobre está sempre a postos para ser invocado do seu arsenal espiritual, requerendo pouca concentração sua para se manifestar.<br />
-        <strong>Equipar ou guardar esse Fantasma Nobre é considerado uma ação livre.</strong>
-        `
-      },
-      {
-        name: 'Vingadora Sagrada',
-        valors: 1,
-        effect: `Seu Fantasma Nobre é uma arma usada contra criaturas das trevas. Demônios e Mortos-Vivos caem perante a pureza sagrada do bem da sua lâmina.<br />
-        "Manobras Ofensivas" usadas contra alvos que sejam considerados: "Mortos-Vivos", "Vampiros" e "Demônios" ganham um dano adicional de <strong>+40</stroing>,
-        e qualquer <i>Manobra Evasiva: "Aparar"</i> também recebe esse bônus.<br />
-        Essa habilidade também pode ser usada em <strong>Escudos ou Armaduras</strong>, oferecendo esse valor bônus para as manobras: "Bloquear" ou "Proteger". 
-        `
-      },
-      {
-        name: 'Matadora de Dragões',
-        valors: 1,
-        effect: `Seu Noble Phantasm foi construído com o intuito de combater e matar os mais poderosos de todos os Phantasmals: Dragões.<br />
-        'Manobras Ofensivas" usadas contra alvos que sejam considerados "Dragões" ganham um dano adicional de <strong>+40</strong>,
-        e qualquer <i>Manobra Evasiva: "Aparar"</i> também recebe esse bônus.<br />
-        Essa habilidade também pode ser usada em <strong>Escudos ou Armaduras</strong>, oferecendo esse valor bônus para as manobras: "Bloquear" ou 'Proteger". 
-        `
-      },
-      {
-        name: 'Nemesis',
-        valors: 1,
-        effect: `Seu Noble Phantasm é uma arma conhecida por caçar e derrotar as mais terríveis feras da natureza. Não há besta furiosa capaz de resistir a sua arma.<br />
-        "Manobras Ofensivas" usadas contra alvos que sejam considerados Feras ganham um dano adicional de <strong>+40</strong>,
-        e qualquer <i>Manobra Evasiva: "Aparar"</i> também recebe esse bônus.<br />
-        Essa habilidade também pode ser usada em <strong>Escudos ou Armaduras</strong>, oferecendo esse valor bônus para as manobras: "Bloquear" ou "Proteger". 
-        `
-      },
-      {
-        name: 'Mata-Deus',
-        valors: 1,
-        effect: `Seu Noble Phantasm foi projetado com o intuito de alcançar a maior de todas as proezas: <strong>matar um deus</strong>.
-        Seja através de feitiços profanos, mecanismos tecnológicos que destroem o mistério ou a capacidade de despertar uma técnica especial em seu usuário, essa arma conseguirá derrubar uma divindade.<br />
-        "Manobras Ofensivas" usadas contra alvos que sejam considerados "Deuses" ganham um dano adicional de <strong>+40</strong>,
-        e qualquer <i>Manobra Evasiva: "Aparar"</i> também recebe esse bônus.<br />
-        Essa habilidade também pode ser usada em <strong>Escudos ou Armaduras</strong>, oferecendo esse valor bônus para as manobras: "Bloquear" ou "Proteger". 
-        `
-      },
-      {
-        name: 'Marca dos Ancestrais',
-        valors: 1,
-        effect: `Seu Noble Phantasm foi agraciado com o poder dos deuses antigos, tornando-o uma arma poderosa no combate às forças Eldritch que venham tentar invadir nosso plano de existência.<br />
-        "Manobras Ofensivas" usadas contra alvos que sejam considerados "Eldritch" ganham um dano adicional de <strong>+40</strong>,
-        e qualquer <i>Manobra Evasiva: "Aparar"</i> também recebe esse bônus.<br />
-        Essa habilidade também pode ser usada em <strong>Escudos ou Armaduras</strong>, oferecendo esse valor bônus para as manobras: "Bloquear" ou "Proteger"
-        `
-      },
-      {
-        name: 'Vampírica',
-        valors: 2,
-        effect: `Seu Fantasma Nobre é uma arma amaldiçoada com o poder aterrorizante de se alimentar do sangue dos ferimentos que causa.<br />
-        Você aprendeu a se fortalecer da energia vital que ele rouba, e curar os seus ferimentos com ela.<br />
-        Quando causar dano usando esse Fantasma Nobre, <strong>regenere</strong> Pontos de Vida na <strong>mesma quantidade do dano causado</strong>. 
-        `
-      },
-      {
-        name: 'Galvanismo',
-        valors: 2,
-        effect: `Seu Fantasma Nobre possui formas mágicas ou mecânicas de gerar energia quando usado para atacar.<br />
-        Quando causar dano usando esse Fantasma Nobre, <strong>regenere</strong> Pontos de Energia na <strong>mesma quantidade do dano causado</strong>.
-        `
-      },
-      {
-        name: 'Símbolo da Esperança',
-        valors: 2,
-        effect: `Seu Fantasma Nobre possui uma presença poderosa no campo de batalha, uma aura capaz de ser reconhecida e sentida por todos os seus companheiros, que os fortalece.<br />
-        Adquirir essa "Habilidade de Valor" faz com que <strong>qualquer</strong> dano que for causado com esse Fantasma Nobre caia a <strong>0</strong>.
-        Rolagens para "Manobras Defensivas" também têm qualquer valor reduzido a <strong>0,/strong>.<br />
-        Enquanto você estiver equipado com esse Fantasma Nobre, todos os seus aliados próximos ganham um <strong>bônus de +10</strong> em todas as "Manobras Ofensivas" e <strong>+10</strong> em todas as "Manobras Defensivas". 
-        `
-      },
-      {
-        name: 'Espada de Uriel',
-        valors: 2,
-        effect: `Seu Fantasma Nobre é uma arma que abriga o poder do fogo.
-        Chamas mágicas podem cobrir sua lâmina e ampliar o dano que ela pode entregar, sendo especialmente efetiva contra alvos que tenham uma fraqueza natural contra fogo.<br /> 
-        <strong>Uma vez por combate</strong>, durante um dos seus turnos, como ação livre, você pode fazer seus ataques normais se tornarem do Elemento Fogo;
-        alvos que possuem fraqueza a fogo recebem o <strong>dobro</strong> de dano final de qualquer "Manobra Ofensiva" usada por você enquanto estiver equipado com esse Fantasma Nobre sob o efeito dessa habilidade.<br />
-        Todas as suas "Manobras Ofensivas" também ganham um <strong>dano extra de +20</strong>;
-        esse dano extra <strong>diminui</strong> para +10 no seu <strong>próximo</strong> turno, e para <strong>+5</strong> no seguinte, finalmente desaparecendo na <strong>quarta</strong> rodada e encerrando o efeito da habilidade.
-        `
-      },
-      {
-        name: 'Benção de Marianne',
-        valors: 2,
-        effect: `Seu Fantasma Nobre é uma arma que conduz quantidades incríveis de eletricidade.
-        Quando ativada, esse poder transforma-a em um relâmpago sólido, capaz de fulminar os alvos, especialmente alvos que tenham uma fraqueza natural contra eletricidade.<br />
-        <strong>Uma vez por combate</strong>, durante um dos seus turnos, como ação livre, você pode fazer seus ataques normais se tornarem do elemento elétrico;
-        alvos que possuem fraqueza a eletricidade recebem o <strong>dobro</strong> de dano final de qualquer "Manobra Ofensiva" usada por você enquanto estiver equipado com esse Fantasma Nobre sob o efeito dessa habilidade.<br />
-        Todas as suas "Manobras Ofensivas" também podem causar <strong>dano crítico</strong> em qualquer rolagem que seja igual a: "1 (um)", "2 (dois)" ou "3 (três)";
-        essa vantagem <strong>diminui</strong> para 1 ou 2 no turno seguinte, e para 1 no próximo, desaparecendo completamente na quarta rodada após a ativação.
-       `
-      },
-      {
-        name: 'Beijo da Víbora',
-        valors: 2,
-        effect: `Seu Fantasma Nobre guarda uma toxina violenta em sua lâmina ou ponta.
-        Ao seu comando, essa lâmina ou ponta pode começar a pingar essa toxina como os dentes de uma serpente faminta, infectando os ferimentos que causa.<br />
-        <strong>Uma vez por combate</strong>, durante um dos seus turnos, como ação livre, você pode fazer seus ataques normais se tornarem do elemento veneno;
-        alvos que possuem fraqueza a veneno recebem o <strong>dobro</strong> de dano final de qualquer "Manobra Ofensiva" usada por você enquanto estiver equipado com esse Fantasma Nobre sob o efeito dessa habilidade.<br />
-        Qualquer alvo atingido por uma "Manobra Ofensiva" sua enquanto essa habilidade estiver em efeito, receberá <strong>10 pontos de dano direto</strong> que não podem ser resistidos.<br />
-        <i>Esse efeito irá se repetir por 3 dos seus ataques</i>.<br /><br />
-
-        <strong>Um mesmo alvo pode ser atingido múltiplas vezes, magnificando o efeito. O dano é considerado um veneno, e por isso, irá permanecer até o alvo ser derrotado ou conseguir neutralizar o efeito.</strong>
-        `
-      },
-      {
-        name: 'Sonata Lunar',
-        valors: 2,
-        effect: `A lâmina de seu Fantasma Nobre foi forjada com propriedades misteriosas e mágicas, fazendo ela deixar de possuir qualquer natureza mundana e se tornar puramente etérea.
-        Devido a essa mudança, seus ataques passam a se fortalecer do seu poder mágico ao invés de sua força física.<br />
-        Substitua o Parâmetro "Força" pelo Parâmetro 'Mana", para qualquer "Manobra Ofensiva" que envolva esse Fantasma Nobre. 
-        `
-      },
-      {
-        name: 'Lenda da Espada',
-        valors: 2,
-        effect: `Seu Noble Phantasm é conhecido por ser uma arma que abriga um grande poder,
-        é de natureza ritualística ou está atrelado a uma especifica técnica especial, tornando-o particularmente poderoso quando usado para lançar tais habilidades especiais.<br />
-        Adicione um valor de <strong>dano extra de +10/+20/+40</strong>, determinado pelo rank do seu Parâmetro "Noble Phantasm" (D-C / B-A / S),
-        sempre que lançar uma "Habilidade Especial" como "Manobra Ofensiva", enquanto utiliza esse Fantasma Nobre.
-        `
-      },
-      {
-        name: 'Barricada',
-        valors: 2,
-        effect: `Seu escudo é projetado para especialmente lidar com flechas, tiros e disparos. Protegido por ele, você é capaz de atravessar um campo de batalha inteiro sem ser sequer alvejado uma vez.<br />
-        Se usado para bloquear ataques remotos, qualquer dano que seria recebido é reduzido a <strong>"0 (zero)"</strong>. 
-        `
-      },
-      {
-        name: 'Decorações de Obsidiana',
-        valors: 2,
-        effect: `Seu escudo possui ou é totalmente fabricado por materiais especiais que são capazes de anular ou reduzir grandemente o dano causado por mágicas.<br />
-        Se usado para bloquear qualquer tipo de "Magia Ofensiva" <i>(que cause algum tipo de dano)</i>  sua <i>Manobra Defensiva: "Bloquear"</i> ganha um adicional de <strong>+20/+40/+60</strong>,
-        determinado pelo rank do seu Parâmetro "Resiliência" (D-C / B-A / S). 
-        `
-      },
-      {
-        name: 'Ave Maria!',
-        valors: 2,
-        effect: `Seu Escudo é capaz de reagir ao perigo e saltar do seu arsenal espiritual para te proteger com um comando de voz, na mesma hora.<br />
-        Você pode usar a <i>Manobra Evasiva: "Bloquear"</i> como uma "Manobra de Reação" e equipar um Fantasma Nobre do tipo: <i>"Escudo"</i> que você possua, mas não está invocado naquela hora, imediatamente.<br />
-        O escudo irá passar a ser considerado como estando equipado na sua <strong>mão não hábil</strong>, para todos os outros efeitos.<br />
-        Se você possuir uma arma equipada na sua mão não hábil, ela será <strong>substituída</strong> pelo seu escudo.  
+        name: 'Lágrimas de Caitha',
+        valors: 3,
+        effect: `Seu Fantasma Nobre está diretamente atrelado a sua saúde física. 
+        Sentindo que sua vida está arriscada, e seus ferimentos se agravando, a benção se manifesta 
+        e um poder incrível surge.<br /><br />
+        Quando seus Pontos de Vida forem <strong>reduzidos</strong> a uma quantia que seja 
+        <strong>igual ou inferior a 50%</strong>, por um ataque de um adversário e <strong>somente</strong> 
+        em uma situação de <strong>combate</strong>, adicione <strong>+20</strong> ao 
+        seu <strong>Valor Inicial</strong> para qualquer <i>Manobra Ofensiva</i> ou <i>Manobra Evasiva</i> 
+        enquanto estiver equipado com esse Fantasma Nobre.
         `
       },
       {
         name: 'Ouroboros',
         valors: 3,
-        effect: `Seu Fantasma Nobre consegue ignorar as leis da física e distorcer o tempo,
-        por segundos o suficiente para que você aplique dois golpes contra um inimigo, em um clarão de movimentos quase impossíveis de se ver.<br />
-        O Fantasma Nobre equipado com essa habilidade pode realizar <strong>dois ataques normais</strong> durante o seu turno.<br />
-        O ataque extra <strong>NÃO</strong> pode ser realizado se caso o dano do primeiro golpe for <strong>reduzido a 0</strong> por uma <i>Manobra Defensiva: "Aparar"</i> ou "Bloquear" do alvo.<br /><br />
-        <strong><i>Uma arma equipada na sua mão não hábil não pode realizar um ataque extra, também<i></strong>. 
+        effect: `Seu Fantasma Nobre consegue ignorar as leis da física e distorcer o tempo, 
+        por segundos o suficiente para que você aplique <strong>dois</strong> golpes contra um inimigo, 
+        em um clarão de movimentos quase impossíveis de se ver.<br /><br /> 
+        O Fantasma Nobre equipado com essa habilidade pode realizar dois ataques normais durante o seu turno. 
+        O ataque extra <strong>NÃO</strong> pode ser realizado se caso o dano do primeiro golpe for 
+        reduzido a 0 por uma <i>Manobra Defensiva "Aparar"/"Bloquear"</i> do alvo.<br /><br />
+        <i>Uma arma equipada na sua mão não hábil não pode realizar um ataque extra, também</i>.     
         `
       },
       {
-        name: 'Lágrimas de Caitha',
-        valors: 3,
-        effect: `Seu Fantasma Nobre está diretamente atrelado a sua saúde física. Sentindo que sua vida está arriscada, e seus ferimentos se agravando, a benção se manifesta e um poder incrível surge.<br />
-        Quando seus Pontos de Vida forem reduzidos a uma quantia que seja <strong>igual ou inferior a 50%</strong> desses,
-        por um ataque de um adversário e <strong>somente</strong> em uma situação de combate,
-        todas as suas "Manobras Ofensivas" passam a causar <strong>+20</strong> pontos de dano.<br />
-        Caso o mesmo ocorra, mas seus Pontos de Vida sejam reduzidos a <strong>menos que 75%</strong>, todas as suas "Manobras Ofensivas" passam a causar <strong>+40</strong> pontos de dano.
+        name: 'Marca dos Ancestrais',
+        valors: 2,
+        effect: `Seu Noble Phantasm foi agraciado com o poder dos deuses antigos, 
+        tornando-o uma arma poderosa no combate às forças Eldritch que venham tentar invadir 
+        nosso plano de existência.<br /><br /> 
+        Inimigos que possuam a <strong>característica</strong> de serem <strong>Eldritch</strong> 
+        recebem o <strong>dobro</strong> de dano após eles rolarem suas 
+        <i>Manobras Evasivas</i> para se defenderem das suas <i>Manobras Ofensivas</i>.<br /><br />
+        <i>Esse Fantasma Nobre não pode possuir as Habilidades de Valor: 
+        "Vingadora Sagrada", "Matadora de Dragões", "Finda-Deus" e "Nemesis"</i>.
         `
       },
       {
-        name: 'Perfeita para o Combate',
-        valors: 3,
-        effect: `Seu Fantasma Nobre foi incansavelmente forjado e minuciosamente planejado, tornando-se uma jóia de design.<br />
-        Tal perfeição o garante uma aura de heroísmo tão grande que ele é capaz de invocar diversos contos de manobras lendárias, muito mais que um Fantasma Nobre que não o possua.<br />
-        Você pode aplicar qualquer "Golpe Especial" da classe base do Fantasma Nobre que possui essa habilidade. 
+        name: 'Finda-Deus',
+        valors: 2,
+        effect: `Seu Noble Phantasm foi projetado com o intuito de alcançar a maior de 
+        todas as proezas: matar um deus. Seja através de feitiços profanos, mecanismos tecnológicos 
+        que destroem o mistério ou a capacidade de despertar uma técnica especial em seu usuário, 
+        essa arma conseguirá derrubar uma divindade.<br /><br />
+        Inimigos que possuam <strong>algum</strong> nível de <strong>divindade</strong> recebem 
+        o <strong>dobro</strong> de dano após eles rolarem suas <i>Manobras Evasivas</i> 
+        para se defenderem das suas <i>Manobras Ofensivas</i>.<br /><br /> 
+        <i>Esse Fantasma Nobre não pode possuir as Habilidades de Valor: 
+        "Vingadora Sagrada", "Matadora de Dragões", "Nemesis" e "Marca dos Ancestrais"</i>.
         `
       },
       {
-        name: 'Cem Cabeças',
-        valors: 3,
-        effect: ` Seu Noble Phantasm é simplesmente mortal; atingir um ponto fraco, ou aplicar um golpe certeiro em um adversário resultará em um ferimento decisivo.<br />
-        Quando causar um <strong>dano crítico</strong>, adicione <strong>+25%/+50%/+75%</strong> determinado pelo rank do seu Parâmetro "Noble Phantasm" (D-C / B-A / S), ao seu modificador de dano. 
+        name: 'Nemesis',
+        valors: 2,
+        effect: `Seu Noble Phantasm é uma arma conhecida por caçar e derrotar as mais
+         terríveis feras da natureza. Não há besta furiosa capaz de resistir a sua arma.<br /><br />
+        Inimigos que possuam a <strong>característica</strong> de serem Feras recebem o 
+        <strong>dobro</strong> de dano após eles rolarem suas <i>Manobras Evasivas</i> para se defenderem das 
+        suas <i>Manobras Ofensivas</i>.<br /><br /> 
+        <i>Esse Fantasma Nobre não pode possuir as Habilidades de Valor: 
+        "Vingadora Sagrada", "Matadora de Dragões", "Finda-Deus" e "Marca dos Ancestrais"</i>.`
+      },
+      {
+        name: 'Vingadora Sagrada',
+        valors: 2,
+        effect: `Seu Fantasma Nobre é uma arma usada contra criaturas das trevas. 
+        Demônios e Mortos-Vivos caem perante a pureza sagrada do bem da sua lâmina.<br /><br /> 
+        Inimigos que possuam a <strong>característica</strong> de serem <strong>Mortos-Vivos</strong> 
+        ou <strong>Demônios</strong> recebem o <strong>dobro</strong> de dano após eles rolarem suas 
+        <i>Manobras Evasivas</i> para se defenderem das suas <i>Manobras Ofensivas</i>.<br /><br />
+        <i>Esse Fantasma Nobre não pode possuir as Habilidades de Valor: 
+        "Matadora de Dragões", "Nemesis", "Finda-Deus" e "Marca dos Ancestrais"</i>.
         `
       },
       {
-        name: 'Poder Selado',
-        valors: 3,
-        effect: `Embora sua armadura ofereça proteção, esse não é o real propósito de utilizá-la...<br />
-        Esse Fantasma Nobre na verdade é um limitador de suas capacidades físicas ou uma forma de treinamento forçado; quando você é liberado dela, você ganha por um curto período, uma explosão de poder fenomenal.<br />
-        Você pode, durante <strong>seu turno</strong>, como "Manobra Livre", desativar esse Fantasma Nobre pelo resto do combate;
-        Pelo resto do seu turno você ganha um dano adicional de <strong>+20/+40/+60</strong>, determinado pelo rank do seu Parâmetro "Noble Phantasm" (D-C / B-A / S) e pode se mover pelo <strong>dobro</strong> do deslocamento normal.
+        name: 'Matador de Dragões',
+        valors: 2,
+        effect: `Seu Noble Phantasm foi construído com o intuito de combater e matar os mais poderosos 
+        de todos os Phantasmals: Dragões. 
+        Inimigos que possuam a <strong>característica</strong> de serem <strong>Dragões</strong> recebem o 
+        <strong>dobro</strong> de dano após eles rolarem suas <i>Manobras Evasivas</i> para se defenderem 
+        das suas <i>Manobras Ofensivas</strong>.<br /><br />
+        <i>Esse Fantasma Nobre não pode possuir as Habilidades de Valor: 
+        "Vingadora Sagrada", "Nemesis", "Finda-Deus" e "Marca dos Ancestrais"</i>.`
+      },
+      {
+        name: 'Elemental',
+        valors: 2,
+        effect: `Seu Fantasma Nobre está encantado magicamente com um elemento dos círculos herméticos; 
+        uma espada de fogo, uma lança de relâmpagos ou uma adaga gélida.<br /><br />
+        Quando usa esse artefato para golpear um inimigo, seu golpe carrega também o efeito daquele elemento.<br /><br /> 
+        Escolha entre <strong>Fogo, Gelo ou Eletricidade</strong> quando adquirir essa Habilidade de Valor;
+        todas as suas <i>Manobras Ofensivas</i> passam agora a serem consideradas causando dano 
+        por esse Elemento.<br /><br /> 
+        Inimigos que tenham fraqueza a esse elemento recebem o <strong>dobro</strong> de dano após 
+        eles rolarem suas <i>Manobras Evasivas</i> para se defenderem das suas <i>Manobras Ofensivas</i>.
         `
+      },
+      {
+        name: 'Mordida Venenosa',
+        valors: 1,
+        effect: `Seu Fantasma Nobre é naturalmente capaz de infectar os ferimentos que causa 
+        com um veneno mortal; talvez tenha sido construído com os restos de um terrível monstro, 
+        é encantado somente para essa finalidade ou detém uma horrenda maldição…<br /><br />
+        Quando <strong>causar</strong> dano através de um <strong>Golpe Crítico</strong> usando 
+        esse Fantasma Nobre, o alvo irá sofrer a condição negativa: <i>"Envenenado"</i>, sem chance de resistir.<br /><br /> 
+        <i>O veneno irá causar dano ao alvo todo o início de seu turno da seguinte forma: 
+        <strong>6-8-12-20-40</strong>; não aumentando após isso.</i>
+        `
+      },
+      {
+        name: 'Sonata Lunar',
+        valors: 2,
+        effect: `A lâmina de seu Fantasma Nobre foi forjada com propriedades misteriosas 
+        e mágicas, fazendo ela deixar de possuir qualquer natureza mundana e se tornar puramente etérea. 
+        Devido a essa mudança, seus ataques passam a se fortalecer do seu poder mágico ao 
+        invés de sua força física.<br /><br />
+        Substitua o Parâmetro <strong>Força</strong> pelo Parâmetro <strong>Mana</strong>, 
+        para qualquer <i>Manobra Ofensiva</i> que envolva esse Fantasma Nobre.                
+        `
+      },
+      {
+        name: 'Galvanismo',
+        valors: 2,
+        effect: `Seu Fantasma Nobre possui formas mágicas ou mecânicas de gerar energia quando 
+        usado para atacar.<br /><br />
+        Quando <strong>causar</strong> dano usando esse Fantasma Nobre, 
+        <strong>regenere</strong> Pontos de Energia na <strong>mesma</strong> quantidade do dano causado.        
+        `
+      },
+      {
+        name: 'Vampírica',
+        valors: 2,
+        effect: `Seu Fantasma Nobre é uma arma amaldiçoada com o poder aterrorizante de 
+        se alimentar do sangue dos ferimentos que causa. Você aprendeu a se fortalecer da energia vital 
+        que ele rouba, e curar os seus ferimentos com ela.<br /><br />
+        Quando <strong>causar</strong> dano usando esse Fantasma Nobre, <strong>regenere</strong> Pontos de Vida 
+        na <strong>mesma</strong> quantidade do dano causado.
+        `
+      },
+      {
+        name: 'Xadrez com a Morte',
+        valors: 1,
+        effect: `Seu Fantasma Nobre é uma arma incomum, imprevisível, não vista normalmente 
+        em um campo de batalha, ou você a empunha de formas particularmente diferentes do normal. 
+        Isso faz com que os alvos não sejam capazes de prever a maioria dos  seus ataques e acabam 
+        sendo surpreendidos.<br /><br />
+        Todas as suas <i>Manobras Ofensivas</i> que podem causar uma <strong>Rolagem Crítica</strong>, 
+        também causam uma Rolagem Crítica quando você rolar um resultado <strong>4</strong> em um dos seus dados.<br /><br /> 
+        <i>Se um dado correspondente ao Rank S for rolado, o número passa a ser 13.</i>
+        `
+      },
+      {
+        name: 'Minimum Maximum',
+        valors: 1,
+        effect: `Seu Fantasma Nobre é encantado com magias que trazem boa sorte; mesmo 
+        quando ele parece ter falhado, algo incrível acontece e ele 
+        encontra uma maneira de atingir o alvo.<br /><br />
+        Sempre que você rolar uma rolagem <strong>mínima</strong> usando o Fantasma Nobre que possua 
+        essa habilidade, <strong>multiplique</strong> o valor da rolagem por <strong>10</strong>.         
+        `
+      },
+      {
+        name: 'Apagador de Fantasmas',
+        valors: 1,
+        effect: `Seu Fantasma Nobre consegue alcançar e ferir seus inimigos mesmo que eles sejam 
+        habilidosos o suficiente para cruzar lâminas com você.<br /><br />
+        Quando atacar um alvo, cause dano <strong>direto aos pontos de vida</strong> dele se caso ele usar 
+        a <i>Manobra Evasiva "Aparar"</i>.<br /><br /> 
+        <i>Você não pode possuir as Habilidades de Valor: "Destruidor de Falanges" e "Revelador de Ilusões" 
+        nesse Fantasma Nobre.</i>
+        `
+      },
+      {
+        name: 'Revelador de Ilusões',
+        valors: 1,
+        effect: `Seu Fantasma Nobre tem a capacidade de alcançar seus alvos, não importa o 
+        quão rápidos eles são ou que tipo de traquinagens para escapar de seus golpes estejam usando.<br /><br />
+        Quando atacar um alvo, cause dano <strong>direto aos pontos de vida</strong> 
+        dele se caso ele usar a <i>Manobra Evasiva "Esquivar"</i>.<br /><br /> 
+        <i>Você não pode possuir as Habilidades de Valor: "Apagador de Fantasmas" e "Destruidor de Falanges" 
+        nesse Fantasma Nobre.</i>
+        `
+      },
+      {
+        name: 'Destruidor de Falanges',
+        valors: 1,
+        effect: `Seu Fantasma Nobre possui a habilidade de ultrapassar escudos e atingir 
+        os alvos mesmo através das barreiras de aço que eles estão usando para se defender.<br /><br />
+        Quando atacar um alvo, cause dano <strong>direto aos pontos de vida</strong> dele se caso ele usar 
+        a <i>Manobra Evasiva "Bloquear"</i>.<br /><br />
+        <i>Você não pode possuir as Habilidades de 
+        Valor: "Apagador de Fantasmas" e "Revelador de Ilusões" nesse Fantasma Nobre.</i>                  
+        `
+      },
+    ].sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
       }
-    ],
+
+      return -1;
+    }),
     type: [
       {
         name: 'Espada',
-        specialStrikes: [
+        valorSkills: [
           {
-            name: 'Ataque com Salto'
+            name: 'Caminho Radiante',
+            valors: 2,
+            effect: `Sua espada é a extensão do seu corpo e dos seus feitos. E junto com ela, 
+            você desenvolveu ou foi abençoado com um golpe decisivo. Tal é sua intimidade com sua lâmina, 
+            que quando a técnica de vocês é disparada, vocês se tornam incomparáveis, quebrando até 
+            os limites de outras lendas.<br /><br /> 
+            Aumente o seu <strong>Valor Inicial</strong> em <strong>+10</strong> quando você 
+            usar uma Técnica Especial usando esse Fantasma Nobre.        
+            `
           },
           {
-            name: 'Ataque Veloz'
+            name: 'Saque Mortal',
+            valors: 2,
+            effect: `Sua espada é particularmente poderosa quando usada para atacar um inimigo 
+            enquanto ela está na bainha ou em uma posição de descanso. 
+            Muitas vezes, o primeiro golpe é tudo que você precisa para decidir o combate.<br /><br /> 
+            Seu primeiro ataque normal em um combate causa dano <strong>direto</strong> aos <strong>Pontos de Vida</strong> 
+            de um alvo que possa ser atacado por você.<br /><br />
+            Você pode usar a <i>manobra "Checkmate"</i> para guardar esse Fantasma Nobre, 
+            e assim, poder ganhar esse bônus novamente no seu próximo ataque normal.
+            `
           },
           {
-            name: 'Ataque Ascendente'
+            name: 'Coração do Combate',
+            valors: 2,
+            effect: `Sua espada incorpora o conceito de si mesma ainda mais profundamente que o normal; 
+            uma arma feita para determinar uma batalha diretamente, sem truques ou estratégias complexas.<br /><br />
+            Uma vez que ela esteja engajada em um confronto contra inimigos, mano-a-mano, sua lâmina se sentirá ainda mais afiada.<br />
+            Sempre que você atacar normalmente, contra um inimigo que tenha atacado você com um ataque corpo a corpo, ou que tenha sido
+            atacado por você anteriormente usando esse Fantasma Nobre, <strong>some o Valor Inicial</strong>
+            de ambos os seus Parâmetros de ataque.
+            `
+          },
+          {
+            name: 'Ápice Marnial',
+            valors: 3,
+            effect: `Sua espada foi escolhida para ser seu armamento, sendo você um guerreiro de grande técnica.
+             Ela se ajusta tão perfeitamente ao seu estilo de luta que vocês foram um passo além; 
+             e esse estilo de luta juntamente com ela se tornou ainda mais versátil e incrível.<br /><br />
+             Se você possuir uma <strong>Habilidade Marcial</strong>, enquanto estiver usando esse Fantasma Nobre, 
+             você irá adquirir vantagens especiais dependendo de qual Habilidade Marcial possuir.<br /> 
+             <strong>ZWEIHANDER</strong> - Você pode executar um ataque extra por turno; 
+             se um desses ataques for um <i>Ataque Crítico</i>, 
+             o adversário não pode rolar nenhuma <i>Manobra Evasiva</i>.<br />
+             <strong>AMBIDESTRIA</strong> - Cada novo ataque normal contra um 
+             mesmo alvo <strong>aumenta</strong> em <strong>+10</strong> o seu Valor Inicial; Se você eliminar um inimigo, 
+             mas ainda tiver ataques restantes, você pode executar uma <i>Manobra de Movimento</i>, imediatamente, 
+             e continuar os ataques contra um próximo alvo.<br />
+             <strong>DUELISTA</strong> - Sua <i>Manobra Evasiva "Aparar"</i> pode agora provocar uma 
+             <strong>Rolagem Crítica</strong>; Se um inimigo entrar no alcance de sua arma com uma 
+             <i>Manobra de Movimento</i>, você pode executar um ataque normal contra esse inimigo. `
+          },
+          {
+            name: 'Espada & Escudo',
+            valors: 1,
+            effect: `Sua espada possui uma lâmina larga o suficiente, 
+            uma bainha resistente, ou você simplesmente aprendeu a usar ela dessa forma; 
+            com ela em punho, você não precisa de um escudo.<br /><br /> 
+            Você pode executar a <i>Manobra Evasiva "Bloquear"</i> usando esse 
+            Fantasma Nobre; porém, <strong>deve</strong> substituir o Parâmetro <strong>Força</strong> 
+            por <strong>Fantasma Nobre</strong>. `
+          },
+          {
+            name: 'Brilho Perfeito',
+            valors: 1,
+            effect: `Sua espada é um conduíte de energias mágicas. 
+            Uma vez que ela é estimulada pelo poder de uma técnica especial, ela irá continuar 
+            por mais alguns momentos com seu poder amplificado, certificando-se de finalizar o combate. 
+            Aumente o seu <strong>Valor Inicial</strong> em <strong>+10</strong> 
+            para seu próximo ataque normal se no turno anterior você usou uma Técnica Especial 
+            com esse Fantasma Nobre.`
+          },
+        ].sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
           }
-        ],
-        valorSkills: []
+    
+          return -1;
+        })
       },
       {
         name: 'Lança',
-        specialStrikes: [
+        valorSkills: [
           {
-            name: 'Montante Adelante'
+            name: 'Montante Adelante',
+            valors: 2,
+            effect: `Sua lança é perfeita para atropelar seus inimigos, 
+            e perfurar eles com uma feroz carga.<br /><br />
+            Se você executar uma <i>Manobra de Deslocamento</i> esse turno, 
+            some ambos os seus Parâmetros de <strong>Ataque</strong> ao seu <strong>Valor Inicial</strong> 
+            no seu próximo ataque normal. 
+            `
           },
           {
-            name: 'Dragooner Final'
+            name: 'Espiral Gaélica',
+            valors: 2,
+            effect: `Sua lança é particularmente mortal ao ser usada com movimentos em cadeia. 
+            Desviar ou evitar um golpe de um inimigo e imediatamente golpear a guarda aberta 
+            aumenta o poder dos seus golpes.<br /><br /> 
+            Se durante a última rodada você utilizou o recurso Burst of Speed para reduzir o dano de uma Manobra Ofensiva de um inimigo, aumente o Valor Inicial da sua próxima Manobra Ofensiva em +10.
+            `
           },
           {
-            name: 'Lua Cheia'
+            name: 'Vento Bravo',
+            valors: 1,
+            effect: `Sua lança libera uma grande quantidade de poder assim que um confronto tem início, 
+            como uma furiosa tempestade.<br /><br />
+            Se você for o primeiro a agir em um combate, <strong>aumente o Valor Inicial</strong> 
+            da sua próxima <i>Manobra Ofensiva</i> em <strong>+10</strong>, 
+            apenas durante a primeira rodada de um combate.
+            `
+          },
+          {
+            name: 'Impulso Signo',
+            valors: 1,
+            effect: `Sua lança é particularmente móvel e fácil de usar, 
+            e você consegue dirigir os ataques dela de forma ainda mais certeira que o normal.<br /> 
+            Se um inimigo conseguir zerar o dano de uma rolagem de um 
+            ataque normal usando uma <i>Manobra Evasiva</i>, você pode, <strong>uma vez por rodada</strong>, 
+            atacar ele novamente. Nesse caso,
+            a sua rolagem de ataque passa a ser de <strong>Agilidade + Fantasma Nobre</strong>.
+            `
+          },
+          {
+            name: 'Predador',
+            valors: 1,
+            effect: `Sua lança é como os dentes de um animal feroz; 
+            se a presa está encurralada, esse será o fim.<br /><br />
+            Se você atacar normalmente um inimigo que esteja sob <strong>cobertura</strong>, 
+            ele não poderá rolar nenhuma <i>Manobra Evasiva</i> para evitar o seu dano. 
+            `
+          },
+        ].sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
           }
-        ],
-        valorSkills: []
+    
+          return -1;
+        })
       },
       {
         name: 'Faca',
-        specialStrikes: [
+        valorSkills: [
           {
-            name: 'O Golpe Mais Rápido'
+            name: 'Alta Frequência',
+            valors: 1,
+            effect: `Sua faca sobrecarrega com poder, se aquece a temperaturas altíssimas 
+            ou vibra a velocidades amedrontadoras no momento em que você a preenche com sua energia; 
+            este efeito perdura por mais alguns minutos, e faz com que o seu próximo 
+            ataque carregue uma pequena parcela daquele poder.<br /><br />
+            <i><strong>Aumente</strong> seu Valor Inicial em <strong>+10</strong> 
+            na sua próxima <i>Manobra Ofensiva</i> se você usou um <strong>Burst of Power</strong> 
+            no seu turno anterior, mas apenas se você não está ativando o recurso novamente.</i>             
+            `
           },
           {
-            name: 'O Golpe Mais Letal'
+            name: 'Fio da Navalha',
+            valors: 3,
+            effect: `Seu Noble Phantasm é simplesmente mortal; atingir um ponto fraco ou aplicar um golpe certeiro 
+            em um adversário resultará em um ferimento decisivo.<br /><br />
+            <strong:Dobre</strong> o seu multiplicador de <strong>dano crítico</strong> 
+            referente ao seu Rank no seu Parâmetro <strong>Sorte</strong>.<br /><br />
+            <i>Essa habilidade apenas é aplicada por um golpe crítico natural e não é considerada 
+            por um crítico forçado usando <strong>Burst of Power</strong>.</i>        
+            `
           },
           {
-            name: 'O Golpe Mais Cruel'
+            name: 'Perfeita para o Combate',
+            valors: 2,
+            effect: `Sua faca já esteve ao seu lado em inúmeras situações e através dos mais variados 
+            campos de batalha, e nunca lhe decepcionou; muito mais que uma pequena lâmina, 
+            ela é na sua opinião, tudo que você precisa para vencer uma luta.<br /><br />
+            Quando executar uma <i>Manobra Ofensiva</i> usando esse Fantasma Nobre, 
+            você deve rolar <strong>2 dados</strong> equivalente aos seus valores de ataque ao invés de 1.         
+            `
+          },
+          {
+            name: 'Brutalidade',
+            valors: 1,
+            effect: `Sua faca está disfarçada como meramente uma arma secundária, quando na verdade, 
+            você está apenas esperando para que a vítima apresente o momento perfeito para ela se revelar 
+            como seu trunfo. Nesse caso, você afioou seus reflexos para fechar qualquer chance de fuga de um 
+            inimigo enquanto estão lutando.<br /><br /> 
+            Para que essa Habilidade de Valor possa ser usada, sua faca <strong>NÃO</strong> 
+            pode ser um dos seus Fantasmas Nobres <strong>ativos</strong>; 
+            Se um inimigo usar a <i>Manobra Evasiva "Esquivar"</i> contra uma das suas <i>Manobras Ofensivas</i>, 
+            você pode, imediatamente após o dano final ser calculado, aplicar um ataque normal usando essa faca, 
+            e causar dano <strong>direto aos Pontos de Vida</strong> desse inimigo.<br /><br />
+            <strong>Você só pode usar essa habilidade uma vez por inimigo.</strong>
+            `
+          },
+          {
+            name: 'Fatalidade',
+            valors: 1,
+            effect: `Sua faca está disfarçada como meramente uma arma secundária, quando na verdade, 
+            você está apenas esperando para que a vítima apresente o momento perfeito para 
+            ela se revelar como seu trunfo. Nesse caso, ela é especialmente preparada para vir 
+            quando o inimigo forma uma guarda usando a arma dele…<br /><br /> 
+            Para que essa Habilidade de Valor possa ser usada, sua faca <strong>NÃO</strong> 
+            pode ser um dos seus Fantasmas Nobres <strong>ativos</strong>; 
+            Se um inimigo usar a <i>Manobra Evasiva "Aparar"</i> contra uma das suas <i>Manobras Ofensivas</i>, 
+            você pode, imediatamente após o dano final ser calculado, aplicar um ataque normal usando essa faca, 
+            e causar dano <strong>direto aos Pontos de Vida</strong> desse inimigo.<br /><br />
+            <strong>Você só pode usar essa habilidade uma vez por inimigo.</strong> 
+            `
+          },
+          {
+            name: 'Dama Sorte',
+            valors: 2,
+            effect: `Sua faca é um amuleto de grande poder, com a única função de tentar reunir 
+            toda a sorte do mundo ao seu favor. Você não encontra dificuldades em conseguir 
+            enterrar a lâmina dela em pontos fracos das suas vítimas.<br /><br /> 
+            Enquanto estiver equipado com esse Fantasma Nobre, o <strong>Valor Inicial</strong> 
+            para todas as suas rolagens de <i>Manobras Ofensivas</i> passam agora a usar o seu Parâmetro <strong>Sorte</strong>. 
+            `
+          },
+        ].sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
           }
-        ],
-        valorSkills: []
+    
+          return -1;
+        })
       },
       {
-        name: 'Pesado',
-        specialStrikes: [
+        name: 'Machado',
+        valorSkills: [
           {
-            name: 'Onda de Choque!'
+            name: 'Força Pura',
+            valors: 1,
+            effect: `Seu machado é feito de forma mais rude e crua, porém, 
+            um golpe dele entrega um peso ainda mais esmagador do que o normal.<br /><br /> 
+            Quando conseguir uma rolagem máxima ao executar uma <i>Manobra Ofensiva</i>, 
+            Você pode <strong>NÃO</strong> causar um <strong>Ataque Crítico</strong>, 
+            mas no lugar, fazer esse ataque ser direto nos <strong>pontos de vida</strong> desse inimigo.
+            `
           },
           {
-            name: 'Quebra Queixo!'
+            name: 'Juggernaut',
+            valors: 2,
+            effect: `Seu machado instiga em você um senso de imparável poder; enquanto o empunha, 
+            e sua vitalidade está no topo, você luta como se não pudesse ser detido.<br /><br />
+            Se os seus <strong>Pontos de Vida</strong> estão no <strong>máximo</strong>, 
+            você pode rolar o <strong>dobro</strong> de dados que você rolaria normalmente 
+            para executar qualquer <i>Manobra Evasiva</i>, desde que esteja equipado com esse Fantasma Nobre. 
+            `
           },
           {
-            name: 'Mais Dor!'
+            name: 'Impulso Alfa',
+            valors: 2,
+            effect: `Seu machado é particularmente efetivo quando usado para atingir 
+            pontos chaves de um oponente que tenha atacado você, 
+            mas atingido nada além do ar; Costas expostas, pescoços desprotegidos, costelas sem proteção… 
+            Se a oportunidade surgir, seu machado fará o trabalho.<br /><br />
+            Quando você usar a <i>Manobra Evasiva "Esquivar"</i> para defender uma <strong>Manobra Ofensiva</strong> 
+            de um inimigo, e reduzir o dano dessa a zero, no seu próximo turno você pode aplicar 
+            <strong>+1 ataque normal</strong> contra esse inimigo, e adicionar o Valor Inicial do seu 
+            Parâmetro <strong>Agilidade</strong> a todas as suas rolagens durante aquele turno. 
+            `
+          },
+          {
+            name: 'Poder Ômega',
+            valors: 2,
+            effect: `Seu machado te possibilita empregar uma técnica de deflexão de 
+            golpes particularmente devastadora; quando essa arma colide contra a arma do adversário, 
+            muitas vezes, a guarda do adversário ficará completamente exposta.<br /><br />
+            Quando você usar a <i>Manobra Evasiva "Aparar"</i> para defender uma <strong>Manobra Ofensiva</strong> 
+            de um inimigo, e reduzir o dano dessa a zero, no seu próximo turno você pode aplicar 
+            <strong>+1 ataque normal</strong> contra esse inimigo, e adicionar o Valor Inicial do seu 
+            Parâmetro <strong>Resiliência</strong> a todas as suas rolagens durante aquele turno.           
+            `
+          },
+          {
+            name: 'Efeito em Massa',
+            valors: 3,
+            effect: `Seu machado é um símbolo de força e pureza em combate; 
+            não há finesse com ele, apenas uma dolorosa verdade feita de ferro e sangue jorrando.<br />
+            Seu Valor Inicial, para qualquer <i>Manobra Ofensiva</i>, sempre é considerado Força.<br /> 
+            Quando atacar normalmente usando esse Fantasma Nobre, 
+            ao invés de rolar dois Parâmetros de <strong>ataque</strong>, 
+            role <strong>1 dado</strong> para cada rank em <strong>Força</strong> que possuir, 
+            sendo que esses dados são equivalentes ao Rank atual.        
+            `
+          },
+        ].sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
           }
-        ],
-        valorSkills: []
+    
+          return -1;
+        })
       },
       {
         name: 'Arco',
-        specialStrikes: [
+        valorSkills: [
           {
-            name: 'Duas Flechas'
+            name: 'Orgulho de Vanadis',
+            valors: 2,
+            effect: `Seu arco é particularmente bom quando usado as distâncias mais impossíveis. 
+            Aliado a seus olhos treinados a ponto da perfeição, se você avista um alvo, mesmo a quilômetros, 
+            sua flecha não só o alcançará, mas será ainda mais mortífera.<br /><br />
+            Se você atacar um inimigo que esteja a, no mínimo, <strong>12m</strong> da sua posição atual, 
+            aumente seu Valor Inicial em <strong>+10</strong> para qualquer <i>Manobra Ofensiva</i> 
+            que você executar contra ele.
+            `
           },
           {
-            name: 'Paciência do Caçador'
+            name: 'Flechas Deedlit',
+            valors: 2,
+            effect: `Com seu arco, sorte não é um fator; se um ponto fraco for perfurado 
+            por uma flecha disparada por ele, o estrago extra é um mérito da sua incrível mira.<br /><br /> 
+            Quando conseguir um <strong>Ataque Crítico</strong> em uma <i>Manobra Ofensiva</i> 
+            usando esse Fantasma Nobre, use o seu Parâmetro <strong>Fantasma Nobre</strong> como se fosse o 
+            seu Parâmetro <strong>Sorte</strong>. 
+            `
           },
-          {
-            name: 'Céu escurecido'
+        ].sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
           }
-        ],
-        valorSkills: []
+    
+          return -1;
+        })
       },
       {
         name: 'Arma de Fogo',
-        specialStrikes: [
+        valorSkills: [
           {
-            name: 'Queima Roupa'
+            name: 'Vigilância',
+            valors: 2,
+            effect: `Seu firearm está sempre a postos para alvejar os inimigos 
+            que cometem a loucura de tentar chegar até você. Ele é confortável de manter na posição, 
+            ou é fácil de disparar de forma surpresa e inesperada.<br /><br /> 
+            Você pode usar esse Fantasma Nobre para atacar um inimigo 
+            que se aproxime de você; assim que ele chegar <strong>a menos de 3m</strong>, 
+            você pode realizar um ataque normal contra esse inimigo.<br /><br />
+            Você pode utilizar essa habilidade <strong>1 vez por rodada</strong>.<br /><br />
+            Essa habilidade só pode ser ativada se o inimigo <strong>se aproximar</strong>; 
+            ela não pode ser usada para outras situações. 
+            `
           },
           {
-            name: 'Através das Paredes'
+            name: 'Dragunov',
+            valors: 2,
+            effect: `Seu firearm é desenhado para segurar posições importantes e 
+            conter o avanço do adversário, ou para que você encontre o ponto perfeito no campo de batalha 
+            e faça chover chumbo derretido na direção deles, enquanto são alvejados, às vezes, 
+            sem saber da onde os tiros vêm.<br /><br />
+            Desde que você esteja sob o efeito de <strong>cobertura</strong>, adicione na rolagem 
+            de <strong>qualquer</strong> <i>Manobra Ofensiva</i> que fizer usando esse Fantasma Nobre 
+            um dado no valor do seu Parâmetro <strong>Resiliência</strong>.
+            Adicione também seu Parâmetro <strong>Resiliência</strong> ao Valor Inicial de todos os seus ataques.               
+            `
           },
           {
-            name: 'Sniper'
+            name: 'Sidearm',
+            valors: 1,
+            effect: `Seu firearm é compacto e possui um modelo desenhado para ser usado com apenas uma mão; 
+            geralmente ele é uma pistola, revólver ou submetralhadora. Isso traz a ele algumas pequenas vantagens 
+            interessantes, mas não diminui o poder dele; afinal, ele ainda é o tesouro divino de um Servant.<br /><br /> 
+            Esse Fantasma Nobre ocupa apenas <strong>uma</strong> das suas mãos, deixando sua outra mão livre.<br />
+            Você pode usar o recurso <strong>Checkmate</strong> como uma <i>Manobra de Reação</i> 
+            para guardar ou sacar esse Fantasma Nobre.       
+            `
+          },
+          {
+            name: 'Duraframe',
+            valors: 1,
+            effect: `Seu firearm é surpreendentemente resistente ao impacto, 
+            e suporta quantidades cômicas de punição. Ele facilmente pode ser usado 
+            para aparar golpes vindos em sua direção de inimigos que lhe surpreenderam 
+            ou passaram por suas coberturas.<br /><br /> 
+            Você pode usar esse Fantasma Nobre para realizar a <i>Manobra Evasiva "Aparar"</i> normalmente.
+            `
+          },
+          {
+            name: 'Fogo Móvel',
+            valors: 2,
+            effect: `Sua arma tem uma função automática, ou você tem uma 
+            técnica particularmente veloz para dispará-la. 
+            Quando você se move, se tiver visão do inimigo, você pode acelerar o 
+            processo de alvejá-lo com um momentum.<br />
+            Quando executar uma <i>Manobra de Movimento</i>, você pode escolher <strong>1 inimigo</strong> 
+            que esteja no seu campo de visão e aplicar um ataque normal nele, enquanto se move.<br /><br /> 
+            Use seu Parâmetro <strong>Agilidade</strong> no lugar de <strong>Mana</strong> para efetuar esse ataque.
+            `
+          },
+          {
+            name: 'Queima Roupa',
+            valors: 2,
+            effect: `Sua firearm, embora não necessariamente seja feita para isso, 
+            tem o coice do cavalo de seis pernas de Odin; Se um inimigo for atingido 
+            por ele a uma distância curta, é muito possível que receberá um estrago ainda maior do que se mantivesse distância. 
+            Se você usar esse Fantasma Nobre para atacar normalmente um inimigo que esteja a distância de ataque de uma arma corpo-a-corpo, adicione +10 ao seu Valor Inicial para esse ataque. 
+            Um inimigo que receba dano desse ataque não pode executar uma Manobra de Movimento no próximo turno dele. 
+            Essa habilidade não afeta o mesmo oponente mais de uma vez.        
+            `
+          },
+        ].sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
           }
-        ],
-        valorSkills: []
+    
+          return -1;
+        })
       },
       {
         name: 'Mágico',
-        specialStrikes: [],
         valorSkills: [
           {
-            name: 'Rugidos de Rubi',
-            valors: 1,
-            effect: `Seu focus mágico é particularmente harmonizado para lançar feitiços do elemento fogo.<br />
-            Quando um <strong>"Feitiço Ofensivo"</strong> de elemento fogo for ser usado e você estiver equipado com esse Fantasma Nobre,
-            você paga apenas <strong>metade</strong> dos Pontos de Energia necessários para executar a magia.<br />
-            Você não pode possuir as Habilidades de Valor: "Sonhos de Safira" e" Emanações de Esmeralda" no mesmo Fantasma Nobre. 
+            name: 'Emanações de Esmeralda',
+            valors: 3,
+            effect: `Seu cajado é decorado com maravilhosas gemas verdes, ou possui uma única, pedra viridiana 
+            que faz uma pequena brisa estar ao seu redor o tempo inteiro com sua aura mágica incrivel. 
+            Essas esmeraldas  estão profundamente atunadas ao <strong>Elemento Eletricidade</strong> e irão 
+            grandemente potencializar o poder dos Feitiços desse elemento, quando são conjurados através 
+            desse cajado.<br /><br />
+            Sempre que lançar um Feitiço do <strong>Elemento Eletricidade</strong>, que seja capaz de causar dano, 
+            gaste apenas <strong>metade</strong> dos <strong>Pontos de Energia</strong> necessários para lançar o 
+            Feitiço escolhido.<br /><br />
+            Adicione também ao <strong>Valor Inicial</strong>, o Valor Inicial do seu Parâmetro <strong>Sorte</strong>.        
             `
           },
           {
             name: 'Sonhos de Safira',
-            valors: 1,
-            effect: `Seu focus mágico é particularmente harmonizado para lançar feitiços do elemento gelo.<br />
-            Quando um <strong>"Feitiço Ofensivo"</strong> de elemento gelo for ser usado e você estiver equipado com esse Fantasma Nobre,
-            você paga apenas <strong>metade</strong> dos Pontos de Energia necessários para executar a magia.<br />
-            Você não pode possuir as Habilidades de Valor: "Rugidos de Rubi" e "Emanações de Esmeralda" no mesmo Fantasma Nobre. 
+            valors: 3,
+            effect: `Seu cajado é decorado com lindas gemas azuis, ou talvez possua uma única pedra cerúlea, 
+            que brilha com uma gentil luz da cor do céu ou do mar. Essas safiras estão profundamente 
+            atunadas ao Elemento Gelo e irão grandemente potencializar o poder dos Feitiços desse elemento, 
+            quando são conjurados através desse cajado.<br /><br />
+            Sempre que lançar um Feitiço do <strong>Elemento Gelo</strong>, que seja capaz de causar dano, 
+            gaste apenas <strong>metade</strong> dos <strong>Pontos de Energia</strong> necessários 
+            para lançar o Feitiço escolhido.<br /><br />
+            Adicione também ao <strong>Valor Inicial</strong>, o Valor Inicial do seu Parâmetro 
+            <strong>Resiliência</strong>.
             `
           },
           {
-            name: 'Emanações de Esmeralda',
-            valors: 1,
-            effect: `Seu focus mágico é particularmente harmonizado para lançar feitiços do elemento Eletricidade.
-            Quando um <strong>"Feitiço Ofensivo"</strong> de eletricidade for ser usado e você estiver equipado com esse Fantasma Nobre,
-            você paga apenas <strong>metade</strong> dos Pontos de Energia necessários para executar a magia.<br />
-            Você não pode possuir as Habilidades de Valor: "Rugidos de Rubi" e "Sonhos de Safira" no mesmo Fantasma Nobre. 
-            `
-          },
-          {
-            name: 'Trimegistrus',
-            valors: 2,
-            effect: `Seu foco mágico é de uma grandeza incrível, uma verdadeira obra-prima de um artesão mágico.
-            Ele possui intrincados mecanismos, gemas de qualidade inigualável lapidadas à exaustão ou feitos de materiais de poder perturbador.<br />
-            Nas mãos de um feiticeiro capaz, é uma arma mais poderosa que uma espada.
-            Quando um <strong>"Feitiço Ofensivo"</strong> de elemento fogo, gelo ou eletricidade é usado enquanto você está equipado com esse Fantasma Nobre, aumente o dano dele em <strong>+8/12/20</strong>.
-            `
-          },
-          {
-            name: 'Matéria para a Mente',
-            valors: 2,
-            effect: `Através dos anos você acumulou grandes quantidades de Mana em seu focus, e preparou ele para servir como uma boa forma de recuperar suas energias místicas durante um combate longo.<br />
-            Durante um combate, como <strong>ação livre</strong>, você pode <i>‘quebrar’</i> esse Fantasma Nobre, guardando ele em seu arsenal espiritual, mas não podendo usar ele até o fim desse combate.<br />
-            Quando quebrado, você irá regenerar <strong>todos</strong> os seus Pontos de Energia. 
+            name: 'Rugidos do Rubí',
+            valors: 3,
+            effect: `Seu cajado é decorado com belíssimas gemas vermelhas, ou talvez possua uma única, 
+            poderosa pedra carmesim na ponta. Esses rubis estão profundamente atunados ao 
+            Elemento Fogo, e irão grandemente potencializar o poder dos Feitiços desse elemento, 
+            quando são conjurados através desse cajado.<br /><br />
+            Sempre que lançar um Feitiço do <strong>Elemento Fogo</strong>, que seja capaz de causar dano, 
+            gaste apenas <strong>metade</strong> dos <strong>Pontos de Energia</strong> necessários para lançar 
+            o Feitiço escolhido.<br /><br />
+            Adicione também ao <strong>Valor Inicial</strong>, o Valor Inicial do seu <strong>Parâmetro Força</strong>. 
             `
           },
           {
             name: 'Fetish',
             valors: 2,
-            effect: `Seu focus é um objetivo de propriedades tenebrosas, malignas e nocivas.
-            Você pode oferecer tal construto como um sacrifício para aumentar as maldições contidas nele e jogá-las sobre seus inimigos.<br />
-            Durante um combate, como <strong>ação livre</strong>, você pode <i>‘quebrar’</i> esse Fantasma Nobre, guardando ele em seu arsenal espiritual, mas não podendo usar ele até o fim desse combate.<br /> 
-            Um alvo escolhido <strong>deve</strong> rolar um teste de <strong>STR+NP</strong>, contra um teste de <strong>MAN+NP</strong> seu.
-            Caso você o ultrapasse, o alvo agora passa a possuir Fraquezas contra: "Fogo", "Raio", "Gelo" e "Veneno",
-            e fica incapaz de resistir a "Feitiços de Maldição" que causem efeitos físicos ou psicológicos, perde quaisquer efeitos positivos que possua, além de não poder ser afetado por nenhum.
+            effect: `Seu cajado é um objetivo de propriedades tenebrosas, malignas e nocivas. 
+            Você pode oferecer tal construto como um sacrifício para aumentar as maldições 
+            contidas nele e jogá-las sobre seus inimigos.<br /><br />
+            Durante um combate, como <strong>ação livre</strong>, você pode <i>"quebrar"</i> esse Fantasma Nobre, 
+            guardando ele em seu arsenal espiritual, mas não podendo usar ele até o fim desse combate.<br /><br /> 
+            Um alvo <strong>escolhido</strong> deve rolar um teste de <strong>STR+NP</strong>, 
+            contra um teste de <strong>MAN+NP</strong> seu. Caso você o <strong>ultrapasse</strong>, 
+            o alvo agora passa a possuir <strong>Fraquezas contra Fogo, Raio, Gelo e Veneno</strong>, 
+            fica incapaz de resistir a <strong>Feitiços de Maldição</strong> que causem 
+            efeitos físicos ou psicológicos e perde qualquer efeitos positivos que possua, 
+            além de não poder ser afetado por nenhum.<br /> 
+            <i>Esse efeito só pode ser removido se caso o conjurador for incapacitado.</i>    
+            `
+          },
+          {
+            name: 'Adrenalina Espiritual',
+            valors: 2,
+            effect: `Através dos anos você acumulou grandes quantidades de Mana em seu cajado, 
+            e preparou ele para servir como uma boa forma de recuperar suas energias místicas 
+            durante um combate longo.<br /><br />
+            Durante um combate, como <strong>ação livre</strong>, você pode gastar uma carga de 
+            qualquer um dos seus recursos de batalha <i>(Burst of Power, Burst of Speed, Checkmate)</i>, 
+            e regenerar <strong>40 Pontos de Energia</strong> para cada Rank no seu Parâmetro <strong>Fantasma Nobre</strong>, 
+            imediatamente.
             `
           },
           {
             name: 'Truque de Mãos',
-            valors: 2,
-            effect: `Seu focus mágico tem uma surpresa esperando um inimigo que ataque você e não consiga atingi-lo.<br />
-            Quando realizar uma <i>Manobra Defensiva: "Aparar"</i> usando esse Fantasma Nobre e reduzir o dano a 0 com sucesso,
-            você pode atingir esse inimigo com uma <strong>magia qualquer</strong> como um <strong>Contra-ataque</strong>.<br />
-            <strong><i>A magia que você escolher não gasta nenhum ponto de Energia<i>.</strong>
+            valors: 1,
+            effect: `Seu cajado tem uma surpresa esperando um inimigo que ataque você e não consiga atingi-lo.<br /><br />  
+            Quando realizar uma <i>Manobra Evisa "Aparar"/"Bloquear"</i>, usando esse Fantasma Nobre 
+            e reduzir o dano a <strong>0 com sucesso</strong>, 
+            você pode atingir esse inimigo com uma magia qualquer como um Contra-Ataque. 
+            A magia que você escolher não gasta nenhum ponto de Energia, mas deve pertencer a um <strong>Elemento</strong> 
+            que você controla e não pode ser de um <strong>Rank maior</strong> que o seu Parâmetro 
+            <strong>Fantasma Nobre</strong>.
             `
           },
           {
             name: 'Pérola da Pureza',
-            valors: 2,
-            effect: `Seu focus mágico é um objeto sagrado ou capaz de facilmente se atunar a forças divinas auxiliando na invocação de bênçãos e milagres.<br />
-            Lançar um feitiço que regenere pontos de vida enquanto equipado com um Fantasma Nobre com essa habilidade fará <strong>todos</strong> os valores de regeneração serem <strong>dobrados</strong>;
-            Feitiços que não causam danos e não regeneram tem a sua duração dobrada.
+            valors: 1,
+            effect: `Seu cajado é um objeto sagrado ou capaz de facilmente se atunar a forças divinas. 
+            Quando um efeito de fechar feridas é conjurado através dele, ele é magnificado.<br /><br />
+            Sempre que você lançar um <strong>Feitiço</strong> que tem como efeito curar Pontos de Vida, 
+            role o <strong>dobro</strong> de dados que o efeito descreve.
             `
-          }
-        ]
-      },
-      {
-        name: 'Armaduras',
-        specialStrikes: [],
-        valorSkills: [
+          },
           {
-            name: 'Cobertura Balística',
-            valors: 2,
-            effect: `Essa armadura possui um design planejado, contemporâneo ou é muito especial;
-            usar ela não apenas te oferece a proteção incrível dessa classe de Noble Phantasm, mas também melhora sua capacidade de evitar golpes.<br />
-            Enquanto equipado com essa armadura, você pode executar a <i>Manobra Defensiva: "Esquivar"</i> mesmo que <strong>mais de dois oponentes</strong> estejam atacando você.
+            name: 'Vanguarda Arcana',
+            valors: 1,
+            effect: `Seu cajado consegue gerar um campo de força mágico à sua frente. 
+            Esse campo não é terrivelmente poderoso, mas pode ser um salva vidas 
+            para um conjurador que se vê encurralado por um adversário.<br /><br />
+            Enquanto estiver equipado com esse Fantasma Nobre, você pode usar a <i>Manobra Evasiva "Bloquear"</i>.<br /> 
+            Nesse caso utilize seu Parâmetro <strong>Mana</strong> no lugar do seu Parâmetro <strong>Resiliência</strong>.   
             `
+          },
+          {
+            name: 'Brasão Menor',
+            valors: 1,
+            effect: `Seu cajado é atunado a um elemento da natureza de forma profunda. 
+            Ele é um receptáculo para os feitiços dessa linha, e enquanto você o empunha, 
+            esse elemento está sob seu controle.<br /><br /> 
+            Enquanto estiver equipado com esse Fantasma Nobre você pode conjurar feitiços 
+            de um Elemento que escolher. O Elemento escolhido deve ser especificado quando essa 
+            Habilidade de Valor é escolhida, e marcado nas especificações desse Fantasma Nobre.   
+            `
+          },
+        ].sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
           }
-        ]
+    
+          return -1;
+        })
       },
       {
         name: 'Escudos',
-        specialStrikes: [],
         valorSkills: [
           {
-            name: 'Prelúdio',
-            valors: 1,
-            effect: `Seu escudo é confiável, facilmente utilizável ou simplesmente capaz de converter você em uma parede a ser atravessada.<br />
-            Enquanto estiver equipado com esse Fantasma Nobre, você pode, no lugar de realizar uma "Manobra Ofensiva", executar um <strong>"Prelúdio"</strong>;
-            isso fará com que toda a vez que rolar a <i>Manobra Defensiva: "Bloquear"</i> durante esse Round, <strong>todos</strong> os resultados dos dados que rolar serão <strong>dobrados</strong>.`
-          },
-          {
-            name: 'Desengatar',
-            valors: 1,
-            effect: `Seu escudo permite que você rapidamente se reposicione após se defender com ele, tornando-o mais difícil de ser cercado por adversários.<br />
-            Após realizar uma <i>Manobra Defensiva: "Bloquear"</i>, sua <i>Manobra Defensiva: "Esquivar"</i> ganha um adicional de <strong>+5/+10/+20</strong>,
-             determinado pelo rank do seu Parâmetro Agilidade <strong>(D-C / B-A / S)</strong>. 
+            name: 'Ave Maria!',
+            valors: 2,
+            effect: `Seu Escudo é capaz de reagir ao perigo e saltar do seu arsenal espiritual 
+            para te proteger com um comando de voz, na mesma hora.<br /><br />
+            Você pode usar a <i>Manobra Evasiva "Bloquear"</i> como uma <i>Manobra de Reação</i> e equipar 
+            um Fantasma Nobre "Escudo" que você possua, mas não está invocado naquela hora, imediatamente.<br /><br /> 
+            O escudo irá passar a ser considerado como estando equipado na sua mão não hábil, 
+            para todos os outros efeitos. 
+            Se você possuir uma arma equipada na sua mão não hábil, ela será substituída pelo seu escudo.           
             `
           },
           {
-            name: 'Coração Valente',
+            name: 'Decorações de Obsidiana',
+            valors: 2,
+            effect: `Seu escudo possui ou é totalmente fabricado por materiais especiais que são 
+            capazes de anular ou reduzir grandemente o dano causado por Feitiços ofensivos.<br /><br />
+            Quando esse Fantasma Nobre for usado para <strong>Bloquear</strong> um Feitiço que cause dano, 
+            <strong>aumente o Valor Inicial</strong> dessa Manobra em <strong>+20</strong>.                          
+            `
+          },
+          {
+            name: 'Barricada',
+            valors: 2,
+            effect: `Seu escudo é projetado para especialmente lidar com flechas, tiros e disparos. 
+            Protegido por ele, você é capaz de atravessar um campo de batalha inteiro sem ser sequer alvejado 
+            uma vez.<br /><br /> 
+            Enquanto estiver equipado com esse Fantasma Nobre, você é considerado estar sob o efeito de cobertura.                 
+            `
+          },
+          {
+            name: 'Coração Valoroso',
             valors: 1,
-            effect: `Seu escudo transfere energia para a arma na sua outra mão após defender um ataque; seus dois armamentos são como um só, ajudando na sua proteção.<br />
-            Após realizar uma <i>Manobra Defensiva: "Bloquear"</i>, sua <i>Manobra Defensiva: "Aparar"</i> ganha um adicional de <strong>+5/+10/+20</strong>,
-            determinado pelo rank do seu Parâmetro Agilidade <strong>(D-C / B-A / S)</strong>. 
+            effect: `Você aprendeu a empregar uma feroz técnica de arma e escudo que se faz valer de 
+            movimentos vigorosos para afastar inimigos, intercalando entre ambas e potencializando as manobras.<br /><br /> 
+            Aumente seu <strong>Valor Inicial</strong> em <strong>+10</strong> para a 
+            <i>Manobra Evasiva "Bloquear"</i>, se durante essa rodada você usou a <i>Manobra Evasiva "Aparar"</i> 
+            para defender um ataque de um inimigo.         
             `
           },
           {
             name: 'Panacea',
             valors: 1,
-            effect: `Sua Armadura é decorada com símbolos especiais ou feita com materiais raros que tem a capacidade de impedir que seu corpo seja afetado por toxinas,
-            mesmo quando armas envenenadas ou maldições atingem seu corpo.<br />
-            Enquanto você estiver equipado com essa armadura, você não pode sofrer a condição negativa <strong>"Envenenado"</strong>.<br />
-            Você ainda recebe danos que possuem o elemento <strong>Veneno</strong>, mas nenhum dos seus efeitos de dano adicional.
+            effect: `Seu escudo é decorado com símbolos especiais ou feito com materiais raros 
+            que tem a capacidade de impedir que seu corpo seja afetado por toxinas, 
+            mesmo quando armas envenenadas ou maldições atingem seu corpo.<br /><br />
+            Enquanto você estiver equipado com esse escudo, você não pode sofrer a condição negativa: "Envenenado".<br /><br />
+            Você ainda <strong>recebe</strong> danos que possuem o elemento <strong>Veneno</strong>, 
+            mas nenhum dos seus efeitos de dano adicional.        
             `
           },
           {
-            name: 'Dynamo',
+            name: 'Préludio',
             valors: 1,
-            effect: `Seu Fantasma Nobre tem a capacidade de converter energia, cinética ou elemental, em pontos de Mana para serem usados durante o confronto.<br />
-            Receber <strong>qualquer</strong> quantidade de dano após rolar uma <i>Manobra Defensiva: "Bloquear"</i>, no caso de <i>escudos</i>,
-            ou "Proteger" no caso de <i>armaduras</i>, irá regenerar seus pontos de Mana na mesma quantidade. 
+            effect: `Seu escudo é decorado com símbolos especiais ou feito com materiais raros que 
+            tem a capacidade de impedir que seu corpo seja afetado por toxinas, mesmo quando armas envenenadas 
+            ou maldições atingem seu corpo.<br /><br />
+            Enquanto você estiver equipado com esse escudo, você <strong>NÃO</strong> pode sofrer 
+            a condição negativa <strong>"Envenenado"</strong>. Você ainda recebe danos que possuem o 
+            elemento Veneno, mas nenhum dos seus efeitos de dano adicional. 
             `
+          },
+        ].sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
           }
-        ]
+    
+          return -1;
+        })
       }
     ]
   }
