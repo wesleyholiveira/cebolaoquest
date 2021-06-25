@@ -224,14 +224,18 @@ export default {
 
         if (secretOrigins) {
           const { origins, category } = secretOrigins.content
+
+          if (typeof origins !== 'object' || origins.length < 1) {
+            return []
+          }
   
           return [
             {
-              label: 'Origens Secretas',
-              value: `${origins.join(', ')}`
+              label: 'Origens Secretas:',
+              value:  origins.join(', ')
             },
             {
-              label: 'Categoria',
+              label: 'Categoria:',
               value: typeof category !== 'string' ? null : category
             }
           ]
