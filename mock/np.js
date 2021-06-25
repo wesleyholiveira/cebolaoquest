@@ -811,5 +811,5 @@ export default {
           return -1;
         })
       }
-    ]
+    ].sort((a, b) => a.name > b.name ? 1 : -1)
   }

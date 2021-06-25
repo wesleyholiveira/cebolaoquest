@@ -233,7 +233,6 @@
                     chips
                     deletable-chips
                     :items="Object.keys(secretOrigins)"
-                    :rules="secretOriginRule"
                     @change="
                       data.proficiencyPoints = data.secretOrigins.content.origins.length * 2
                       defaultProficiencyPoints = data.proficiencyPoints
@@ -776,10 +775,8 @@ export default {
         {
           name: 'Oni',
         },
-        {
-          name: 'Divindade',
-        },
       ],
+      'Divindindade': []
     },
     nameRules: [
       (v) => !!v || 'Este campo é obrigatório',
@@ -1279,9 +1276,20 @@ export default {
   top: 0;
   z-index: 3;
 }
+.v-stepper__header.fixed .v-stepper__step {
+  width: 50%;
+}
 .v-stepper__header.fixed .ficha-info {
   margin-top: 0 !important;
   top: -25px;
+}
+.v-stepper__header.fixed .ficha-wrapper {
+  /* top: 70px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100%;
+  position: absolute; */
 }
 .v-stepper__header.mobile.fixed {
   margin-bottom: 0;
