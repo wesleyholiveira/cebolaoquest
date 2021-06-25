@@ -107,13 +107,13 @@ export default {
   display: inline-flex;
 }
 .group .infos--item.inline {
-  width: 80px;
+  width: 120px;
 }
 .group .infos--item .infos--item--label.inline {
-  width: 40px;
+  width: 50px;
 }
 .group .infos--item .infos--item--value.inline {
-  width: 40px;
+  width: 50px;
 }
 </style>
 

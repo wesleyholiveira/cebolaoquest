@@ -114,7 +114,6 @@ export default {
         const { data } = await this.$axios.get(url)
         
         const user = data.user
-        console.log(user)
         if (data) {
           this.data = {
             ...this.data,

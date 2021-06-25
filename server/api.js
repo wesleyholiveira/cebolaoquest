@@ -712,7 +712,6 @@ app.post('/api/player', async (req, res) => {
 
     if (secretOrigins) {
       const secretOriginsModels = new Array(secretOriginsModel({ ...secretOrigins, player_id: playerId }))
-      console.log(secretOrigins, secretOriginsModels)
 
       if (secretOriginsModels) {
         secretOriginsRepository.insertAll(secretOriginsModels)

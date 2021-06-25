@@ -223,7 +223,13 @@ export default {
 
   methods: {
     resetAttrModifiers() {
-      const proficiencyPoints = this.proficiencyPoints + this.backupProficiency
+      let proficiencyPoints = 0
+      
+      let profAttrs = this.attribute.rank.split('+')
+      proficiencyPoints = profAttrs.length - 1
+      if (profAttrs.length < 1) {
+        proficiencyPoints = this.proficiencyPoints + this.backupProficiency
+      }
 
       this.index = 0
       this.attribute.rank = this.baseParams[0].rank

@@ -650,7 +650,6 @@ export default {
 
   mounted() {
     this.body = document.body.getBoundingClientRect()
-    this.data.proficiencyPoints = this.data.secretOrigins.content.origins.length * 2
   },
 
   computed: {
