@@ -8,6 +8,7 @@ export default [
     Só pode ser usada assim que o combate <strong>começa</strong>; 
     todos os seus aliados ganham <strong>1 (um)</strong> uso de cada um dos três recursos de combate 
     <strong>(Burst of Speed, Burst of Power, Checkmate)</strong> em adição de seus usos normais.<br /><br />
+    
     <strong>Duração:</strong> Instantânea<br />
     <strong>Recarga:</strong> Nenhuma`
   },
@@ -21,6 +22,7 @@ export default [
       qualquer rolagem que fizer para uma <i>Manobra Evasiva</i>, se desejar; você pode rolar 
       novamente ambos os dados, ou apenas um deles.  
       <i>Suas Manobras Evasivas podem provocar Rolagens Críticas</i>.<br /><br />
+
       <strong>Duração:</strong> 3 rodadas<br />
       <strong>Recarga:</strong> 3 rodadas
       `
@@ -36,6 +38,7 @@ export default [
     <i>Sempre que você fizer uma rolagem para executar um ataque normal, 
     você pode rerolar <strong>1 (uma)</strong> vez qualquer rolagem que fizer. 
     Se desejar, você pode rolar novamente ambos os dados, ou apenas um deles</i>.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -44,7 +47,8 @@ export default [
     merits: 1,
     effect: `Essa técnica é a marca de figuras de grande autoridade que tiveram proeminência em 
     comandar grandes nações militarizadas.<br />
-    Seu Valor Inicial para <strong>qualquer</strong> rolagem é aumentado em <strong>+5</strong>.<br /><br /> 
+    Seu Valor Inicial para <strong>qualquer</strong> rolagem é aumentado em <strong>+5</strong>.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas
     `
@@ -57,6 +61,7 @@ export default [
     Essa Estratagema só pode ser ativada se você está sob o efeito de 
     pelo menos uma <strong>outra</strong> Estratagema; escolha <strong>1 aliado</strong>, 
     ele recebe os mesmos bônus que você, mesmo que já esteja sob o efeito de outra Estratagema.<br /><br />
+
     <strong>Duração:</strong> Instantânea<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -68,7 +73,8 @@ export default [
     você sempre tem recursos a sua disposição.<br />
     Enquanto essa Estratagema estiver em uso, você pode rolar <strong>1 dado</strong> igual o seu 
     Rank no Parâmetro <strong>Fantasma Nobre</strong> no começo de cada um dos seus turnos, e guardá-lo.<br />
-    Você pode substituir um dos seus dados rolados para qualquer finalidade, por um desses dados guardados.<br /><br />  
+    Você pode substituir um dos seus dados rolados para qualquer finalidade, por um desses dados guardados.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas
     `
@@ -81,6 +87,7 @@ export default [
     Pode ser usada como <i>Manobra de Reação</i>, quando você é afetado por uma condição negativa qualquer; 
     Imediatamente, se <strong>cure</strong> dessa condição. Você <strong>NÃO</strong> pode ser 
     afetado por ela pelo resto do combate.<br /><br />
+
     <strong>Duração:</strong> Instantânea<br />
     <strong>Recarga:</strong> Nenhuma    
     `
@@ -96,6 +103,7 @@ export default [
     Enquanto puder continuar usando a mesma <i>Manobra Evasiva</i>, continue aumentando o 
     Valor Inicial em <strong>+5</strong>.<br />
     <i>Esse bônus é cancelado no seu próximo turno</i>.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -109,6 +117,7 @@ export default [
     Enquanto essa Estratagema estiver em jogo, aumente o Valor Inicial de <strong>TODAS</strong> as 
     suas <i>Manobras Evasivas</i> em <strong>+20</strong>, mas somente quando <strong>ESTIVER</strong> 
     sendo atingido por um ataque remoto.<br /><br /> 
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -121,6 +130,7 @@ export default [
     Quando usar essa Estratagema, você será informado da posição de <strong>todos</strong> os inimigos que 
     estão escondidos em seu raio de visão, atrás de coberturas ou em salas que não pode ver.<br /> 
     Ela também <strong>remove</strong> qualquer efeito de invisibilidade de inimigos que estejam próximos.<br /><br />
+
     <strong>Duração:</strong> Instantânea<br />
     <strong>Recarga:</strong> Nenhuma`
   },
@@ -133,6 +143,7 @@ export default [
     Desde que esteja equipado com um <strong>Armamento</strong> que possa executar um ataque remoto, 
     enquanto essa Estratagema estiver em jogo; <strong>Sempre</strong> que um aliado atacar um inimigo, 
     você pode atacar esse inimigo com um ataque normal desse armamento remoto.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -145,6 +156,7 @@ export default [
     cada um deles com um ataque normal.<br />
     Se o seu ataque for de uma arma <strong>corpo-a-corpo</strong>, os inimigos devem estar 
     a menos de <strong>3m</strong> de distância uns dos outros.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -158,6 +170,7 @@ export default [
     impedindo ele de realizar uma <i>Manobra Ofensiva</i> ou <i>Manobra de Movimento</i> 
     durante o próximo turno.<br />
     <i>Essa Habilidade não pode ser resistida e irá afetar esse alvo, incondicionalmente</i>.<br /><br />
+
     <strong>Duração:</strong> Instantânea<br />
     <strong>Recarga:</strong> Nenhuma`
   },
@@ -168,6 +181,7 @@ export default [
       Até mesmo uma ferida mortal pode ser ignorada por mais alguns minutos, para que o valente herói continue a batalha.<br />
       Use essa Estratagema como Manobra de Reação quando seus Pontos de Vida chegarem a 0; você ganha uma <i>"vida fantasma"</i> no valor de 50% dos seus Pontos de Vida máximos, e pode continuar o combate.<br /> 
       Enquanto possuir essa <i>"vida fantasma"</i>, o conjurador não pode ser curado. Ao final do combate, você desmaia e precisa ter os Pontos de Vida recuperados para poder voltar a agir.<br /><br />
+
       <strong>Duração:</strong> Instantânea<br />
       <strong>Recarga:</strong> Nenhuma
       `
@@ -179,6 +193,7 @@ export default [
       Eles conseguem facilmente identificar certos traços de suas presas, e podem informar aliados ou preparar cenários vantajosos para si mesmos.<br />
       Quando essa Estratagema é colocada em jogo; atacar um oponente que não seja considerado um herói, mas possui uma fraqueza ou especialidade,
       e atingir ele criticamente, irá informar a você qual é essa fraqueza ou especialidade, ou ambas, se possível.<br /><br />
+
       <strong>Duração:</strong> Permanente
       <strong>Recarga:</strong> Nenhuma
       `
@@ -191,6 +206,7 @@ export default [
     Só pode ser usada assim que o combate <strong>começa</strong>; 
     Escolha uma <i>Manobra Evasiva</i>, nenhum dos inimigos que estejam no seu campo de visão 
     podem usar a <i>Manobra Evasiva</i> que você escolheu, pelo resto do combate.<br /><br />
+
     <strong>Duração:</strong> Instantânea<br />
     <strong>Recarga:</strong> Nenhuma`
   },
@@ -203,6 +219,7 @@ export default [
     que a da capacidade humana, vinda desse legado.<br />
     Durante o efeito dessa Estratagema, você rola <strong>1 dado</strong> a mais no valor do seu 
     Rank em <strong>Força</strong> para qualquer <i>Manobra Ofensiva</i> que executar.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -214,6 +231,7 @@ export default [
      recebendo as feridas da luta no lugar deles.<br />
      Quando usar essa Estratagema, escolha um aliado; enquanto essa técnica durar, 
      todo o dano que o aliado escolhido fosse receber, você recebe no lugar.<br /><br />
+
      <strong>Duração:</strong> 3 rodadas<br />
      <strong>Recarga:</strong> 3 rodadas`
   },
@@ -225,6 +243,7 @@ export default [
     focando obter vantagem sobre o inimigo.<br />
     Quando essa Estratagema é colocada em jogo, você pode rearranjar a ordem dos <strong>turnos</strong> 
     que tenha sido previamente decidida pelas rolagens de iniciativa, da maneira que quiser.<br /><br />
+
     <strong>Duração:</strong> Permanente<br />
     <strong>Recarga:</strong> Nenhuma`
   },
@@ -235,6 +254,7 @@ export default [
       tornando possível para o mago lançar seus feitiços e reunir suas energias muito mais rapidamente.<br />
       Durante o efeito dessa Estratagema, você pode usar Feitiços que sejam <strong>1 rank maior que o seu rank</strong> de Mana sem penalizador.<br />
       Feitiços que sejam 1 rank menor tem o custo cortado pela metade.<br /><br />
+
       <strong>Duração:</strong> 3 rodadas<br />
       <strong>Recarga:</strong> 3 rodadas
       `
@@ -246,6 +266,7 @@ export default [
       Com gestos velozes, eles podem desenhar as antigas runas de sua gélida terra, e despertar um poder formidável.<br />
       Quando usar essa Estratagema, escolha você mesmo ou um aliado; qualquer outra Estratagema que elas possuam,
       que está em Recarga naquele momento, perde a Recarga e pode ser usada em um dos próximos de seus turnos.<br /><br />
+
       <strong>Duração:</strong> Instantânea<br />
       <strong>Recarga:</strong> 3 Rodadas
       `
@@ -260,6 +281,7 @@ export default [
     ou que ainda não tenha percebido sua presença, 
     enquanto essa Estratagema estiver em jogo; Aumente o <strong>Valor Inicial</strong> 
     da sua rolagem em <strong>+20</strong>.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -272,6 +294,7 @@ export default [
       Todas as Manobras Evasivas que ele realiza também ganham um <strong>bônus de +20</strong>.<br />
       O conjurador desse Estratagema não pode realizar nenhuma <i>Manobra Ofensiva</i> 
       ou <i>Manobra de Movimento</i> pela duração dessa Estratagema.<br /><br />
+      
       <strong>Duração:</strong> 3 rodadas<br />
       <strong>Recarga:</strong> 3 rodadas
       `
@@ -286,6 +309,7 @@ export default [
     Enquanto essa Estratagema estiver ativa, você pode usar os Feitiços <strong>desse</strong> 
     elemento como se fosse da classe <strong>Caster</strong>.<br /><br />
     <i>Você deve seguir as regras para uso de Feitiços normalmente</i>.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</stronog> 3 rodadas`
   },
@@ -297,6 +321,7 @@ export default [
     Durante o efeito dessa Estratagema, sempre que você conseguir derrotar um inimigo, 
     você pode escolher um aliado; esse aliado imediatamente <strong>ganha</strong> 
     um turno extra durante essa rodada.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas `
   },
@@ -310,6 +335,7 @@ export default [
     seu <strong>Valor Inicial</strong> do Parâmetro <strong>Mana</strong>, 
     mais uma rolagem de <strong>1d20</strong> de <strong>Pontos de Energia</strong> 
     por nível do seu parâmetro <strong>Mana</strong> em cada um dos seus turnos.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas
     `
@@ -323,6 +349,7 @@ export default [
     for ser atacado por qualquer tipo de ataque que um inimigo lançar contra ele, 
     você pode rolar uma <i>Manobra Evasiva</i> no lugar dele. 
     Esse aliado <strong>DEVE</strong> estar a menos de <strong>3m</strong> de distância de você.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -338,7 +365,8 @@ export default [
     de nível <strong style="color: blue">azul</strong>.<br />
     <strong>Habilidades Marciais</strong> também são consideradas 
     <strong style="color: blue">Técnicas Especiais de nível azul</strong>, 
-    e se o inimigo atacar continuamente com ela, estará arriscando sua identidade.<br /><br /> 
+    e se o inimigo atacar continuamente com ela, estará arriscando sua identidade.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -350,6 +378,7 @@ export default [
       Durante o efeito dessa Estratagema, você pode contra-atacar um inimigo que 
       ataque você com uma Manobra Ofensiva a <strong>corpo-a-corpo</strong>. 
       Esse efeito só acontece <strong>1 vez por rodada</strong>.<br /><br />
+
       <strong>Duração:</strong> 3 rodadas<br />
       <strong>Recarga:</strong> 3 rodadas
       `
@@ -365,6 +394,7 @@ export default [
     um número que esteja presente em um dos dados que você rola para executar 
     <i>Manobras Ofensivas ou Evasivas</i>; sempre que rolar esse número, 
     ele é considerado uma <strong>Rolagem Crítica</strong>.<br /><br />
+
     <strong>Duração:</strong> Permanente<br />
     <strong>Recarga:</strong> Nenhuma`
   },
@@ -377,6 +407,7 @@ export default [
     uma rolagem para executar um <strong>Feitiço</strong>, você pode rerolar <strong>1 vez</strong> 
     qualquer rolagem que fizer para lançá-lo. Se desejar, 
     você pode rolar novamente ambos os dados, ou apenas um deles.<br /><br />
+
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
   },
@@ -387,6 +418,7 @@ export default [
       Através de técnicas sombrias, maneirismos, uma risada monstruosa… aqueles que você machuca perderão a calma e se encontrarão com dificuldade de se concentrar.<br />
       Durante o efeito dessa Estratagema, se você conseguir causar dano a um alvo que esteja sob o efeito de uma Estratagema, esses efeitos são imediatamente removidos.<br />
       Ele não poderá usar <strong>nenhum</strong> Estratagema nas próximas <strong>3 rodadas</strong>. Esse efeito é considerado um efeito psicológico.<br /><br />
+
       <strong>Duração:</strong> 3 rodadas<br />
       <strong>Recarga:</strong> 3 rodadas
       `

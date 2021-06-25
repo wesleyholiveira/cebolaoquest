@@ -259,7 +259,7 @@ export default {
       },
       {
         name: 'Feitiços',
-        title: 'Custo',
+        title: 'PEs',
         key: 'cost',
       },
     ],
