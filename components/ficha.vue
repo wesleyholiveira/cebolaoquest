@@ -743,7 +743,6 @@ export default {
       'Caster (Magia Branca)',
       'Berserker',
       'Foreigner',
-      'Rider',
       'Lancer',
       'Avenger',
       'Saber',
