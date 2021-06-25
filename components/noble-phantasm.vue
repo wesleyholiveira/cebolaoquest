@@ -14,7 +14,6 @@
             :items="dataType"
             item-text="name"
             label="Tipo"
-            @change="np.effects = []"
           />
         </v-col>
         <v-col cols="12" lg="12" sm="12" style="text-align: left">
@@ -279,29 +278,29 @@ export default {
           //   )
           // }
 
-          if (type.name == 'Mágico' && !this.previouslyMagical) {
-            this.valors += 1
-            this.valorCapData += 1
+        //   if (type.name == 'Mágico' && !this.previouslyMagical) {
+        //     this.valors += 1
+        //     this.valorCapData += 1
 
-            valorPoints[index] = this.valors
-            valorPoints = [...valorPoints]
-            this.$emit('updateValorPoints', valorPoints)
-            this.$emit('updateValorCap', this.valorCapData)
-            this.previouslyMagical = true
-            return
-          }
+        //     valorPoints[index] = this.valors
+        //     valorPoints = [...valorPoints]
+        //     this.$emit('updateValorPoints', valorPoints)
+        //     this.$emit('updateValorCap', this.valorCapData)
+        //     this.previouslyMagical = true
+        //     return
+        //   }
 
-          if (this.previouslyMagical) {
-            this.valors -= 1
-            this.valorCapData -= 1
+        //   if (this.previouslyMagical) {
+        //     this.valors -= 1
+        //     this.valorCapData -= 1
 
-            valorPoints[index] = this.valors
-            valorPoints = [...valorPoints]
+        //     valorPoints[index] = this.valors
+        //     valorPoints = [...valorPoints]
 
-            this.$emit('updateValorPoints', valorPoints)
-            this.$emit('updateValorCap', this.valorCapData)
-          }
-          this.previouslyMagical = false
+        //     this.$emit('updateValorPoints', valorPoints)
+        //     this.$emit('updateValorCap', this.valorCapData)
+        //   }
+        //   this.previouslyMagical = false
         }
       }
     },
@@ -311,6 +310,17 @@ export default {
       this.np.type = {
         ...old,
         name: newType.name,
+      }
+
+      this.np.effects = []
+      let valorPoints = this.valorPoints
+      const index = this.index
+
+      if (this.np.effects.length < 1) {
+        valorPoints[index] = this.valorCap
+        valorPoints = [...valorPoints]
+        
+        this.$emit('updateValorPoints', valorPoints)
       }
     },
   },

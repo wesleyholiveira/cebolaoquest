@@ -197,4 +197,4 @@ MODIFY COLUMN
     'Avenger',
     'Saber',
     'Shielder'
-    );
+);
