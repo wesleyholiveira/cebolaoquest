@@ -6,7 +6,7 @@
           A zoeira está sem limites hein?!
         </v-card-title>
         <v-card-text>
-          Você não pode ser tão proficiente assim porque a vida é INJUSTA.
+          Você não pode distribuir tantas Origens Secretas.
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -85,12 +85,12 @@
         >
         </span>
       </v-tooltip>
-      <!-- <v-btn @click="turnToProficient()" text color="green darken-1">
+      <v-btn @click="turnToProficient()" text color="green darken-1">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
       <v-btn @click="resetAttrModifiers()" text color="primary darken-1">
         <v-icon>mdi-reload</v-icon>
-      </v-btn> -->
+      </v-btn>
     </div>
     <!-- <a @click="turnToDeficient()" v-if="isCounterSynergy">
       <v-badge content="-" color="red darken-1" class="badge minus"></v-badge>
@@ -118,6 +118,7 @@ export default {
   data: () => ({
     // backupMerit: 0,
     // isNegative: false,
+    backupProficiency: 0,
     dialogProf: false,
     dialogUnderLevel: false,
     index: 0,
@@ -184,7 +185,6 @@ export default {
 
     this.parameters = { ...this.attribute }
     this.index = index > -1 ? index : 0
-    this.initialProficiencyPoints = this.proficiencyPoints
     this.initialMeritPoints = this.meritPoints
   },
 
@@ -223,16 +223,15 @@ export default {
 
   methods: {
     resetAttrModifiers() {
-      const proficiencyPoints =
-        this.initialProficiencyPoints > 0
-          ? this.initialProficiencyPoints
-          : this.defaultProficiencyPoints
+      const proficiencyPoints = this.proficiencyPoints + this.backupProficiency
 
-      // this.index = 0
+      this.index = 0
       this.attribute.rank = this.baseParams[0].rank
       this.attribute.value = this.baseParams[0].value
       // this.isNegative = false
+
       this.$emit('updateProficiencyPoints', proficiencyPoints)
+      this.backupProficiency = 0
     },
 
     addAttribute() {
@@ -316,6 +315,8 @@ export default {
 
         proficiencyPoints -= 1
 
+        this.backupProficiency += 1
+
         this.attribute.rank = newParam
         this.attribute.value = Math.floor(
           value + this.baseParams[this.index].value * 0.5
@@ -347,7 +348,7 @@ export default {
 }
 .parameters .badges {
   font-size: 0.4rem;
-  top: 0px;
+  top: -10px;
   right: 0px;
   position: absolute;
 }

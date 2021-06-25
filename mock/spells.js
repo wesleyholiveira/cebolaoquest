@@ -120,8 +120,8 @@ export default [
     Esse feitiço pode ser invocado apenas <strong>1 vez</strong> durante um combate.<br />
     Causa <strong>1d12</strong> de dano para cada rank do parâmetro <strong>Fantasma Nobre</strong> 
     do conjurador; alvos que receberem dano tem primeiro os Pontos de Vida reduzidos pela <strong>metade</strong>, 
-    e apenas depois recebem o dano que receberam após se defenderem.
-    <i>É impossível Aparar ou se Esquivar desse Feitiço</i>.`,
+    e apenas depois recebem o dano que receberam após se defenderem.<br /><br />
+    <i>É impossível <strong>"Aparar"</strong> ou se <strong>"Esquivar"</strong> desse Feitiço</i>.`,
     element: 'Fire'
   },
   {
@@ -215,7 +215,7 @@ export default [
     cost: 70,
     effect: `Um construto na forma de uma estaca enorme feita de gelo, de cor branca azulada é criada, 
     flutuando próximo ou sobre o conjurador. Ela é atirada como que por telecinese contra um alvo, 
-    perfurando-o, e causando uma "explosão" de gelo e frio uma vez que está alojada no inimigo.<br />
+    perfurando-o, e causando uma <i>"explosão"</i> de gelo e frio uma vez que está alojada no inimigo.<br />
     Um alvo é atingido com <strong>1d10</strong> de dano para cada rank no 
     parâmetro <strong>Fantasma Nobre</strong> do conjurador.<br /><br />
 
@@ -335,7 +335,7 @@ export default [
     correndo até a mão onde será expelida pela ponta dos dedos na forma de uma corrente elétrica 
     que lembra um pequeno relâmpago.<br />
     O Feitiço causa <strong>1d8</strong> de dano por Rank que o conjurador possui no seu 
-    parâmetro </strong>Mana</strong>. Se caso o alvo for pego de surpresa pelo conjurador, o alvo não 
+    parâmetro <strong>Mana</strong>. Se caso o alvo for pego de surpresa pelo conjurador, o alvo não 
     rola uma <i>Manobra Evasiva</i>.<br /><br />
 
     <i>Esse Feitiço não pode ser <strong>"Aparado"</strong></i>.`,
@@ -498,5 +498,429 @@ export default [
 
     <i>Esse feitiço pode ser invocado apenas <strong>1 vez</strong> durante um combate</i>.`,
     element: 'Electric'
+  },
+  {
+    name: 'Envenenar',
+    rank: 'D',
+    cost: 25,
+    effect: `A mais simples das maldições; o conjurador irá transformar o ar em uma pequena área que 
+    possa ver, geralmente ao redor de um único inimigo, em uma nuvem de veneno. 
+    O alvo surpreendido irá respirar a toxina e receber o efeito.<br />
+    O conjurador irá atacar um alvo com <strong>1d6</strong> para cada rank que tiver em 
+    seu parâmetro <strong>Fantasma Nobre</strong>, obrigando o alvo a rolar 
+    <strong>Resiliência + Sorte</strong>, com o Valor Inicial sendo <strong>Resiliência</strong>.<br /><br /> 
+    Se o alvo não conseguir superar o resultado, ele será <strong>Envenenado</strong>, 
+    e a partir do próximo turno ele receberá uma quantia de dano 
+    inevitável no valor de <strong>6-8-12-20-40</strong>; não aumentando após isso.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Olhos da Serpente',
+    rank: 'D',
+    cost: 30,
+    effect: `O conjurador irá olhar profundamente nos olhos do alvo, e iniciar o feitiço; 
+    subitamente, uma sensação de medo e pânico irá preencher o inimigo, fazendo todos 
+    os seus músculos ficarem rígidos.<br />
+    O conjurador irá atacar um alvo com <strong>1d6</strong> para cada rank que tiver em seu 
+    parâmetro <strong>Fantasma Nobre</strong>, obrigando o alvo a rolar 
+    <strong>Resiliência + Sorte</strong>, com o Valor Inicial sendo <strong>Resiliência</strong>.<br />
+    Se o alvo não conseguir superar o resultado, ele ficará <strong>Paralizado</strong>.<br /><br />
+    
+    Enquanto sob esse efeito, ele não pode realizar nenhuma <i>Manobra de Movimento</i> ou <i>Manobra Ofensiva</i>, 
+    mas pode realizar <i>Manobras Evasivas</i> que não sejam a manobra <strong>Esquivar</strong>.<br />
+    Ele deve repetir a rolagem no começo de cada turno dele, até conseguir superar a rolagem inicial do 
+    conjurador, para poder se recuperar.<br /><br />
+
+    <i>Esse é um efeito psicológico</i>.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Olhar do Observador',
+    rank: 'D',
+    cost: 20,
+    effect: `Uma luz sinistra, que pode ser das cores verde, laranja ou roxa, irá sair pelos 
+    olhos do conjurador como uma lanterna. Assim que ela cai sobre os olhos de um alvo, 
+    ele será tomado por um peculiar senso de esquecimento, e letargia mental, como uma exaustão.<br /> 
+    Rituais e palavras de comando necessários para a 
+    manifestação de magias se tornam particularmente difíceis de realizar.<br />
+    O conjurador irá atacar um alvo com <strong>1d6</strong> para cada rank que tiver em 
+    seu parâmetro <strong>Fantasma Nobre</strong>, obrigando o alvo a rolar 
+    <strong>Resiliência + Sorte</strong>, com o Valor Inicial sendo <strong>Resiliência</strong>.<br /><br />
+
+    Se o alvo não conseguir superar o resultado, ele ficará <strong>Distraído</i>. 
+    Enquanto estiver sob esse efeito, ele não poderá usar nenhum tipo de <strong>Feitiço</strong>.<br />
+    Ele deve repetir a rolagem no começo de cada turno dele, 
+    até conseguir superar a rolagem inicial do conjurador, para poder se recuperar.<br /><br />
+
+    <i>Esse é um efeito psicológico</i>.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Dardos de Veneno',
+    rank: 'D',
+    cost: 20,
+    effect: `O conjurador fabrica diversos pequenos espetos ou espinhos, similares a ferrões, 
+    que irão flutuar sob a cabeça e com um gesto, eles irão voar contra um alvo e perfura-lo, 
+    ao mesmo tempo que injetam um pouco de veneno nele.<br /><br />
+
+    Esse Feitiço causa <strong>1d6</strong> de dano por rank no seu parâmetro <strong>Fantasma Nobre</strong>.<br /> 
+    Um alvo que receba dano será <strong>Envenenado</strong> e a partir do próximo turno ele 
+    receberá uma quantia de dano inevitável no valor de <strong>6-8-12-20-40</strong>; 
+    não aumentando após isso.<br /><br /> 
+
+    <i>O conjurador pode executar esse Feitiço como <strong>ação livre</strong>, desde que exista 
+    pelo menos <strong>1 inimigo</strong> em seu campo de visão que esteja sob um efeito de envenenamento</i>.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Ninho de Cobras',
+    rank: 'C',
+    cost: 40,
+    effect: `O conjurador secreta das pontas dos dedos uma substância 
+    gosmenta esverdeada ou de cor roxa. Os fios de veneno rapidamente se 
+    transformam em serpentes, animadas por mágica.<br /><br />
+    O conjurador pode comandar essas cobras para executar algumas ações diferentes:
+    <ul>
+      <li>
+        Elas podem procurar e encontrar qualquer inimigo escondido, 
+        atacando ele e causando <strong>1d8</strong> por rank de <strong>Mana</strong> do conjurador.<br />
+        <i>Esse comando também ignora coberturas</i>.
+      </li>
+      <li>
+        Elas podem permanecer junto do conjurador, e contra-atacar inimigos que 
+        se aproximem para atacar ele a <strong>corpo-a-corpo</strong>, causando <strong>1d8</strong> 
+        por nível de <strong>Mana</strong> do conjurador.
+      </li>
+      <li>
+        O conjurador pode enviá-las para atacar como uma <i>Manobra de Reação</i> quando um aliado 
+        causar dano a um inimigo.<br />
+        O dano é de <strong>1d8</strong> por nível de <strong>Mana</strong> do conjurador.
+      </li>
+    </ul>
+    <br />
+    Uma serpente por rank do parâmetro <strong>Fantasma Nobre</strong> 
+    é invocada quando você conjura esse Feitiço. Cada cobra pode tomar <strong>1 ação</strong>.<br />
+    <strong>Qualquer</strong> ataque dessas cobras que cause dano a um inimigo irá 
+    causar o efeito do <strong>Feitiço Envenenar</strong>.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Sangue Derretidinho',
+    rank: 'C',
+    cost: 50,
+    effect: `Com esse Feitiço o conjurador aprende a usar toxinas e ácidos para liquefazer 
+    o próprio corpo, e transformá-lo em uma poça de sangue cáustico ou uma nuvem de gás.<br />
+    O líquido ou o gás se movem a uma velocidade muito maior do que qualquer <strong>Espírito Heroico</strong> 
+    pode ver ou reagir; em segundos o conjurador irá trocar de lugar, e reformar sua forma física, 
+    em um espetáculo muito similar a um simples teletransporte.<br /><br />
+    
+    O conjurador, porém, pode ficar apenas alguns milésimos de segundos, e deve planejar o local da 
+    sua transição: É um teletransporte que funciona apenas para distâncias curtas. 
+    Uma vez que ele tenha visualizado o lugar aonde irá se reformar, 
+    O conjurador se desmancha, viaja, e imediatamente se reforma no lugar que ele visualizou.<br /><br />
+     
+    Embora esse feitiço tenha uma distância máxima <strong>igual a visão</strong> do conjurador, 
+    podendo chegar a <strong>cinco</strong> quilômetros em campo aberto, 
+    mas sempre afetada por obstáculos no caminho, é possível que o conjurador consiga 
+    viajar para lugares muito mais distantes usando visão eletrônica, como por 
+    exemplo olhar para uma transmissão ao vivo em outro país e executar o feitiço, 
+    ou olhar para o feed de uma câmera de segurança em uma sala, e imediatamente se reformar ali dentro.<br /><br />
+    
+    O conjurador pode levar com ele aliados ou até mesmo inimigos.<br />
+    Ele sempre pode carregar um número 
+    de criaturas vivas ou objetos que sejam maiores que seu próprio corpo igual ao seu rank no 
+    Parâmetro <strong>Fantasma Nobre</strong>.<br /><br />
+    
+    Se o alvo do Feitiço for um inimigo, ou estiver resistindo ao Feitiço, o conjurador deve 
+    rolar <strong>1d8</strong> para cada rank que possuir no Parâmetro 
+    <strong>Fantasma Nobre</strong>, enquanto o alvo deve tentar resistir com os Parâmetros 
+    <strong>Força + Sorte</strong>, com o Valor Inicial sendo <strong>Resiliência</strong>.<br />
+    <i>Se ele falhar, ele será trazido para onde o conjurador desejar</i>.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Corona de Infecção',
+    rank: 'B',
+    cost: 75,
+    effect: `O conjurador irá atingir 1 alvo com um fino, brilhante, raio de energia venenosa, 
+    geralmente das cores verde, roxa ou laranja, disparado pela ponta de um dedo, 
+    mas pode também ser <i>"cuspido"</i> pela boca.<br />
+    Esse ataque causa <strong>1d10</strong> para cada rank que possuir no Parâmetro 
+    <strong>Fantasma Nobre</strong>, e é muito rápido, não podendo ser <strong>Esquivado</strong>.<br /><br />
+
+    Um inimigo que receba dano é <strong>infectado</strong> por um poderoso <strong>vírus venenoso</strong>, 
+    que se espalha para qualquer inimigo aliado que está próximo a ele.<br />
+    O veneno causa <strong>12-16-24-40</strong> de dano <strong>direto</strong> durante 
+    as <strong>5 rodadas</strong> que leva para chegar a seu ápice de dano.<br /><br />
+    
+    Os inimigos que <i>"pegam"</i> o vírus não podem resistir, e irão começar a receber o mesmo dano, 
+    imediatamente em seus próximos turnos, desde que estejam em um raio 
+    de <strong>5 metros</strong> próximos ao paciente zero.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Letargia',
+    rank: 'B',
+    cost: 70,
+    effect: `O conjurador lança esse feitiço como uma ilusão psíquica, que ataca diretamente a mente do alvo; 
+    o inimigo verá o conjurador expelir correntes fantasmagóricas de algum lugar de seu corpo, 
+    embora elas sejam apenas construtos psíquicos e não realmente tem uma presença física.<br />
+    As correntes irão tentar se prender ao alvo, e ele deve vencer o conjurador em um 
+    teste de <strong>1d10</strong> para cada rank que o conjurador possuir no Parâmetro <strong>Fantasma Nobre</strong>, 
+    contra uma rolagem de <strong>Força + Resiliência</strong> dele, com o Valor Inicial sendo <strong>Resiliência</strong>.<br /><br />
+
+    Se falhar no teste, o alvo recebe a condição <strong>Letárgico</strong>; seu corpo sente 
+    como se um enorme peso tivesse sido colocado sobre ele, como se a gravidade tivesse sido aumentada…<br />
+    Suas <i>Manobras de Movimento</i> ficam <strong>limitadas</strong> a apenas <strong>3 metros</strong>, 
+    ele não pode usar a <i>Manobra Evasiva: "Esquivar"</i>.<br /> 
+    Sempre que ele realizar uma rolagem, para qualquer finalidade, ele deve escolher apenas um dos 
+    dois atributos que seriam rolados normalmente, e nenhuma rolagem pode ser uma <strong>Rolagem Crítica</strong>.<br /><br /> 
+     
+    <i>Esse Feitiço é considerado um efeito <strong>psicológico</strong>.<br />
+    Ele tem uma duração de <strong>1 rodada</strpng> para cada rank que o conjurador 
+    possuir no Parâmetro <strong>Mana</strong></i>.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Reverter Toxinas',
+    rank: 'A',
+    cost: 80,
+    effect: `O conjurador é capaz de usar sua mágica para converter venenos e maldições em efeitos opostos, 
+    enviando uma onda psíquica circular com ele como epicentro, que banha o campo de batalha em um gentil 
+    luz branca esverdeada.<br /><br />
+
+    Todos os aliados do conjurador em uma área circular de <strong>20 metros</strong> ao redor do conjurador 
+    são curados de qualquer condição física que eles possuírem. Alvos curados 
+    tem seus <strong>Pontos de Vida</strong> regenerados completamente.<br />
+    Todos os aliados se tornam <strong>imunes</strong> a condição de envenenamento por um número de 
+    rodadas <strong>igual</strong> aos ranks do parâmetro <strong>Mana</strong> do conjurador.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Choque Anafilatico',
+    rank: 'S',
+    cost: 125,
+    effect: `O conjurador escolhe um alvo que esteja sob os efeitos da condição Envenenado; 
+    os olhos dele se acendem com uma maliciosa luz enquanto ele sussurra palavras de poder.<br />
+    O alvo escolhido então violentamente explode em uma substância venenosa, quantidades enormes de 
+    ácido ou veneno escapando por todos os orifícios de seu corpo, se sobreviver, caso contrário, 
+    ele apenas torna-se uma bomba tóxica que desintegra, espalhando seus conteúdos nocivos por toda a parte.<br /><br /> 
+    
+    Esse Feitiço só pode ser usado em um inimigo que esteja <strong>Envenenado</strong>; 
+    Esse alvo recebe <strong>1d20</strong> de dano para cada rank que o conjurador possuir em seu 
+    parâmetro <strong>Fantasma Nobre</strong>, e não poderá rolar suas 
+    <i>Manobras Evasivas</i> para tentar resistir ao dano, sendo forçado a rolar 
+    <strong>Resiliência + Sorte</strong>, com o Valor Inicial sendo 
+    <strong>Resiliência</strong> para reduzir o dano.<br />
+    Caso receba o dano inicial, ele receberá mais dano baseado no dano do veneno que o está afligindo; 
+    sendo esse dano o dano final desse veneno.<br /><br />
+    
+    Se caso o alvo for destruído por esse feitiço, todos os inimigos que estavam em um 
+    raio de <strong>5 metros</strong> próximos à vítima recebem <strong>1d20</strong> de dano para cada rank 
+    que o conjurador possuir em seu parâmetro <strong>Mana</strong>, e podem apenas usar sua 
+    <i>Manobra Evasiva: "Esquivar"</i> para tentar reduzir o dano.<br /><br />
+
+    Todos que são atingidos pela explosão são <strong>imediatamente Envenenados</strong> recebendo um dano 
+    contínuo de <stron>12-16-24-40</strong>, até caírem ou se curarem.<br />
+    <i>Esse feitiço pode ser invocado apenas <strong>1 vez</strong> durante um combate</i>.`,
+    element: 'Poison'
+  },
+  {
+    name: 'Structural Grasp',
+    rank: 'D',
+    cost: 0,
+    effect: `O Feitiço mais básico desse elemento. Permite ao conjurador 
+    entender e perceber diversos detalhes sobre um objeto, mas principalmente, armas.<br />
+    Apenas olhando para o objeto, o mago pode saber detalhes como se é ou não mágico, 
+    os materiais que o compõem e se foi recentemente usado para um combate.<br />
+    Tocar a peça permitirá que ele veja além, ganhando conhecimento sobre encantamentos com exatidão, 
+    a quantidade de dano que eles podem causar e, se a peça for um 
+    <strong>Fantasma Nobre Armamento Lendário</strong<, ele pode saber <strong>todas</strong> as suas Habilidades de Valor.<br /><br />
+    
+    Realizando um teste do Parâmetro <strong>Fantasma Nobre</strong>, ele pode adquirir essa 
+    <i>"insight"</i> apenas por olhar após o Armamento tenha sido brandido pelo 
+    menos <strong>1 vez</strong> no seu campo de visão.`,
+    element: 'Sword'
+  },
+  {
+    name: 'Reinforcement',
+    rank: 'D',
+    cost: 30,
+    effect: `Esse Feitiço melhora um equipamento, reforçando ele em um sentido conceitual. 
+    O conjurador compreende a maneira como essa peça foi construída, a intenção de seu design 
+    e seu propósito como equipamento, e basicamente, faz uma espada <i>"ser mais espada"</i> através de sua magia.<br />
+    O conjurador só pode usar esse Feitiço em um <strong>equipamento</strong> que ele puder <strong>tocar</strong>. 
+    A partir do momento que ele usa esse Feitiço na peça, ela ganhará condições especiais e certas vantagens.<br /><br />
+     
+    Armas mundanas agora passam a ser consideradas <strong>Fantasmas Nobres</strong> de qualidade inferior; 
+    eles não possuem <strong>Habilidades de Valor</strong>, mas podem ferir Phantasmals e Espíritos Heróicos, 
+    note que nenhum Parâmetro é aumentado, mas as armas podem agora ferir tais criaturas.<br /> 
+    Armas modernas que possuam muitos mecanismos não podem ser encantadas, mas armas de fogo mais simples, 
+    como revólveres e rifles ainda podem se beneficiar desse efeito.<br /><br />
+    
+    Armas que já tinham um cunho mágico, ou Fantasmas Nobres Armamentos Lendários irão se fortalecer.<br />
+    Eles passam agora a receber um bônus na sua chance de executar 
+    uma <strong>Rolagem Crítica</strong>, diminuindo em <strong>-1</strong> o resultado necessário para tal.<br />
+    <i>Rolagens que obtenham resultados mínimos, ao invés disso, 
+    tem essa rolagem <strong>multiplicada</strong> por <strong>10</strong></i>.<br /><br />
+    
+    Os efeitos em uma arma mundana são permanentes, e permanecem até a peça ser despedaçada. 
+    Em armas especiais , eles irão durar um número de rodadas igual aos ranks que o conjurador 
+    possuir em seu parâmetro <strong>Mana</strong>.`,
+    element: 'Sword'
+  },
+  {
+    name: 'Projection',
+    rank: 'C',
+    cost: 50,
+    effect: `O conjurador materializa uma arma, aparentemente, do nada. Elas geralmente tem a aparência 
+    de uma peça idiotamente simples, feita de aço, e não possuem nenhuma decoração.<br />
+    A arma projetada é considerada uma arma mágica, e portanto, pode ser usada para atacar e 
+    ferir Phantasmals e Espíritos Heroicos, embora não possua nenhuma <strong>Habilidade de Valor</strong>.<br />
+    O conjurador pode projetar qualquer arma, seguindo os <strong>Modelos Base de Armamentos Lendarios</strong>.<br /><br />
+
+    Escudos podem ser projetados e usados para realizar a <i>Manobra Evasiva: "Bloquear"</i>, 
+    mas armaduras são problemáticas,e o conjurador infelizmente não será capaz de produzi-las.`,
+    element: 'Sword'
+  },
+  {
+    name: 'Melding',
+    rank: 'C',
+    cost: 50,
+    effect: `O conjurador irá levantar a mão e com um comando, ativar esse feitiço, se focando em uma 
+    arma que está sendo empunhada por um inimigo.<br />
+    Ele imediatamente irá afetar a peça em um nível conceitual, revertendo seus componentes a estados mais 
+    primordiais.<br />
+    
+    <ul>
+      <li>
+        O conjurador deve escolher <strong>1 inimigo</strong> que esteja equipado com algum tipo de armamento.
+      </li>
+      <li>
+        O conjurador irá fazer uma rolagem de <strong>1d8</strong> para cada rank em 
+        seu Parâmetro <strong>Fantasma Nobre</strong>.
+      </li>
+      <li>
+        A arma tem uma quantia de durabilidade decidida pelo <strong style="color: red">Narrador</strong> 
+        que pode variar grandemente, dependendo da qualidade dela.
+      </li>
+      <li>
+        Uma arma que tenha a <strong>durabilidade</strong> reduzida a <strong>0 (zero)</strong> receberá todos 
+        os efeitos desse Feitiço.
+      </li>
+      <li>
+        Uma arma mundana, ou de qualidade mágica inferior, como uma arma projetada ou uma arma encantada 
+        com <strong>Reinforcement</strong> não resistirá e será reduzida a ferrugem ou pó, 
+        dependendo de seus componentes, e será destruída. 
+      </li>
+    </ul>
+    
+    Armas que possuam <strong>propriedades mágicas</strong> mais intensas, ou 
+    <strong>Fantasmas Nobres</strong> conseguem resistir 
+    melhor aos efeitos desse feitiço; Eles perderão o brilho, e irão parecer opacos e sem vida, 
+    suas lâminas e pontas completamente sem corte ou capacidade de perfurar, porém <strong>NÃO</strong> serão reduzidos a pó, 
+    e ainda podem continuar sendo usados para combater, embora com suas propriedades completamente seladas.<br />
+    <i>Arcos</i> e <i>Armas de Fogo</i> ainda vão conseguir atirar, 
+    mas seu poder de fogo estará severamente prejudicado.<br /><br />
+    
+    Um Fantasma Nobre sob o efeito desse Feitiço perde todos os efeitos de suas <strong>Habilidades de Valor</strong>.<br />
+    <i>Ele não pode causar uma <strong>Rolagem Crítica</strong></i>.<br /><br />
+
+    <i><strong>Armaduras</strong> e <strong>Escudos</strong> também podem sofrer os efeitos desse Feitiço</i>.<br />
+    Um equipamento sob o efeito de <strong>Melding</strong> permanecerá assim por um número 
+    de rodadas <strong>igual</strong> a quantidade de em seu <Parâmetro <strong>Fantasma Nobre</strong>.`,
+    element: 'Sword'
+  },
+  {
+    name: 'Swordflesh',
+    rank: 'B',
+    cost: 75,
+    effect: `O conjurador consegue parcialmente transformar carne, ossos e o próprio sangue dele, ou de um aliado, em metal e aço. <br />
+    Ferimentos serão fechados com diversas pequenas lâminas funcionando como um <i>"sutura"</i>, 
+    impedindo o sangue de escapar e eliminando a dor.<br /><br />
+
+    Devido a maneira como funciona, esse Feitiço, apesar de ser bastante efetivo para <strong>curar</strong> feridas, 
+    tem alguns efeitos colaterais.<br /> 
+    O conjurador ou um aliado que ele possa tocar irá ganhar um <i>"escudo"</i>, que funciona como um marcador 
+    de <i>Pontos de Vida adicional</i>. O encantado não ficará inconsciente enquanto esse 
+    escudo tiver <i>Pontos de Vida</i>.<br /> 
+    Os <i>Pontos de Vida</i> desse escudo são determinados pelo Rank que o conjurador tenha em seu 
+    parâmetro <strong>Fantasma Nobre</strong>, <strong>multiplicado</strong> por </strong>20</strong>.<br /><br />
+
+    Quando o combate terminar, porém, o encantado irá receber todo o dano que havia sido recebido 
+    nesse escudo, de uma vez, enquanto o conjurador precisa remover as suturas de espadas e o metal 
+    que agora está crescendo na carne dele.<br />
+    <i>Esse Feitiço não pode matar o encantado, mas irá reduzir ele 
+    a 1 <strong>Ponto de Vida</strong>, e provavelmente forçá-lo a passar por descansos longos para que 
+    o corpo se recupere do choque.</i>`,
+    element: 'Sword'
+  },
+  {
+    name: 'Steel Mind',
+    rank: 'B',
+    cost: 60,
+    effect: `O conjurador consegue <i>"forjar"</i> sua psique, como se fosse uma espada. Esse feitiço 
+    exige uma quantidade extrema de concentração e disciplina, enquanto o conjurador deve se 
+    entregar ao <i>"conceito de uma espada"</i>, que deve ser ao mesmo tempo, 
+    dura como o aço, mais maleável e capaz de se dobrar para poder resistir a qualquer golpe que aplicar, 
+    ou sofrer.<br /><br />
+
+    Um alvo aliado ou o próprio conjurador se tornam <strong>imunes</strong> a efeitos psicológicos</i>.<br />
+    Enquanto o conjurador pode manter o efeito por <strong>1 rodada</strong> para cada rank no 
+    Parâmetro <strong>Mana</strong> que possuir sem problemas, um alvo aliado precisa se concentrar 
+    no efeito do feitiço, fazendo um teste de Parâmetro usando <strong>Fantasma Nobre</strong> <i>todo o começo</i> 
+    de seu turno, para manter o efeito pela mesma quantidade de rodadas.`,
+    element: 'Sword'
+  },
+  {
+    name: 'Dismantle',
+    rank: 'A',
+    cost: 90,
+    effect: `O conjurador consegue entender não apenas espadas, mas também visualizar os componentes 
+    que formam construtos mágicos, e aprende a reduzi-los a seus materiais, basicamente 
+    <i>"desmanchando"</i> magias.<br />
+    Com um <strong>comando</strong> que pode ser uma <i>palavra</i> ou um <i>gesto</i>, 
+    efeitos permanentes que estão no campo de batalha 
+    irão desaparecer.<br /><br />
+
+    Role <strong>1d12</strong> para cada rank que você possuir em seu Parâmetro 
+    <strong>Fantasma Nobre</strong>.<br />
+    O conjurador original do feitiço que você deseja destruir deve rolar <strong>Fantasma Nobre + Sorte</strong>.<br /> 
+    Se você superar o resultado, o feitiço que estava em efeito desaparece, 
+    e você ganha <i>Pontos de Energia</i> <strong>igual</strong> ao custo de <i>Pontos de Energia</i> dele.<br /><br />
+    
+    <i>Esse Feitiço <strong>PODE</strong> desmanchar <strong>Reality Marbles</strong></i>.`,
+    element: 'Sword'
+  },
+  {
+    name: 'Broken Phantasm',
+    rank: 'S',
+    cost: 125,
+    effect: `A mais poderosa magia do elemento Espada. O conjurador sobrecarrega uma arma mágica, 
+    transformando ela em um projétil mortal.<br />
+    <i>Lanças</i> e <i>Adagas</i> podem ser <strong>arremessadas</strong>, <i>Espadas</i> podem ser usadas 
+    como <strong>flechas</strong> para serem disparadas por um <i>"Arco Projetado"</i>, 
+    e <i>Escudos</i> podem voar contra um inimigo.<br />
+    Quando o <i>projétil</i> <strong>atinge</strong> o alvo, ele explode em um espetáculo de energia mágica 
+    pura que espalha chamas azuis esverdeadas e faíscas de energia para todos os lados.<br />
+    Inimigos são consumidos por uma onda de energia que irá despedaçá-los e depois queimá-los.<br /><br />
+    
+    Para usar esse Feitiço, o conjurador deve usar o <strong>Feitiço: "Projection"</strong> primeiro, 
+    ou deverá <strong>sacrificar</strong> um <i>Fantasma Nobre Armamento Lendario</i>, até o fim do combate.<br /> 
+    Uma vez que ele tenha a <i>"munição"</i> necessária, ele pode executar um ataque remoto de 
+    <strong>1D20</strong> para cada rank em seu Parâmetro <strong>Fantasma Nobre</strong>, 
+    contra um alvo, ou escolher uma área circular que esteja em seu campo de visão, de pelo 
+    menos <strong>20 metros</strong> de raio.<br /><br />
+    
+    Se escolher um alvo, esse alvo deve executar uma <i>Manobra Evasiva: "Esquivar"</i>, ou receberá dano 
+    de acordo com o primeiro impacto, e em seguida, mais um dano de <strong>1d20</strong> para cada rank 
+    no parâmetro Mana do conjurador.<br />
+    Alvos que estejam dentro do raio <strong>DEVEM</strong> se <i>Esquivar</i>, recebendo <strong>1d12</strong> 
+    de dano para cada rank no parâmetro <strong>Mana</strong> do conjurador.<br /><br />
+    
+    Se o golpe for direcionado contra a área, todos os inimigos dentro dela <strong>DEVEM</strong> 
+    imediatamente se <i>esquivarem</i> de um ataque de <strong>1D20</strong> para cada rank em 
+    seu Parâmetro <strong>Fantasma Nobre</strong>.`,
+    element: 'Sword'
   },
 ]

@@ -71,13 +71,19 @@ export default {
       meritPoints: 0,
       statusPoints: 0,
       proficiencyPoints: 0,
-      maxHp: 100,
-      maxSp: 100,
+      maxHp: 90,
+      maxSp: 90,
       hp: 0,
       sp: 0,
       parameters: [],
       valorPoints: [0],
       noblePhantasms: [],
+      secretOrigins: {
+        content: {
+          origins: [],
+          category: {}
+        }
+      },
       extraInfos: {
         species: '',
         addressSelfAs: '',
@@ -108,6 +114,7 @@ export default {
         const { data } = await this.$axios.get(url)
         
         const user = data.user
+        console.log(user)
         if (data) {
           this.data = {
             ...this.data,

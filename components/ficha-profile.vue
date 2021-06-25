@@ -39,6 +39,7 @@
           :negativeTraitsItems="negativeTraitsItems"
           :martialSkillsItems="martialSkillsItems"
           :specialTechniquesItems="specialTechniquesItems"
+          :secretOrigins="secretOrigins"
           :noblePhantasmsItems="noblePhantasmsItems"
           :extraInfoItems="extraInfoItems"
         />
@@ -126,11 +127,11 @@ export default {
         return [
           {
             label: 'HP',
-            value: `${player.hp} / ${player.maxHp}`
+            value: `${player.hp} / ${player.maxHp}`,
           },
           {
             label: 'SP',
-            value: `${player.sp} / ${player.maxSp}`
+            value: `${player.sp} / ${player.maxSp}`,
           },
           {
             label: 'Level:',
@@ -215,6 +216,31 @@ export default {
       return []
     },
 
+    secretOrigins() {
+      const player = this.player
+
+      if (player && player.secretOrigins) {
+        const { secretOrigins } = player
+
+        if (secretOrigins) {
+          const { origins, category } = secretOrigins.content
+  
+          return [
+            {
+              label: 'Origens Secretas',
+              value: `${origins.join(', ')}`
+            },
+            {
+              label: 'Categoria',
+              value: category
+            }
+          ]
+        }
+      }
+
+      return []
+    },
+
     noblePhantasmsItems() {
       const player = this.player
 
@@ -230,12 +256,10 @@ export default {
         }))
 
         npItems.forEach((np) => {
-          np.infos.unshift(
-            {
-              label: 'Tipo de Armamento Lendário:',
-              value: np.type,
-            }
-          )
+          np.infos.unshift({
+            label: 'Tipo de Armamento Lendário:',
+            value: np.type,
+          })
         })
 
         return npItems

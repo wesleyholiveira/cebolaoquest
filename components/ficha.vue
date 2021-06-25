@@ -213,13 +213,42 @@
                         close
                         :color="item.rarity"
                         @click:close="
-                          data.specialTechniques = data.specialTechniques.filter((e, i) => i !== index)
+                          data.specialTechniques =
+                            data.specialTechniques.filter((e, i) => i !== index)
                         "
                       >
                         <span>{{ item.name }}</span>
                       </v-chip>
                     </template>
                   </v-combobox>
+                </v-col>
+                <v-col cols="12">
+                  <h2 class="text-center">Origens Secretas</h2>
+                </v-col>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-combobox
+                    v-model="data.secretOrigins.content.origins"
+                    label="Escolha suas Origens:"
+                    multiple
+                    chips
+                    deletable-chips
+                    :items="Object.keys(secretOrigins)"
+                    :rules="secretOriginRule"
+                    @change="
+                      data.proficiencyPoints = data.secretOrigins.content.origins.length * 2
+                      defaultProficiencyPoints = data.proficiencyPoints
+                    "
+                  />
+                </v-col>
+                <v-col cols="12" lg="6" sm="12">
+                  <v-select
+                    v-model="data.secretOrigins.content.category"
+                    label="Escolha a subcategoria:"
+                    :items="selectedOriginsItems"
+                    item-text="name"
+                    item-value="name"
+                    class="custom-field"
+                  />
                 </v-col>
               </v-row>
               <template v-for="(item, key) in data.noblePhantasms">
@@ -621,6 +650,7 @@ export default {
 
   mounted() {
     this.body = document.body.getBoundingClientRect()
+    this.data.proficiencyPoints = this.data.secretOrigins.content.origins.length * 2
   },
 
   computed: {
@@ -632,6 +662,16 @@ export default {
         this.data.proficiencyPoints > 0
       )
     },
+
+    selectedOriginsItems() {
+      if (this.data.secretOrigins.content) {
+        const { origins } = this.data.secretOrigins.content
+        if (origins.length > 0) {
+          return origins.flatMap(e => this.secretOrigins[e])
+        }
+      }
+      return []
+    }
   },
 
   data: (instance) => ({
@@ -664,16 +704,17 @@ export default {
     maxCharsDislikes: 100,
     maxCharsAbstract: 1000,
     maxCharsLocality: 50,
+    valid: true,
+    dialog: false,
+    toggle: false,
+    registerDialog: false,
+    meritsDialog: false,
+    extraInfosValid: true,
     firstTimeValors: true,
     firstTimeStratagems: true,
     firstTimeMartialSkills: true,
     firstTimeSpecialTechs: true,
     firstTimeNegativeTraits: true,
-    registerDialog: false,
-    meritsDialog: false,
-    dialog: false,
-    valid: true,
-    extraInfosValid: true,
     // isNegative: false,
     date: null,
     menu: false,
@@ -693,6 +734,7 @@ export default {
     backupNegativeTraits: [],
     backupMartialSkills: [],
     backupSpecialTechniques: [],
+    selectedSecretOrigins: [],
     classes: [
       'Archer',
       'Assassin',
@@ -706,6 +748,41 @@ export default {
       'Saber',
       'Shielder',
     ].sort(),
+    secretOrigins: {
+      'Coração de Dragão': [
+        {
+          name: 'Sangue do Dragão Vermelho',
+        },
+        {
+          name: 'Sangue do Dragão Negro',
+        },
+        {
+          name: 'Sangue do Dragão Branco',
+        },
+      ],
+      'Fera Selvagem': [
+        {
+          name: 'Behemoth',
+        },
+        {
+          name: 'Fenrir',
+        },
+      ],
+      'Natureza Demoniaca': [
+        {
+          name: 'Diabo',
+        },
+        {
+          name: 'Mara',
+        },
+        {
+          name: 'Oni',
+        },
+        {
+          name: 'Divindade',
+        },
+      ],
+    },
     nameRules: [
       (v) => !!v || 'Este campo é obrigatório',
       (v) =>
@@ -807,6 +884,10 @@ export default {
         v.length <= instance.maxCharsAbstract ||
         `Este campo excedeu o limite máximo de: ${instance.maxCharsAbstract} caracteres`,
     ],
+    secretOriginRule: [
+      (v) => !!v || 'Este campo é obrigatório',
+      (v) => v.length > 0 || 'Você deve ao menos selecionar uma Origem Secreta'
+    ],
     dataNoblePhantasms: dataNP,
     stratagems: dataStratagems,
     bStratagems: instance.data.stratagems,
@@ -851,6 +932,7 @@ export default {
           i++
         } else {
           i = 0
+          this.registerMessage = msg
         }
       }, 450)
     },
@@ -965,6 +1047,7 @@ export default {
             }
           }
 
+          const { origins, category } = this.data.secretOrigins.content
           const { id, token } = this.$auth.user
           const { data } = await this.$axios.post(
             '/api/player',
@@ -993,6 +1076,13 @@ export default {
               sp: this.data.sp,
               maxHp: this.data.maxHp,
               maxSp: this.data.maxSp,
+              secretOrigins: {
+                content: JSON.stringify({
+                  origins,
+                  category
+                }),
+                player_id: id
+              }
             },
             {
               headers: {
@@ -1028,30 +1118,6 @@ export default {
           }
 
           this.registerDialog = false
-          if (this.response.status != 'error') {
-            // this.backupStratagems = []
-            // this.backupNegativeTraits = []
-            // this.backupMartialSkills = []
-            // this.backupSpecialTechniques = []
-            // this.capMerits = 0
-            // this.name = '',
-            // this.currentClass = '',
-            // this.merits = this.defaultMerits
-            // this.valorPoints = [this.defaultValorPoints]
-            // this.statusPoints = this.defaultStatusPoints
-            // this.proficiencyPoints = this.defaultProficiencyPoints
-            // this.alignment = []
-            // this.principle = []
-            // this.parameters = this.attributes
-            // this.selectedStratagems = []
-            // this.selectedNegativeTraits = []
-            // this.selectedMartialSkills = []
-            // this.selectedSpecialTechniques = []
-            // this.noblePhantasms = []
-            // this.$refs.form.reset()
-            // this.$refs.extraInfosForm.reset()
-          }
-
           goTo(0)
         } else {
           this.dialog = false
@@ -1222,6 +1288,9 @@ export default {
 .v-stepper__header.mobile.fixed {
   margin-bottom: 0;
   padding-bottom: 0 !important;
+}
+.custom-field .v-select__slot {
+  min-height: 42px;
 }
 </style>
 <style scoped>

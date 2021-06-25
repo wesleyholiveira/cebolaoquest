@@ -99,12 +99,12 @@
             v-for="(item, i) in itemSearch"
             :key="i"
             :color="randomizedColors[i]"
-            class="mb-10"
+            class="mb-10 card-effects"
             :id="`card-${i + 1}`"
           >
             <v-card-title class="text-h5">{{ item.name }}</v-card-title>
 
-            <v-card-subtitle v-html="item.effect"></v-card-subtitle>
+            <v-card-subtitle v-html="item.effect" class="subtitle--effect"></v-card-subtitle>
 
             <v-card-actions>
               <v-btn text>
@@ -276,7 +276,7 @@ export default {
     dataSearchOrdered() {
       if (this.searchBy) {
         return this.data[this.searchBy].sort((a, b) =>
-          a[this.orderBy] > b[this.orderBy] ? this.orderByModifier : -this.orderByModifier
+          a['name'] > b['name'] ? this.orderByModifier : -this.orderByModifier
         )
       }
 
@@ -436,6 +436,12 @@ export default {
 .database .v-select.v-select--chips .v-select__selections,
 .database .v-input__slot {
   min-height: 32px;
+}
+.card-effects .subtitle--effect strong {
+  color: cyan !important;
+}
+.card-effects .subtitle--effect i {
+  color: rgb(255, 163, 25) !important;
 }
 </style>
 

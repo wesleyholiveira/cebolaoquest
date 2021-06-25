@@ -16,7 +16,7 @@ export default {
       funds: 0,
       meritPoints: 4,
       statusPoints: 1,
-      proficiencyPoints: 1,
+      proficiencyPoints: 0,
       maxHp: 90,
       maxSp: 90,
       hp: 90,
@@ -71,6 +71,12 @@ export default {
       specialTechniques: [],
       martialSkills: [],
       negativeTraits: [],
+      secretOrigins: {
+        content: {
+          origins: [],
+          category: {}
+        }
+      },
       extraInfos: {
         species: '',
         addressSelfAs: '',

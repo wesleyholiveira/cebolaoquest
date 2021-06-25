@@ -11,7 +11,7 @@
         <v-col cols="12" lg="6" sm="12">
           <v-combobox
             v-model="type"
-            :items="data.type"
+            :items="dataType"
             item-text="name"
             label="Tipo"
             @change="np.effects = []"
@@ -162,7 +162,15 @@ export default {
     },
   }),
 
-  computed: {},
+  computed: {
+    dataType() {
+      if (this.data.type) {
+        return this.data.type.sort((a, b) => a.name > b.name ? 1 : -1)
+      }
+
+      return []
+    }
+  },
 
   methods: {
     calculateValorsFromArray: (data) =>

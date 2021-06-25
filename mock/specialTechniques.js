@@ -78,7 +78,7 @@ export default [
         priority: 1,
         effect: `Mais uma famosa anedota, especialmente popular em contos de 
         origem oriental: O poder de criar ilusões de óptica que consistem de cópias exatas do usuário.<br /> 
-        Tais "clones" não possuem matéria, mas podem ser utilizados para uma infinidade de 
+        Tais <i>"clones"</i> não possuem matéria, mas podem ser utilizados para uma infinidade de 
         manobras inteligentes e estratégicas.<br /><br />
         
         Como <i><strong>Manobra Livre</strong></i> durante seu turno, gastando <strong>25 Pontos de Energia</strong> 
@@ -401,7 +401,7 @@ export default [
         effect: `O <strong>"Campo Selado"</strong> é preenchido por uma paisagem desolada, preenchida de amedrontadoras imagens de destruição.<br />
         A atmosfera é densa e opressiva, e o espaço é permeado por uma maldição inescapável que irá lentamente danificar e matar aqueles que têm a infelicidade de receberem o convite para dentro desse inferno.<br /><br />
         
-        O conjurador deve especificar uma fonte de dano elemental para esse Reality Marble: "Fogo", "Eletricidade", "Gelo" ou "Veneno".<br /><br />
+        O conjurador deve especificar uma fonte de dano elemental para esse Reality Marble: <i>"Fogo", "Eletricidade", "Gelo" ou "Veneno"</i>.<br /><br />
         
         Todos os inimigos que estiverem dentro do <strong>"Campo Selado"</strong> são afetados por uma condição negativa chamada: "Desolação";
         essa condição negativa não pode ser removida por nenhum outro efeito, desaparecendo somente se o Reality Marble for encerrado.<br /><br />
@@ -411,7 +411,7 @@ export default [
         ativarem uma <strong>Estratagema</strong> ou <strong>Feitiço</strong> ou utilizarem 
         uma <strong>Técnica Especial</strong>; podendo receber múltiplos danos caso executarem mais 
         de uma dessas ações durante seus turnos.<br />  
-        Inimigos que tenham fraqueza ao elemento que compõe o "Campo Selado" recebem o dano em <strong>dobro</strong>. 
+        Inimigos que tenham fraqueza ao elemento que compõe o <i>"Campo Selado"</i> recebem o dano em <strong>dobro</strong>. 
         Igualmente, resistências e imunidades a tais elementos também afetam os que estiverem 
         dentro do Reality Marble.<br /><br />
 

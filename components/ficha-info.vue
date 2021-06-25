@@ -32,7 +32,7 @@
                     class="ficha-info"
                 >
                     <v-card-title>
-                        <span>Proficiências</span>
+                        <span>Origens Secretas</span>
                     </v-card-title>
                     <v-card-text>{{proficiencyPoints}}</v-card-text>
                 </v-card>

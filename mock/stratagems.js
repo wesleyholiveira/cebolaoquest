@@ -391,49 +391,6 @@ export default [
       <strong>Recarga:</strong> 3 rodadas
       `
   },
-  /*{
-    name: 'Modificação Dracônica',
-    merits: 1,
-    effect: `Essa Estratagema existe nos contos sobre heróis que possuem o sangue dos mais poderosos Phantasmals, os dragões, correndo em suas veias.<br />
-      Ativar essa técnica desperta essa natureza do dragão dentro do herói, dando a ele algumas características de tais monstros tão lendários.<br />
-      <strong>Possuir essa Estratagema faz você ser tratado como possuindo a característica Dragão a todo o momento, mesmo quando não está ativada.</strong><br />
-      Suas Manobras Ofensivas ganham um bônus de <strong>dano de +20</strong>. Suas Manobras Evasivas: <strong>"Aparar e Bloquear"</strong> ganham um bônus de <strong>+20</strong>.<br /> 
-      Você <strong>NÃO</strong> pode receber dano por ataques de elemento <strong>Fogo</strong> ou <strong>Gelo</strong>.<br />
-      Seus Pontos de Energia ganham um valor temporário extra, que é igual ao seu valor de Pontos de Vida.
-      Porém, ao final da duração dessa Estratagema, qualquer valor de Pontos de Energia que você utilizar são <strong>deduzidos</strong> dos seus <strong>Pontos de Vida</strong>.<br /><br />
-      <strong>Duração:</strong> 3 rodadas<br />
-      <strong>Recarga:</strong> 3 rodadas
-      `
-  },
-  {
-    name: 'Natureza Demoniaca',
-    merits: 1,
-    effect: `O herói possui uma herança mestiça com demônios, diabos ou onis do oriente, ou pode ter sido possuído ou amaldiçoado por um.
-      De qualquer forma, ele pode deixar a sua natureza demoníaca desabrochar e ganhar um aumento em seu poder por um curto período de tempo.<br />
-      <strong>Possuir essa Estratagema faz você ser tratado como possuindo a característica Demônio a todo o momento, mesmo quando não está ativada.</strong><br />
-      Todas as suas <strong>Manobras Ofensivas</strong> ganham um bônus de <strong>dano de +40</strong>. 
-      Você <strong>NÃO</strong> pode receber dano por ataques de elemento <strong>Fogo</strong> e <strong>Eletricidade</strong>.<br />
-      Quando você conseguir uma <strong>rolagem crítica</strong> com uma Manobra Ofensiva, você pode atacar aquele alvo novamente, com um ataque normal, <strong>UMA</strong> vez.<br />
-      Qualquer resultado <strong>6</strong> que conseguir em uma rolagem para uma <strong>Manobra Ofensiva</strong> é considerado uma rolagem crítica.<br /><br />
-      <strong>Duração:</strong> 3 rodadas<br />
-      <strong>Recarga:</strong> 3 rodadas 
-      `
-  },
-  {
-    name: 'Fera Selvagem',
-    merits: 1,
-    effect: `Você é parte de uma linhagem de mestiços entre humanos e animais, geralmente predadores ferozes que ocupam o topo da cadeia alimentar. 
-      Com essa Estratagema, você pode deixar essa herança feral surgir e lutar de maneira mais animalesca, ganhando sentidos mais aguçados e maior agilidade.<br />
-      <strong>Possuir essa Estratagema faz você ser tratado como possuindo a característica Fera a todo o momento, mesmo quando não está ativada.</strong>
-      Sua Manobra Evasiva <strong>"Esquivar"</strong> pode ser usada indefinidamente e ganha um bônus de <strong>+40</strong>.<br />
-      Você <strong>NÃO</strong> pode receber dano por ataques de elemento <strong>Gelo</strong>.<br />
-      Sua velocidade de movimento é <strong>dobrada</strong>, e seu movimento se torna irrestrito, podendo se mover após atacar.<br />
-      Você pode ignorar a cobertura dos inimigos, e identificar inimigos que estejam escondidos.<br />
-      Sempre que for atacado por um inimigo a corpo-a-corpo, você pode realizar um <strong>contra-ataque</strong> contra esse inimigo. Esses contra-ataques não são restritos.<br /><br />
-      <strong>Duração:</strong> 3 rodadas<br />
-      <strong>Recarga:</strong> 3 rodadas 
-      `
-  },*/
 ].sort((a, b) => {
   if (a.name > b.name) {
       return 1;

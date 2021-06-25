@@ -20,6 +20,7 @@ import npModel from './models/np'
 import npTypeModel from './models/np_type'
 import npEffectModel from './models/np_effect'
 import userModel from './models/user'
+import secretOriginsModel from './models/secretOrigins'
 
 import attributeRepository from './repositories/attributeRepository'
 import playerRepository from './repositories/playerRepository'
@@ -36,6 +37,7 @@ import imageRepository from './repositories/imageRepository'
 import category from './models/category'
 import categoryRepository from './repositories/categoryRepository'
 import userRoleRepository from './repositories/userRoleRepository'
+import secretOriginsRepository from './repositories/secretOriginsRepository'
 
 const axios = require('axios').default
 const tokenBlacklist = []
@@ -211,6 +213,8 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
     const npTypeRepo = npTypeRepository
     const npEffectsRepo = npEffectRepository
     const categories = await categoryRepository.getCategoriesByPlayerId(id)
+    const secretOrigins = await secretOriginsRepository.getSecretOriginsByPlayerId(id)
+
     let unitAge = 'anos'
 
     if (age == 1) {
@@ -262,6 +266,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       sp,
       maxHp,
       maxSp,
+      secretOrigins: secretOrigins[0],
       extraInfos: {
         species: species || '',
         sex,
@@ -482,7 +487,7 @@ app.get('/api/player/:id', async (req, res) => {
     hp,
     sp,
     maxHp,
-    maxSp
+    maxSp,
   } = player
 
   const parameters = await attributeRepository.getParametersByPlayerId(id)
@@ -495,6 +500,7 @@ app.get('/api/player/:id', async (req, res) => {
   const npTypeRepo = npTypeRepository
   const npEffectsRepo = npEffectRepository
   const categories = await categoryRepository.getCategoriesByPlayerId(id)
+  const secretOrigins = await secretOriginsRepository.getSecretOriginsByPlayerId(id)
 
   let unitAge = 'anos'
   if (age < 2) {
@@ -542,6 +548,7 @@ app.get('/api/player/:id', async (req, res) => {
     sp,
     maxHp,
     maxSp,
+    secretOrigins: secretOrigins[0],
     extraInfos: {
       species: species || '',
       sex,
@@ -598,7 +605,8 @@ app.post('/api/player', async (req, res) => {
     hp,
     sp,
     maxHp,
-    maxSp
+    maxSp,
+    secretOrigins
   } = req.body
 
   const playerRepo = playerRepository
@@ -632,7 +640,7 @@ app.post('/api/player', async (req, res) => {
     hp,
     sp,
     maxHp,
-    maxSp
+    maxSp,
   })
 
   const attributeRepo = attributeRepository
@@ -702,6 +710,15 @@ app.post('/api/player', async (req, res) => {
       })
     }
 
+    if (secretOrigins) {
+      const secretOriginsModels = new Array(secretOriginsModel({ ...secretOrigins, player_id: playerId }))
+      console.log(secretOrigins, secretOriginsModels)
+
+      if (secretOriginsModels) {
+        secretOriginsRepository.insertAll(secretOriginsModels)
+      }
+    }
+
     // const currentNps = await npRepository.getNoblePhantasmsByPlayerId(playerId)
     await npRepository.deleteByPlayerId(playerId)
 
@@ -735,7 +752,7 @@ app.post('/api/player', async (req, res) => {
         })))
 
         const npeLength = npEffectModels.length
-        const npEffectsDeletionPromise = new Promise((resolve, rejet) =>
+        const npEffectsDeletionPromise = new Promise((resolve, reject) =>
           noblePhantasms.forEach(np =>
             resolve(npEffectsRepo.deleteById(np.id))
           )

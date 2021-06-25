@@ -5,16 +5,7 @@
         <v-card-title class="headline">
           {{ label }}
         </v-card-title>
-        <v-card-text
-          style="
-            max-height: 450px;
-            overflow-y: auto;
-            line-height: 1.4rem;
-            text-align: justify;
-          "
-          v-html="skills.effect"
-        >
-        </v-card-text>
+        <v-card-text class="infos--text" v-html="skills.effect"> </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="dialog = false"> Sair </v-btn>
@@ -99,6 +90,15 @@
           "
         ></ficha-profile-group>
         <ficha-profile-group
+          :items="secretOrigins"
+          group-title="Origens Secretas"
+          group
+          v-on:updateProfile="
+            skills = $event
+            dialog = true
+          "
+        ></ficha-profile-group>
+        <ficha-profile-group
           :items="noblePhantasmsItems"
           group-title="Fantasmas Nobres"
           group
@@ -144,6 +144,7 @@ export default {
     specialTechniquesItems: Array,
     noblePhantasmsItems: Array,
     extraInfoItems: Array,
+    secretOrigins: Array
   },
 
   computed: {
@@ -166,6 +167,12 @@ export default {
   padding: 10px;
   border: 4px solid #006064;
 }
+.infos .infos--text {
+  max-height: 450px;
+  overflow-y: auto;
+  line-height: 1.4rem;
+  text-align: justify;
+}
 hr {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -177,5 +184,11 @@ hr {
 
 <style>
 .v-carousel__item .v-image__image {
+}
+.infos--text strong {
+  color: cyan;
+}
+.infos--text i {
+  color: rgb(255, 163, 25);
 }
 </style>

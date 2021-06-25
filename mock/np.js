@@ -616,7 +616,7 @@ export default {
         })
       },
       {
-        name: 'Mágico',
+        name: 'Cajados',
         valorSkills: [
           {
             name: 'Emanações de Esmeralda',
