@@ -193,28 +193,6 @@ export default [
         `
     },
     {
-        name: 'Grito de Guerra',
-        merits: 1,
-        rarity: 'green',
-        priority: 0,
-        effect: `Um exemplo de uma simples ação que se tornou tão famosa e conhecida, que ganhou um efeito praticamente mágico nas mãos de um Servant.<br />
-        Embora não passe de uma forma de erguer a moral das tropas, seja usando a própria voz, ou com um chifre de guerra para produzir um poderoso som que anuncia uma carga ou o começo de uma determinada defesa,
-        quando usada por um grande herói de reconhecida liderança, seus efeitos são magnificados, criando vantagens não apenas para aquele que a usa, mas também para todos que lutam sob sua bandeira.<br /><br />
-        
-        Essa Técnica Especial só pode ser usada no momento antes dos participantes de uma situação de combate rolarem suas <string>Iniciativas</strong>;
-        o usuário <strong>imediatamente</strong> ganha o primeiro turno, e confere a todos os seus aliados um bônus de <strong>+5/10/20</strong>,
-        dependendo do rank no parâmetro <strong>Fantasma Nobre</strong> do usuário <strong>(D-C/ B-A / S)</strong>, em suas rolagens de iniciativa que seguem.<br /><br />
-        
-        Durante a primeira rodada, o usuário e todos os aliados dele irão se mover ao <strong>dobro da velocidade</strong> normal.<br />
-        Se o usuário atingir um inimigo com um golpe:  <i>"normal, ou Técnica Especial, corpo-a-corpo"</i>, ele receberá um bônus em todas as suas <strong>Manobras Ofensivas de +5/10/20</strong>,
-        e em suas <strong>Manobras Defensivas</strong>, no mesmo valor.<br />
-        Em caso de conseguir causar dano, todos os aliados irão receber o <strong>mesmo bônus</strong>.<br /><br />
-        <strong>Esses bônus só se aplicam na primeira rodada do combate</strong><br /><br />
-        
-        Ativar o grito de guerra irá consumir <strong>25% dos Pontos de Energia</strong> máximos do usuário.  
-        `
-    },
-    {
         name: 'Mestre das Miragens',
         merits: 1,
         rarity: 'blue',
@@ -241,7 +219,7 @@ export default [
         `
     },
     {
-        name: 'Barganha Faustina',
+        name: 'Barganha Faustiana',
         merits: 1,
         rarity: 'red',
         priority: 2,

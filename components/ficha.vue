@@ -738,7 +738,7 @@ export default {
     classes: [
       'Archer',
       'Assassin',
-      'Caster (Criação de Território)',
+      'Caster (Brasão Magico)',
       'Caster (Magia Branca)',
       'Berserker',
       'Foreigner',

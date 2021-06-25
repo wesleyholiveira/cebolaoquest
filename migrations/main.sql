@@ -182,3 +182,19 @@ CREATE TABLE IF NOT EXISTS player_secret_origins (
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (`player_id`) REFERENCES players (`id`) ON DELETE CASCADE
 );
+
+ALTER TABLE
+    `players`
+MODIFY COLUMN
+    class enum(
+    'Archer',
+    'Assassin',
+    'Caster (Brasão Magico)',
+    'Caster (Magia Branca)',
+    'Berserker',
+    'Foreigner',
+    'Lancer',
+    'Avenger',
+    'Saber',
+    'Shielder'
+    );
