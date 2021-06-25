@@ -232,7 +232,7 @@ export default {
             },
             {
               label: 'Categoria',
-              value: category
+              value: typeof category !== 'string' ? null : category
             }
           ]
         }

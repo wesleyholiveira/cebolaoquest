@@ -16,7 +16,7 @@
         />
       </v-col>
       <v-col cols="12" lg="12" sm="12" style="text-align: left">
-        <v-combobox
+        <!-- <v-combobox
           v-if="!isOverloaded"
           v-model="np.effects"
           :rules="rules.effect"
@@ -30,9 +30,8 @@
           @change="
             backupEffects = decideValorsOperation(np.effects, backupEffects)
           "
-        />
+        /> -->
         <v-combobox
-          v-if="isOverloaded"
           v-model="np.effects"
           :rules="rules.effect"
           :items="getValorSkillItems()"
@@ -42,15 +41,14 @@
           multiple
           icon
           deletable-chips
-          class="warn"
           @change="
             backupEffects = decideValorsOperation(np.effects, backupEffects)
           "
         />
-        <span v-if="isOverloaded" class="warn">
+        <!-- <span v-if="isOverloaded" class="warn">
           Você está sobrecarregado e como consequência seu armamento lendário
           terá: {{ dmgDown }} a menos de dano
-        </span>
+        </span> -->
       </v-col>
     </v-row>
   </v-container>
@@ -138,7 +136,9 @@ export default {
         (v) =>
           v.filter((el) => !el.name).length < 1 ||
           'Há pelo menos um efeito inválido',
-        (v) => instance.validateMaxPoints(v, instance.valorCap),
+        (v) =>
+          v.length > 0 && instance.calculateValorsFromArray(v) <= instance.valorCap || 
+            `Você não pode ultrapassar o máximo de ${instance.valorCap} valors por NP`,
         (v) => {
           const seq = instance.forbiddenSequence
           const e = v.map((el) => el.name)
@@ -163,20 +163,20 @@ export default {
     calculateValorsFromArray: (data) =>
       data.map((el) => el.valors).reduce((acc, valor) => acc + valor),
 
-    validateMaxPoints(v, cap) {
-      let result = 0
-      if (v.length > 0) {
-        result = this.calculateValorsFromArray(v)
-      }
+    // validateMaxPoints(v, cap) {
+    //   let result = 0
+    //   if (v.length > 0) {
+    //     result = this.calculateValorsFromArray(v)
+    //   }
 
-      if (v.length > 0 && (result > cap || this.valorPoints[this.index] < 0)) {
-        this.isOverloaded = true
-        this.dmgDown = Math.abs(10 * (result - cap))
-      } else {
-        this.isOverloaded = false
-      }
-      return true
-    },
+        /*if (v.length > 0 && (result > cap || this.valorPoints[this.index] < 0)) {
+          this.isOverloaded = true
+          this.dmgDown = Math.abs(10 * (result - cap))
+        } else {
+          this.isOverloaded = false
+        }*/
+    //   return true
+    // },
 
     getValorSkillItems() {
       const valorSkills = this.data.valorSkills
