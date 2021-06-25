@@ -186,9 +186,9 @@ hr {
 .v-carousel__item .v-image__image {
 }
 .infos--text strong {
-  color: cyan;
+  color: cyan !important;
 }
 .infos--text i {
-  color: rgb(255, 163, 25);
+  color: rgb(255, 163, 25) !important;
 }
 </style>

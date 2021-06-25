@@ -245,6 +245,7 @@
                     v-model="data.secretOrigins.content.category"
                     label="Escolha a subcategoria:"
                     :items="selectedOriginsItems"
+                    :rules="secretOriginRule"
                     item-text="name"
                     item-value="name"
                     class="custom-field"
