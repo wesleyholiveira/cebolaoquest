@@ -711,6 +711,7 @@ app.post('/api/player', async (req, res) => {
     }
 
     if (secretOrigins) {
+      console.log(secretOrigins)
       const secretOriginsModels = new Array(secretOriginsModel({ ...secretOrigins, player_id: playerId }))
 
       if (secretOriginsModels) {

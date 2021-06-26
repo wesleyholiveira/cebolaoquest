@@ -632,6 +632,7 @@ import dataStratagems from '../mock/stratagems'
 import dataMartialSkills from '../mock/martialSkills'
 import dataSpecialTechniques from '../mock/specialTechniques'
 import dataNegativeTraits from '../mock/negativeTraits'
+import secretOrigins from '~/server/models/secretOrigins'
 let interval
 export default {
   props: {
@@ -1072,6 +1073,7 @@ export default {
               maxHp: this.data.maxHp,
               maxSp: this.data.maxSp,
               secretOrigins: {
+                id: this.data.secretOrigins.id,
                 content: JSON.stringify({
                   origins,
                   category

@@ -118,7 +118,6 @@ export default {
   data: () => ({
     // backupMerit: 0,
     // isNegative: false,
-    backupProficiency: 0,
     dialogProf: false,
     dialogUnderLevel: false,
     index: 0,
@@ -223,21 +222,12 @@ export default {
 
   methods: {
     resetAttrModifiers() {
-      let proficiencyPoints = 0
-      
       let profAttrs = this.attribute.rank.split('+')
-      proficiencyPoints = profAttrs.length - 1
-      if (profAttrs.length < 1) {
-        proficiencyPoints = this.proficiencyPoints + this.backupProficiency
-      }
+      let proficiencyPoints = this.proficiencyPoints + profAttrs.length - 1
 
-      this.index = 0
-      this.attribute.rank = this.baseParams[0].rank
-      this.attribute.value = this.baseParams[0].value
-      // this.isNegative = false
-
+      this.attribute.rank = this.baseParams[this.index].rank
+      this.attribute.value = this.baseParams[this.index].value
       this.$emit('updateProficiencyPoints', proficiencyPoints)
-      this.backupProficiency = 0
     },
 
     addAttribute() {
@@ -245,7 +235,6 @@ export default {
       let i = this.index
 
       let statusPoints = this.statusPoints
-
       if (statusPoints > 0) {
         if (i >= 2 && this.playerLevel < 10) {
           this.dialogUnderLevel = true
@@ -263,6 +252,11 @@ export default {
         this.attribute.rank = p[i].rank
         this.attribute.value = p[i].value
 
+        let profAttrs = this.attribute.rank.split('+').length - 1
+        if (profAttrs < 0) {
+          profAttrs = 0
+        }
+
         if (this.attribute.name == 'END') {
           this.$emit('updateMaxHp', this.maxHp + p[i].extra)
         }
@@ -271,7 +265,10 @@ export default {
           this.$emit('updateMaxSp', this.maxSp + p[i].extra)
         }
 
-        this.$emit('updateProficiencyPoints', this.defaultProficiencyPoints)
+        this.$emit(
+          'updateProficiencyPoints',
+          this.proficiencyPoints + profAttrs
+        )
         this.$emit('updateStatusPoints', statusPoints)
       }
     },
@@ -297,7 +294,15 @@ export default {
         this.attribute.rank = p[i].rank
         this.attribute.value = p[i].value
 
-        this.$emit('updateProficiencyPoints', this.defaultProficiencyPoints)
+        let profAttrs = this.attribute.rank.split('+').length - 1
+        if (profAttrs < 0) {
+          profAttrs = 0
+        }
+
+        this.$emit(
+          'updateProficiencyPoints',
+          this.proficiencyPoints + profAttrs
+        )
         this.$emit('updateStatusPoints', statusPoints)
         return
       }
@@ -320,8 +325,6 @@ export default {
         const newParam = `${this.attribute.rank}+`
 
         proficiencyPoints -= 1
-
-        this.backupProficiency += 1
 
         this.attribute.rank = newParam
         this.attribute.value = Math.floor(
