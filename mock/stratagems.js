@@ -128,7 +128,7 @@ export default [
     selvagem feroz, ou é dono de uma forma de magicamente ou espiritualmente 
     sentir a presença de outros seres vivos em suas proximidades imediatas.<br />
     Quando usar essa Estratagema, você será informado da posição de <strong>todos</strong> os inimigos que 
-    estão escondidos em <i>seu raio de visão,/i>, atrás de coberturas ou em salas que não pode ver.<br /><br />
+    estão escondidos em <i>seu raio de visão</i>, atrás de coberturas ou em salas que não pode ver.<br /><br />
 
     <i>Ela também <strong>remove</strong> qualquer efeito de invisibilidade de inimigos que estejam próximos</i>.<br /><br />
 
