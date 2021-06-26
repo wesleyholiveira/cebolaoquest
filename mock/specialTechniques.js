@@ -119,11 +119,11 @@ export default [
         Sua ascensão ao status de lenda as garantiu uma propriedade de, de uma certa forma,
         alterar o fluxo do tempo no momento do ataque, e sempre golpear o inimigo primeiro, impedindo os danos que ele poderia lhe causar.<br /><br />
         
-        Quando você se torna alvo de uma <strong>Técnica Especial, Magia Ofensiva, ou ataque normal</strong> que causou <strong>Dano Crítico</stong>; você pode ativar essa Técnica Especial como um contra-ataque preventivo.<br /><br />
+        Quando você se torna alvo de uma <strong>Técnica Especial, Magia Ofensiva, ou ataque normal</strong> que causou <strong>Dano Crítico</strong>; você pode ativar essa Técnica Especial como um contra-ataque preventivo.<br /><br />
         
         Ataque esse inimigo com uma rolagem de <strong>Fantasma Nobre + Agilidade + Sorte</strong>,
-        e adicione ao dano final qualquer dano que seria causado a você. Por ser um contra-ataque, o alvo não possui uma rolagem de <strong>Manobra Evasiva</strong> e é forçado a rolar <i>"Proteger"</i> na mesma hora.<br />
-        Caso o alvo receba esse dano, o ataque que seria infligido a você é cancelado, e o turno desse inimigo é encerrado.<br /><br />
+        e adicione ao dano final qualquer dano que seria causado a você. Por ser um contra-ataque, o alvo não possui uma rolagem de <i>Manobra Evasiva</i> e é forçado a rolar <i>"Proteger"</i> na mesma hora.<br />
+        Caso o alvo receba esse dano, o ataque que seria infligido a você é <strong>cancelado</strong>, e o turno desse inimigo é encerrado.<br /><br />
         
         Essa técnica dispensa sua vingança contra qualquer oponente, mesmo aqueles que estejam distantes de você.
         Por ser difícil de aplicar, ela não exige nenhuma energia para ser usada, apenas concentração, frieza e o momento correto. 
@@ -285,11 +285,11 @@ export default [
         priority: 1,
         effect: `Essa técnica é raramente vista, e somente guerreiros que não possuem medo, 
         ou possuem uma plena confiança em suas habilidades, a demonstram.<br />
-        Trata-se da lendária "carga"; o ato de cortar o campo de batalha, sem nenhum medo, 
+        Trata-se da lendária <i>"carga"</i>; o ato de cortar o campo de batalha, sem nenhum medo, 
         na direção dos inimigos, e correr para o coração da tempestade do combate, 
         imediatamente travando lâminas contra os opositores.<br /> 
         Um Espírito Heróico capaz de reviver esse ato glorioso pode invocar essa anedota e 
-        rapidamente iniciar um confronto, sem medo de ser ferido por disparos ou impedido por coberturas<br /><br />. 
+        rapidamente iniciar um confronto, sem medo de ser ferido por disparos ou impedido por coberturas.<br /><br />
         
         <i>Você pode usar essa técnica no início de uma cena de combate; 
         Imediatamente, você se torna o primeiro da ordem de ações dessa cena</i>.<br /><br />

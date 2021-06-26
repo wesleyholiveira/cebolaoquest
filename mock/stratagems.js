@@ -128,8 +128,9 @@ export default [
     selvagem feroz, ou é dono de uma forma de magicamente ou espiritualmente 
     sentir a presença de outros seres vivos em suas proximidades imediatas.<br />
     Quando usar essa Estratagema, você será informado da posição de <strong>todos</strong> os inimigos que 
-    estão escondidos em seu raio de visão, atrás de coberturas ou em salas que não pode ver.<br /> 
-    Ela também <strong>remove</strong> qualquer efeito de invisibilidade de inimigos que estejam próximos.<br /><br />
+    estão escondidos em <i>seu raio de visão,/i>, atrás de coberturas ou em salas que não pode ver.<br /><br />
+
+    <i>Ela também <strong>remove</strong> qualquer efeito de invisibilidade de inimigos que estejam próximos</i>.<br /><br />
 
     <strong>Duração:</strong> Instantânea<br />
     <strong>Recarga:</strong> Nenhuma`
@@ -179,7 +180,8 @@ export default [
     merits: 1,
     effect: `Essa Estratagema representa a capacidade de um herói determinado de levantar mais uma vez, mesmo após seu corpo parecer ferido demais.
       Até mesmo uma ferida mortal pode ser ignorada por mais alguns minutos, para que o valente herói continue a batalha.<br />
-      Use essa Estratagema como Manobra de Reação quando seus Pontos de Vida chegarem a 0; você ganha uma <i>"vida fantasma"</i> no valor de 50% dos seus Pontos de Vida máximos, e pode continuar o combate.<br /> 
+      Use essa Estratagema como <i>Manobra de Reação</i> quando seus Pontos de Vida chegarem a <strong>0 (zero)</strong>; 
+      você ganha uma <i>"vida fantasma"</i> no valor de <strong>50%</strong> dos seus <i>Pontos de Vida</i> máximos, e pode continuar o combate.<br /> 
       Enquanto possuir essa <i>"vida fantasma"</i>, o conjurador não pode ser curado. Ao final do combate, você desmaia e precisa ter os Pontos de Vida recuperados para poder voltar a agir.<br /><br />
 
       <strong>Duração:</strong> Instantânea<br />
@@ -250,10 +252,13 @@ export default [
   {
     name: 'Encantamentos Velozes',
     merits: 1,
-    effect: `Geralmente utilizada por feiticeiros e bruxas de grande renome, essa Estratagema acelera a conjuração de uma magia,
-      tornando possível para o mago lançar seus feitiços e reunir suas energias muito mais rapidamente.<br />
-      Durante o efeito dessa Estratagema, você pode usar Feitiços que sejam <strong>1 rank maior que o seu rank</strong> de Mana sem penalizador.<br />
-      Feitiços que sejam 1 rank menor tem o custo cortado pela metade.<br /><br />
+    effect: `Geralmente utilizada por feiticeiros e bruxas de grande renome, essa <i>Estratagema</i> 
+      acelera a conjuração de uma magia, tornando possível para o mago lançar seus feitiços e reunir 
+      suas energias muito mais rapidamente.<br />
+      Durante o efeito dessa Estratagema, você pode usar Feitiços que sejam <strong>1 rank maior</i> do que o seu rank de 
+      <strong>Mana</strong> sem penalizador.<br /><br />
+
+      <i>Feitiços que sejam <strong>1 rank menor</strong> tem o custo cortado pela <strong>metade</strong>.<br /><br />
 
       <strong>Duração:</strong> 3 rodadas<br />
       <strong>Recarga:</strong> 3 rodadas
@@ -277,10 +282,11 @@ export default [
     effect: `Essa técnica é geralmente observada em assassinos lendários, espiões e agentes secretos. 
     Ela serve para aumentar a letalidade de seus ataques 
     vindos das sombras e finalizar o serviço na hora.<br />
-    Quando você atacar normalmente um inimigo, sob um efeito de invisibilidade, 
+
+    <i>Quando você atacar normalmente um inimigo, sob um efeito de invisibilidade, 
     ou que ainda não tenha percebido sua presença, 
     enquanto essa Estratagema estiver em jogo; Aumente o <strong>Valor Inicial</strong> 
-    da sua rolagem em <strong>+20</strong>.<br /><br />
+    da sua rolagem em <strong>+20</strong></i>.<br /><br />
 
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`
@@ -330,11 +336,12 @@ export default [
     merits: 1,
     effect: `Quando essa Estratagema é colocada em jogo, você consegue gerar uma 
     vibração ao seu redor, que estimula os circuitos mágicos de você e dos seus aliados, 
-    recarregando, lentamente, o poder mágico de todos.<br />
-    Durante o efeito dessa Estratagema, você e todos os seus aliados recuperam 
+    recarregando, lentamente, o poder mágico de todos.<br /><br />
+
+    <i>Durante o efeito dessa Estratagema, você e <strong>todos</strong> os seus aliados recuperam 
     seu <strong>Valor Inicial</strong> do Parâmetro <strong>Mana</strong>, 
     mais uma rolagem de <strong>1d20</strong> de <strong>Pontos de Energia</strong> 
-    por nível do seu parâmetro <strong>Mana</strong> em cada um dos seus turnos.<br /><br />
+    por nível do seu parâmetro <strong>Mana</strong> em cada um dos seus turnos.</i><br /><br />
 
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas
@@ -345,7 +352,7 @@ export default [
     merits: 1,
     effect: `É a marca de galantes cavaleiros, fies paladinos e corajosos guarda-costas, que não 
     temem se pôr em perigo mortal para proteger alguém.<br />
-    Quando usar essa Estratagema, escolha um <strong>aliado</strong:; sempre que esse aliado 
+    Quando usar essa Estratagema, escolha um <strong>aliado</strong>; sempre que esse aliado 
     for ser atacado por qualquer tipo de ataque que um inimigo lançar contra ele, 
     você pode rolar uma <i>Manobra Evasiva</i> no lugar dele. 
     Esse aliado <strong>DEVE</strong> estar a menos de <strong>3m</strong> de distância de você.<br /><br />
@@ -405,8 +412,8 @@ export default [
     feitiços sob o seu comando com maior concentração e foco.<br />
     Enquanto essa Estratagema estiver em jogo, sempre que você fizer 
     uma rolagem para executar um <strong>Feitiço</strong>, você pode rerolar <strong>1 vez</strong> 
-    qualquer rolagem que fizer para lançá-lo. Se desejar, 
-    você pode rolar novamente ambos os dados, ou apenas um deles.<br /><br />
+    qualquer rolagem que fizer para lançá-lo.<br />
+    <i>Se desejar, você pode rolar novamente ambos os dados, ou apenas um deles.</i><br /><br />
 
     <strong>Duração:</strong> 3 rodadas<br />
     <strong>Recarga:</strong> 3 rodadas`

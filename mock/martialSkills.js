@@ -52,10 +52,15 @@ export default [
         name: 'Duelista',
         merits: 2,
         effect: `Esse é um estilo de luta balanceado geralmente praticado por duelistas.<br />
-        Ele se foca em utilizar apenas <strong>UMA</strong> arma, geralmente uma espada, enquanto uma das mãos se mantém livre, para balancear a postura e garantir maior agilidade.<br />
-        Como a descrição implica, usar essa habilidade Marcial significa que você não pode equipar nenhum Fantasma Nobre em uma das suas mãos, <strong>incluindo</strong> escudos.<br />
-        Suas Manobras Evasivas: "Aparar" e "Esquivar" ganham um <strong>bônus de +10</strong>. Você pode usar ambas essas Manobras indefinidamente.<br />
-        Se caso reduzir o dano de um ataque do inimigo a <strong>0 (zero)</strong> com uma <i>Manobra Evasiva: Esquivar/Aparar</i>, você pode contra-atacar esse inimigo com um ataque normal.<br />
+        Ele se foca em utilizar apenas <strong>UMA</strong> arma, geralmente uma espada, 
+        enquanto uma das mãos se mantém livre, para balancear a postura e garantir maior agilidade.<br />
+        Como a descrição implica, usar essa <i>Habilidade Marcial</i> significa que você não pode equipar 
+        <strong>nenhum</strong> Fantasma Nobre em uma das suas mãos, <strong>incluindo</strong> escudos.<br /><br />
+
+        <i>Suas Manobras Evasivas: "Aparar" e "Esquivar"</i> ganham um <strong>bônus de +10</strong>.<br />
+        Você pode usar ambas essas <strong>Manobras</strong> indefinidamente.<br />
+        Se caso reduzir o dano de um ataque do inimigo a <strong>0 (zero)</strong> com uma Manobra Evasiva: "Esquivar"/"Aparar", 
+        você pode contra-atacar esse inimigo com um ataque normal</i>.<br />
         `
     }
 ].sort((a, b) => {

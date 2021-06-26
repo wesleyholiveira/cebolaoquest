@@ -151,7 +151,7 @@ export default {
         sendo surpreendidos.<br /><br />
         Todas as suas <i>Manobras Ofensivas</i> que podem causar uma <strong>Rolagem Crítica</strong>, 
         também causam uma Rolagem Crítica quando você rolar um resultado <strong>4</strong> em um dos seus dados.<br /><br /> 
-        <i>Se um dado correspondente ao Rank S for rolado, o número passa a ser 13.</i>
+        <i>Se um dado correspondente ao <strong>Rank S</strong> for rolado, o número passa a ser <strong>13</strong>.</i>
         `
       },
       {
@@ -160,8 +160,8 @@ export default {
         effect: `Seu Fantasma Nobre é encantado com magias que trazem boa sorte; mesmo 
         quando ele parece ter falhado, algo incrível acontece e ele 
         encontra uma maneira de atingir o alvo.<br /><br />
-        Sempre que você rolar uma rolagem <strong>mínima</strong> usando o Fantasma Nobre que possua 
-        essa habilidade, <strong>multiplique</strong> o valor da rolagem por <strong>10</strong>.         
+        <i>Sempre que você rolar uma rolagem <strong>mínima</strong> usando o Fantasma Nobre que possua 
+        essa habilidade, <strong>multiplique</strong> o valor da rolagem por <strong>10</strong></i>. 
         `
       },
       {
@@ -215,8 +215,9 @@ export default {
             você desenvolveu ou foi abençoado com um golpe decisivo. Tal é sua intimidade com sua lâmina, 
             que quando a técnica de vocês é disparada, vocês se tornam incomparáveis, quebrando até 
             os limites de outras lendas.<br /><br /> 
-            Aumente o seu <strong>Valor Inicial</strong> em <strong>+10</strong> quando você 
-            usar uma Técnica Especial usando esse Fantasma Nobre.        
+            
+            <i>Aumente o seu <strong>Valor Inicial</strong> em <strong>+10</strong> quando você 
+            usar uma <strong>Técnica Especial</strong> usando esse Fantasma Nobre.</i>
             `
           },
           {
@@ -227,8 +228,9 @@ export default {
             Muitas vezes, o primeiro golpe é tudo que você precisa para decidir o combate.<br /><br /> 
             Seu primeiro ataque normal em um combate causa dano <strong>direto</strong> aos <strong>Pontos de Vida</strong> 
             de um alvo que possa ser atacado por você.<br /><br />
-            Você pode usar a <i>manobra "Checkmate"</i> para guardar esse Fantasma Nobre, 
-            e assim, poder ganhar esse bônus novamente no seu próximo ataque normal.
+
+            <i>Você pode usar a <strong>Manobra "Checkmate"</strong> para guardar esse Fantasma Nobre, 
+            e assim, poder ganhar esse bônus novamente no seu próximo ataque normal.</i>
             `
           },
           {
@@ -276,10 +278,10 @@ export default {
             valors: 1,
             effect: `Sua espada é um conduíte de energias mágicas. 
             Uma vez que ela é estimulada pelo poder de uma técnica especial, ela irá continuar 
-            por mais alguns momentos com seu poder amplificado, certificando-se de finalizar o combate. 
-            Aumente o seu <strong>Valor Inicial</strong> em <strong>+10</strong> 
-            para seu próximo ataque normal se no turno anterior você usou uma Técnica Especial 
-            com esse Fantasma Nobre.`
+            por mais alguns momentos com seu poder amplificado, certificando-se de finalizar o combate.<br /> 
+            <i>Aumente o seu <strong>Valor Inicial</strong> em <strong>+10</strong> 
+            para seu próximo ataque normal se no turno anterior você usou uma <strong>Técnica Especial</strong>
+            com esse Fantasma Nobre</i>.`
           },
         ].sort((a, b) => {
           if (a.name > b.name) {
@@ -407,12 +409,14 @@ export default {
             você está apenas esperando para que a vítima apresente o momento perfeito para 
             ela se revelar como seu trunfo. Nesse caso, ela é especialmente preparada para vir 
             quando o inimigo forma uma guarda usando a arma dele…<br /><br /> 
-            Para que essa Habilidade de Valor possa ser usada, sua faca <strong>NÃO</strong> 
+
+            Para que essa <strong>Habilidade de Valor</strong> possa ser usada, sua faca <strong>NÃO</strong> 
             pode ser um dos seus Fantasmas Nobres <strong>ativos</strong>; 
             Se um inimigo usar a <i>Manobra Evasiva "Aparar"</i> contra uma das suas <i>Manobras Ofensivas</i>, 
             você pode, imediatamente após o dano final ser calculado, aplicar um ataque normal usando essa faca, 
             e causar dano <strong>direto aos Pontos de Vida</strong> desse inimigo.<br /><br />
-            <strong>Você só pode usar essa habilidade uma vez por inimigo.</strong> 
+            
+            <i>Você só pode usar essa habilidade uma <strong>vez</strong> por inimigo.</i> 
             `
           },
           {
@@ -705,8 +709,10 @@ export default {
             valors: 1,
             effect: `Seu cajado é um objeto sagrado ou capaz de facilmente se atunar a forças divinas. 
             Quando um efeito de fechar feridas é conjurado através dele, ele é magnificado.<br /><br />
-            Sempre que você lançar um <strong>Feitiço</strong> que tem como efeito curar Pontos de Vida, 
-            role o <strong>dobro</strong> de dados que o efeito descreve.
+            
+            <i>Sempre que você lançar um <strong>Feitiço</strong> que tem como efeito curar 
+            <strong>Pontos de Vida</strong>, 
+            role o <strong>dobro</strong> de dados que o efeito descreve.</i>
             `
           },
           {
@@ -724,10 +730,12 @@ export default {
             valors: 1,
             effect: `Seu cajado é atunado a um elemento da natureza de forma profunda. 
             Ele é um receptáculo para os feitiços dessa linha, e enquanto você o empunha, 
-            esse elemento está sob seu controle.<br /><br /> 
-            Enquanto estiver equipado com esse Fantasma Nobre você pode conjurar feitiços 
-            de um Elemento que escolher. O Elemento escolhido deve ser especificado quando essa 
-            Habilidade de Valor é escolhida, e marcado nas especificações desse Fantasma Nobre.   
+            esse elemento está sob seu controle.<br /><br />
+
+            <i>Enquanto estiver equipado com esse Fantasma Nobre você pode conjurar feitiços 
+            de um <strong>Elemento</strong> que <strong>escolher</strong>. 
+            O Elemento escolhido deve ser especificado quando essa 
+            <strong>Habilidade de Valor</strong> é escolhida, e marcado nas especificações desse Fantasma Nobre.</i>
             `
           },
         ].sort((a, b) => {
@@ -768,7 +776,8 @@ export default {
             effect: `Seu escudo é projetado para especialmente lidar com flechas, tiros e disparos. 
             Protegido por ele, você é capaz de atravessar um campo de batalha inteiro sem ser sequer alvejado 
             uma vez.<br /><br /> 
-            Enquanto estiver equipado com esse Fantasma Nobre, você é considerado estar sob o efeito de cobertura.                 
+            <i>Enquanto estiver equipado com esse Fantasma Nobre, você é considerado estar sob o efeito 
+            de cobertura</i>.                 
             `
           },
           {
@@ -798,9 +807,10 @@ export default {
             effect: `Seu escudo é decorado com símbolos especiais ou feito com materiais raros que 
             tem a capacidade de impedir que seu corpo seja afetado por toxinas, mesmo quando armas envenenadas 
             ou maldições atingem seu corpo.<br /><br />
-            Enquanto você estiver equipado com esse escudo, você <strong>NÃO</strong> pode sofrer 
-            a condição negativa <strong>"Envenenado"</strong>. Você ainda recebe danos que possuem o 
-            elemento Veneno, mas nenhum dos seus efeitos de dano adicional. 
+            
+            <i>Enquanto você estiver equipado com esse escudo, você <strong>NÃO</strong> pode sofrer 
+            a condição negativa <strong>"Envenenado"</strong>. Você ainda <strong>recebe</strong> danos que possuem o 
+            elemento Veneno, mas nenhum dos seus efeitos de dano adicional</i>.
             `
           },
         ].sort((a, b) => {
