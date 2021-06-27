@@ -233,6 +233,7 @@ export default {
       this.webgl = true
       const threeJS = document.getElementById('ThreeJS')
       this.diceRoller = this.$dice(threeJS)
+      this.diceRoller.init()
     }
 
     this.socket.emit('whenUserEnter', username)
@@ -278,7 +279,6 @@ export default {
             this.socket.emit('visualRoll', this.backupDices)
           } catch (err) {
             console.log(err)
-            this.diceRoller.resetRoll()
           }
         }
       }

@@ -12,10 +12,9 @@ class DiceRoller {
     this.container = container;
   }
 
-  init(container) {
+  init() {
     let t = this;
 
-    this.container = container;
     this.scene = new THREE.Scene();
     this.dices = []
     this.animationID = 0;
@@ -26,6 +25,8 @@ class DiceRoller {
       ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
       NEAR = 0.01,
       FAR = 20000;
+
+    const container = this.container
 
     this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
     this.camera.position.set(0, 90, 5);
@@ -137,40 +138,41 @@ class DiceRoller {
 
       let yRand = Math.random() * 5;
       dice.getObject().position.x = -15 - (i % 3) * 1.5;
-			dice.getObject().position.y = 2 + Math.floor(i / 3) * 1.5;
-			dice.getObject().position.z = -15 + (i % 3) * 1.5;
-			dice.getObject().quaternion.x =
-				((Math.random() * 90 - 45) * Math.PI) / 180;
-			dice.getObject().quaternion.z =
-				((Math.random() * 90 - 45) * Math.PI) / 180;
-			dice.updateBodyFromMesh();
-			let rand = Math.random() * 2;
-			dice
-				.getObject()
-				.body.velocity.set(25 + rand, 20 + yRand, 15 + rand);
-			dice
-				.getObject()
-				.body.angularVelocity.set(
-					5 * Math.random() - 10,
-					5 * Math.random() - 10,
-					5 * Math.random() - 10
-				);
+      dice.getObject().position.y = 2 + Math.floor(i / 3) * 1.5;
+      dice.getObject().position.z = -15 + (i % 3) * 1.5;
+      dice.getObject().quaternion.x =
+        ((Math.random() * 90 - 45) * Math.PI) / 180;
+      dice.getObject().quaternion.z =
+        ((Math.random() * 90 - 45) * Math.PI) / 180;
+      dice.updateBodyFromMesh();
+      let rand = Math.random() * 2;
+      dice
+        .getObject()
+        .body.velocity.set(25 + rand, 20 + yRand, 15 + rand);
+      dice
+        .getObject()
+        .body.angularVelocity.set(
+          5 * Math.random() - 10,
+          5 * Math.random() - 10,
+          5 * Math.random() - 10
+        );
 
       diceValues.push({ dice, value });
     }
 
     this.dices = diceValues;
-    DiceManager.prepareValues(diceValues);
+    DiceManager.prepareValues(diceValues.filter(d => d.dice.isFinished() === true));
   }
 
   resetRoll() {
-    let { animationID } = this;
-    while(animationID--){
-      cancelAnimationFrame(animationID);
+    while(this.animationID){
+      cancelAnimationFrame(this.animationID);
+      cancelAnimationFrame(this.animationID - 1);
+      this.animationID--;
     }
 
-    this.backupRenderer = this.renderer;
-    this.init(this.container);
+    this.backupRenderer = this.renderer
+    this.init()
   }
 }
 
