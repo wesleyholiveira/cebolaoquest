@@ -244,37 +244,42 @@ export default {
       const { type, dices } = res
       if (type && type == 'roll') {
         if (this.webgl) {
-          if (this.backupDices) {
-            const bDices = this.backupDices.dices
-            this.nextRoll = {
-              ...this.backupDices,
-              dices: {
-                d6: [],
-                d8: [],
-                d10: [],
-                d12: [],
-                d20: [],
-              },
+          try {
+            if (this.backupDices) {
+              const bDices = this.backupDices.dices
+              this.nextRoll = {
+                ...this.backupDices,
+                dices: {
+                  d6: [],
+                  d8: [],
+                  d10: [],
+                  d12: [],
+                  d20: [],
+                },
+              }
+  
+              Object.keys(bDices).forEach((k) => {
+                bDices[k].forEach((d) =>
+                  this.nextRoll.dices[k].push(this.generateRNG(1, 6))
+                )
+              })
             }
-
-            Object.keys(bDices).forEach((k) => {
-              bDices[k].forEach((d) =>
-                this.nextRoll.dices[k].push(this.generateRNG(1, 6))
-              )
-            })
+  
+            const dicesThrower = Object.keys(dices).flatMap((k) =>
+              dices[k].flatMap((value) => ({
+                value,
+                type: k,
+              }))
+            )
+  
+            this.diceRoller.resetRoll()
+            this.diceRoller.randomDiceThrow(dicesThrower)
+            this.visibleRoller = true
+            this.socket.emit('visualRoll', this.backupDices)
+          } catch (err) {
+            console.log(err)
+            this.diceRoller.resetRoll()
           }
-
-          const dicesThrower = Object.keys(dices).flatMap((k) =>
-            dices[k].flatMap((value) => ({
-              value,
-              type: k,
-            }))
-          )
-
-          this.diceRoller.resetRoll()
-          this.diceRoller.randomDiceThrow(dicesThrower)
-          this.visibleRoller = true
-          this.socket.emit('visualRoll', this.backupDices)
         }
       }
     })
