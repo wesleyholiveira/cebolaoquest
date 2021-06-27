@@ -246,6 +246,8 @@ export default {
       if (type && type == 'roll') {
         if (this.webgl) {
           try {
+            this.diceRoller.resetRoll()
+
             if (this.backupDices) {
               const bDices = this.backupDices.dices
               this.nextRoll = {
@@ -273,7 +275,6 @@ export default {
               }))
             )
   
-            this.diceRoller.resetRoll()
             this.diceRoller.randomDiceThrow(dicesThrower)
             this.visibleRoller = true
             this.socket.emit('visualRoll', this.backupDices)

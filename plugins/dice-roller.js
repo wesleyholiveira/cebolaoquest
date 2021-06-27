@@ -160,8 +160,8 @@ class DiceRoller {
       diceValues.push({ dice, value });
     }
 
-    this.dices = diceValues;
-    DiceManager.prepareValues(diceValues.filter(d => d.dice.isFinished() === true));
+    this.dices = diceValues
+    DiceManager.prepareValues(this.dices);
   }
 
   resetRoll() {
