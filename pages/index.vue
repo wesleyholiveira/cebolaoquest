@@ -39,6 +39,11 @@ export default {
   auth: true,
   data: () => ({
     items: [
+      'Adicionado um NP padrão como visivel para facilitar identificação de onde está o módulo de NP',
+      'Adicionado feature para conseguir subir/descer o atributo sem perder a "proficiência"',
+      'Removido flag que previne reconexões no socket.io',
+      'Atualizado efeitos seguindo o novo MANUEL do Rafael',
+      'Adicionado restrição impeditiva para quando algum safado tentar colocar mais de 5 valors por NP',
       'Adicionado nova coluna para special_techniques para poder salvar o nível de raridade',
       'Removido o botão de negativar um atributo',
       'Adicionado porcentagem de crítico na label do campo de LUK',

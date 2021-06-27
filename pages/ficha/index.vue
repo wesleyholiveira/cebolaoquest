@@ -67,7 +67,12 @@ export default {
       ],
       valorPoints: [],
       stratagems: [],
-      noblePhantasms: [],
+      noblePhantasms: [{
+        name: '',
+        effects: [],
+        type: '',
+        merits: 1
+      }],
       specialTechniques: [],
       martialSkills: [],
       negativeTraits: [],
