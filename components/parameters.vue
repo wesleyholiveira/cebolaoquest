@@ -248,14 +248,14 @@ export default {
         i += 1
         statusPoints -= 1
 
-        this.index = i
-        this.attribute.rank = p[i].rank
-        this.attribute.value = p[i].value
-
         let profAttrs = this.attribute.rank.split('+').length - 1
         if (profAttrs < 0) {
           profAttrs = 0
         }
+
+        this.index = i
+        this.attribute.rank = p[i].rank.padEnd(profAttrs + 1, '+')
+        this.attribute.value = p[i].value
 
         if (this.attribute.name == 'END') {
           this.$emit('updateMaxHp', this.maxHp + p[i].extra)
@@ -265,10 +265,10 @@ export default {
           this.$emit('updateMaxSp', this.maxSp + p[i].extra)
         }
 
-        this.$emit(
-          'updateProficiencyPoints',
-          this.proficiencyPoints + profAttrs
-        )
+        // this.$emit(
+        //   'updateProficiencyPoints',
+        //   this.proficiencyPoints + profAttrs
+        // )
         this.$emit('updateStatusPoints', statusPoints)
       }
     },
@@ -290,19 +290,19 @@ export default {
         i -= 1
         statusPoints += 1
 
-        this.index = i
-        this.attribute.rank = p[i].rank
-        this.attribute.value = p[i].value
-
         let profAttrs = this.attribute.rank.split('+').length - 1
         if (profAttrs < 0) {
           profAttrs = 0
         }
 
-        this.$emit(
-          'updateProficiencyPoints',
-          this.proficiencyPoints + profAttrs
-        )
+        this.index = i
+        this.attribute.rank = p[i].rank.padEnd(profAttrs + 1, '+')
+        this.attribute.value = p[i].value
+
+        // this.$emit(
+        //   'updateProficiencyPoints',
+        //   this.proficiencyPoints + profAttrs
+        // )
         this.$emit('updateStatusPoints', statusPoints)
         return
       }

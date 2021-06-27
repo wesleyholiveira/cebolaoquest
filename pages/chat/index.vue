@@ -221,7 +221,6 @@ export default {
     this.username = username
     this.socket = this.$nuxtSocket({
       channel: '/index',
-      reconnection: false,
     })
 
     const engines = NumberGenerator.engines
