@@ -133,9 +133,8 @@ export default {
     },
     rules: {
       effect: [
-        (v) => !v || 'Efeito de NP inválido',
         (v) =>
-          v.filter((el) => !el.name).length < 1 ||
+          v.length > 0 && v.filter((el) => !el.name).length < 1 ||
           'Há pelo menos um efeito inválido',
         (v) =>
           v.length > 0 && instance.calculateValorsFromArray(v) <= instance.valorCap || 
