@@ -180,7 +180,7 @@ export default {
   mounted: function () {
     const index = this.baseParams
       .map((e) => e.rank)
-      .indexOf(this.attribute.rank.replace(/[\-\+]/, ''))
+      .indexOf(this.attribute.rank.replace(/[\-\+]/g, ''))
 
     this.parameters = { ...this.attribute }
     this.index = index > -1 ? index : 0
@@ -278,6 +278,7 @@ export default {
       let i = this.index
 
       let statusPoints = this.statusPoints
+      console.log(i)
       if (i > 0) {
         if (this.attribute.name == 'END') {
           this.$emit('updateMaxHp', this.maxHp - p[i].extra)
