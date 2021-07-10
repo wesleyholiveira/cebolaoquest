@@ -802,15 +802,15 @@ export default {
             `
           },
           {
-            name: 'Préludio',
+            name: 'Prelúdio',
             valors: 1,
-            effect: `Seu escudo é decorado com símbolos especiais ou feito com materiais raros que 
-            tem a capacidade de impedir que seu corpo seja afetado por toxinas, mesmo quando armas envenenadas 
-            ou maldições atingem seu corpo.<br /><br />
-            
-            <i>Enquanto você estiver equipado com esse escudo, você <strong>NÃO</strong> pode sofrer 
-            a condição negativa <strong>"Envenenado"</strong>. Você ainda <strong>recebe</strong> danos que possuem o 
-            elemento Veneno, mas nenhum dos seus efeitos de dano adicional</i>.
+            effect: `Seu escudo é confiável, facilmente utilizável ou simplesmente capaz de converter 
+            você em uma parede a ser atravessada.<br /><br />
+
+            Enquanto estiver equipado com esse <i>Noble Phantasm</i>, você pode, no lugar de realizar uma 
+            <i>Manobra Ofensiva</i>, executar um <i>Prelúdio</i>; isso fará com que toda a vez que 
+            rolar a <strong>Manobra Defensiva: <strong>Bloquear</strong></i> durante essa rodada, 
+            todos os resultados dos dados que rolar serão <strong>dobrados</strong>. 
             `
           },
         ].sort((a, b) => {
