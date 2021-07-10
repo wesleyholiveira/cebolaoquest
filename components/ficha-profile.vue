@@ -1,51 +1,53 @@
 <template>
-  <v-container>
-    <v-row justify="center">
-      <v-col cols="12" xs="12" sm="12" class="hidden-md-and-up">
-        <ficha-aside
-          :name="name"
-          :referenceItems="referenceImages"
-          :characterItems="characterItems"
-          :profileItems="profileItems"
-          :parametersItems="parametersItems"
-          :stratagemsItems="stratagemsItems"
-          :negativeTraitsItems="negativeTraitsItems"
-          :martialSkillsItems="martialSkillsItems"
-          :specialTechniquesItems="specialTechniquesItems"
-          :noblePhantasmsItems="noblePhantasmsItems"
-          :extraInfoItems="extraInfoItems"
-        />
-      </v-col>
-      <v-col cols="12" lg="8" md="8" sm="12">
-        <p v-if="abstract.length > 0">{{ abstract }}</p>
+  <client-only>
+    <v-container>
+      <v-row justify="center">
+        <v-col cols="12" xs="12" sm="12" class="hidden-md-and-up">
+          <ficha-aside
+            :name="name"
+            :referenceItems="referenceImages"
+            :characterItems="characterItems"
+            :profileItems="profileItems"
+            :parametersItems="parametersItems"
+            :stratagemsItems="stratagemsItems"
+            :negativeTraitsItems="negativeTraitsItems"
+            :martialSkillsItems="martialSkillsItems"
+            :specialTechniquesItems="specialTechniquesItems"
+            :noblePhantasmsItems="noblePhantasmsItems"
+            :extraInfoItems="extraInfoItems"
+          />
+        </v-col>
+        <v-col cols="12" lg="8" md="8" sm="12">
+          <p v-if="abstract.length > 0">{{ abstract }}</p>
 
-        <div class="table-content" v-if="stories && stories.length > 0">
-          <h3 class="header">TABELA DE CONTEÚDO</h3>
-          <ficha-table-content :stories="stories" :playerId="playerID" />
-        </div>
+          <div class="table-content" v-if="stories && stories.length > 0">
+            <h3 class="header">TABELA DE CONTEÚDO</h3>
+            <ficha-table-content :stories="stories" :playerId="playerID" />
+          </div>
 
-        <div class="content">
-          <ficha-content :stories="stories" :playerId="playerID" />
-        </div>
-      </v-col>
-      <v-col cols="12" lg="4" md="4" class="hidden-sm-and-down">
-        <ficha-aside
-          :name="name"
-          :referenceItems="referenceImages"
-          :characterItems="characterItems"
-          :profileItems="profileItems"
-          :parametersItems="parametersItems"
-          :stratagemsItems="stratagemsItems"
-          :negativeTraitsItems="negativeTraitsItems"
-          :martialSkillsItems="martialSkillsItems"
-          :specialTechniquesItems="specialTechniquesItems"
-          :secretOrigins="secretOrigins"
-          :noblePhantasmsItems="noblePhantasmsItems"
-          :extraInfoItems="extraInfoItems"
-        />
-      </v-col>
-    </v-row>
-  </v-container>
+          <div class="content">
+            <ficha-content :stories="stories" :playerId="playerID" />
+          </div>
+        </v-col>
+        <v-col cols="12" lg="4" md="4" class="hidden-sm-and-down">
+          <ficha-aside
+            :name="name"
+            :referenceItems="referenceImages"
+            :characterItems="characterItems"
+            :profileItems="profileItems"
+            :parametersItems="parametersItems"
+            :stratagemsItems="stratagemsItems"
+            :negativeTraitsItems="negativeTraitsItems"
+            :martialSkillsItems="martialSkillsItems"
+            :specialTechniquesItems="specialTechniquesItems"
+            :secretOrigins="secretOrigins"
+            :noblePhantasmsItems="noblePhantasmsItems"
+            :extraInfoItems="extraInfoItems"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+  </client-only>
 </template>
 
 <script>
@@ -228,16 +230,16 @@ export default {
           if (typeof origins !== 'object' || origins.length < 1) {
             return []
           }
-  
+
           return [
             {
               label: 'Origens Secretas:',
-              value:  origins.join(', ')
+              value: origins.join(', '),
             },
             {
               label: 'Categoria:',
-              value: typeof category !== 'string' ? null : category
-            }
+              value: typeof category !== 'string' ? null : category,
+            },
           ]
         }
       }
