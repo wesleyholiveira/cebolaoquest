@@ -809,7 +809,7 @@ export default {
 
             Enquanto estiver equipado com esse <i>Noble Phantasm</i>, você pode, no lugar de realizar uma 
             <i>Manobra Ofensiva</i>, executar um <i>Prelúdio</i>; isso fará com que toda a vez que 
-            rolar a <i><strong>Manobra Defensiva: <strong>Bloquear</strong></i> durante essa rodada, 
+            rolar a <i>Manobra Defensiva: <strong>Bloquear</strong></i> durante essa rodada, 
             todos os resultados dos dados que rolar serão <strong>dobrados</strong>. 
             `
           },
