@@ -31,7 +31,7 @@ module.exports = {
     getNameByUserId: async (id) => {
         const query = `
         SELECT
-            players.id, players.name
+            players.id, players.name, players.active
         FROM
             players
         JOIN
@@ -58,7 +58,7 @@ module.exports = {
     getName: async () => {
         const query = `
         SELECT
-            players.id, players.name
+            players.id, players.name, players.active
         FROM
             players
         JOIN
@@ -80,9 +80,68 @@ module.exports = {
         })
     },
 
+    getEssentialInfos: async (userId) => {
+        const query = `
+        SELECT
+            players.id, players.name, players.active, player_images.img
+        FROM
+            players
+        JOIN
+            user_roles
+        ON
+            user_roles.user_id = players.user_id
+        JOIN
+            roles
+        ON
+            user_roles.role_id = roles.id
+        JOIN
+            player_images
+        ON
+            players.id = player_images.player_id
+        WHERE
+            players.user_id = ?
+        AND
+            players.active = 1
+        ORDER BY id DESC LIMIT 1`;
+        return new Promise((resolve, reject) => {
+            db.query(query, [userId], (err, result) => {
+                
+
+                if (err) return reject(err)
+                return resolve(result)
+            })
+        })
+    },
+
     deleteById: async (id) => {
         console.log(`Removing (IF EXISTS) the player_id = ${id}`)
         const query = 'DELETE FROM players WHERE id = ?'
+        return new Promise((resolve, reject) => {
+            db.query(query, [id], (err, results) => {
+                
+
+                if (err) return reject(err)
+                return resolve(results)
+            })
+        })
+    },
+
+    resetAllActivePlayer: async(userId) => {
+        console.log(`Updating (IF EXISTS) all 'active' field to '0' with user_id = ${userId}`)
+        const query = `UPDATE players SET active = 0 WHERE user_id = ?`
+        return new Promise((resolve, reject) => {
+            db.query(query, [userId], (err, results) => {
+                
+
+                if (err) return reject(err)
+                return resolve(results)
+            })
+        })
+    },
+
+    activePlayer: async(id) => {
+        console.log(`Updating (IF EXISTS) 'active' field with player_id = ${id}`)
+        const query = `UPDATE players SET active = 1 WHERE player_id = ?`
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
                 

@@ -93,7 +93,7 @@ app.use(function (req, res, next) {
 
 app.get('/api/user', async (req, res) => {
   const token = req.headers['authorization'].split(' ')[1]
-  const { userId, username, isAdmin } = decode(token)
+  const { userId, username, isAdmin, active } = decode(token)
 
   return res.json({
     user: {
@@ -421,20 +421,25 @@ app.post('/api/login', async (req, res) => {
           userId: el.id,
           roleId: el.role_id
         }))[0]
+        const { userId, active } = result
+
+        const playerResult = await playerRepository.getEssentialInfos(userId)[0] || {}
 
         let isAdmin = false
         if (result.roleId && result.roleId == 2) {
           isAdmin = true
         }
 
-        const { userId } = result
-        const token = sign({
+        const ret = {
           userId,
           username,
-          isAdmin
-        }, SECRET, { expiresIn: '3h' })
+          isAdmin,
+          active,
+          ...playerResult
+        }
+        const token = sign(ret, SECRET, { expiresIn: '3h' })
 
-        return res.json({ userId, username, isAdmin, token })
+        return res.json({...ret, token})
       }
     }
     return res.status(401).json({ message: 'Usuário e/ou senha inválidos', statusMessage: 'error' })

@@ -53,8 +53,24 @@
                 </v-col>
                 <v-col cols="12" lg="4" md="6" sm="12">
                   <v-container>
-                    <v-row>
+                    <v-row justify="center" align-content="center">
                       <v-col>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                              v-on="on"
+                              v-bind="attrs"
+                              v-if="player.active == 0"
+                              depressed
+                              color="cyan darken-4"
+                              @click.stop="disabled = true"
+                            >
+                              <v-icon>mdi-panda</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>Definir como "Ficha Principal"</span>
+                        </v-tooltip>
+
                         <v-btn
                           v-if="loading"
                           :loading="loading"
@@ -182,7 +198,7 @@ export default {
     },
   },
 
-  fetchOnServer: false
+  fetchOnServer: false,
 }
 </script>
 

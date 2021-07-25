@@ -222,6 +222,9 @@ export default {
     this.socket = this.$nuxtSocket({
       channel: '/index',
     })
+    this.socketOverlay = this.$nuxtSocket({
+      channel: '/overlay',
+    })
 
     const engines = NumberGenerator.engines
     const generator = NumberGenerator.generator
@@ -237,6 +240,7 @@ export default {
     }
 
     this.socket.emit('whenUserEnter', username)
+    this.socketOverlay.emit('whenUserEnter', username)
 
     this.socket.on('data', (res) => {
       this.messages.push(res)
@@ -293,6 +297,10 @@ export default {
           this.typing = this.typing.filter((e) => e != res.username)
         }
       }
+    })
+
+    this.socket.on('disconnect', () => {
+      this.socketOverlay.emit('disconnect', 'aaaaaaaaaaaaa')
     })
 
     if (this.webgl) {
