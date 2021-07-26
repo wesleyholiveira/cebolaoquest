@@ -317,7 +317,7 @@ export default [
     <i>Você deve seguir as regras para uso de Feitiços normalmente</i>.<br /><br />
 
     <strong>Duração:</strong> 3 rodadas<br />
-    <strong>Recarga:</stronog> 3 rodadas`
+    <strong>Recarga:</strong> 3 rodadas`
   },
   {
     name: 'Conquistador',
