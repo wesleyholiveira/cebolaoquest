@@ -39,7 +39,7 @@
           </div>
           <footer class="overlay--bottom-infos">
             <div class="overlay--bottom-infos--username">
-              <span>{{ player.username }}</span>
+              <span>{{ player.name }}</span>
             </div>
             <div class="overlay--bottom-infos--bursts">
               <v-btn text v-for="(attr, i) in player.attributes" :key="i">

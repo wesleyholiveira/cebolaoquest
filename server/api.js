@@ -93,7 +93,7 @@ app.use(function (req, res, next) {
 
 app.get('/api/user', async (req, res) => {
   const token = req.headers['authorization'].split(' ')[1]
-  const { userId, username, isAdmin, is_active, img, max_hp, max_sp, hp, sp, attributes } = decode(token)
+  const { userId, username, isAdmin, is_active, img, name, max_hp, max_sp, hp, sp, attributes } = decode(token)
 
   return res.json({
     user: {
@@ -107,6 +107,7 @@ app.get('/api/user', async (req, res) => {
       max_sp,
       hp,
       sp,
+      name,
       attributes
     }
   })

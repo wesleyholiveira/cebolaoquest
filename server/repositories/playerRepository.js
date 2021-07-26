@@ -84,7 +84,7 @@ module.exports = {
     getEssentialInfos: async (userId) => {
         const query = `
         SELECT
-            players.id, players.is_active, player_images.img,
+            players.id, players.name, players.is_active, player_images.img,
             players.max_hp, players.hp, players.max_sp, players.sp,
             player_attributes.name as attr_name, player_attributes.rank as attr_rank,
             player_attributes.value as attr_value
