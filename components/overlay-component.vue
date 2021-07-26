@@ -44,7 +44,7 @@
             <div class="overlay--bottom-infos--bursts">
               <v-btn text v-for="(attr, i) in player.attributes" :key="i">
                 <v-icon>{{ attr.attrIcon }}</v-icon>
-                <span>{{ attributes.indexOf(attr.attrRank) }}</span>
+                <span>{{ attributes.indexOf(attr.attrRank.replace('+', '')) }}</span>
               </v-btn>
             </div>
           </footer>
