@@ -60,10 +60,13 @@
                             <v-btn
                               v-on="on"
                               v-bind="attrs"
-                              v-if="player.active == 0"
+                              v-show="player.is_active == 0"
                               depressed
                               color="cyan darken-4"
-                              @click.stop="disabled = true"
+                              @click.stop="
+                                disabled = true
+                                updatePlayerIsActive(player, i)
+                              "
                             >
                               <v-icon>mdi-panda</v-icon>
                             </v-btn>
@@ -175,6 +178,27 @@ export default {
 
         this.data[pID] = data.user
         this.loading = false
+      }
+    },
+
+    async updatePlayerIsActive(player, index) {
+      const playerId = parseInt(player.id)
+      const { id, token } = this.$auth.user
+
+      if (id && token) {
+        const url = `/api/player/${playerId}`
+        const newPlayer = this.players.map(player => ({
+          ...player,
+          is_active: 0
+        }))
+
+        await this.$axios.put(url, {player})
+        newPlayer[index] = {
+          ...player,
+          is_active: 1
+        }
+
+        this.players = newPlayer
       }
     },
 

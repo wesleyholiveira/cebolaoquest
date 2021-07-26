@@ -240,7 +240,7 @@ export default {
     }
 
     this.socket.emit('whenUserEnter', username)
-    this.socketOverlay.emit('whenUserEnter', username)
+    this.socketOverlay.emit('whenUserEnter', this.$auth.user)
 
     this.socket.on('data', (res) => {
       this.messages.push(res)
@@ -299,9 +299,9 @@ export default {
       }
     })
 
-    this.socket.on('disconnect', () => {
-      this.socketOverlay.emit('disconnect', 'aaaaaaaaaaaaa')
-    })
+    // this.socket.on('disconnect', () => {
+    //   this.socketOverlay.emit('disconnect', 'aaaaaaaaaaaaa')
+    // })
 
     if (this.webgl) {
       this.socket.on('visualRoll', (res) => {

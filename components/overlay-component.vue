@@ -1,15 +1,68 @@
 <template>
-  <overlay-component :players="prepareValues" />
+  <v-container class="overlay">
+    <v-row
+      class="overlay--container"
+      v-for="player in players"
+      :key="player.id"
+    >
+      <v-col class="overlay--col">
+        <section class="overlay--stats">
+          <div class="overlay--stats-group">
+            <figure class="overlay--stats-figure">
+              <img
+                :src="player.imgURL"
+                width="70"
+                height="70"
+                class="overlay--stats-img"
+              />
+            </figure>
+            <aside class="overlay--stats-aside">
+              <p class="headline" style="float: left; padding-left: 5px">HP:</p>
+              <span style="float: right; padding-right: 5px"
+                >{{ player.hp }} / {{ player.max_hp }}</span
+              >
+              <progress
+                :value="player.hp"
+                :max="player.max_hp"
+                class="overlay--bar overlay--hp-bar"
+              />
+              <p class="headline" style="float: left; padding-left: 5px">SP:</p>
+              <span style="float: right; padding-right: 5px"
+                >{{ player.sp }} / {{ player.max_sp }}</span
+              >
+              <progress
+                :value="player.sp"
+                :max="player.max_sp"
+                class="overlay--bar overlay--sp-bar"
+              />
+            </aside>
+          </div>
+          <footer class="overlay--bottom-infos">
+            <div class="overlay--bottom-infos--username">
+              <span>{{ player.username }}</span>
+            </div>
+            <div class="overlay--bottom-infos--bursts">
+              <v-btn text v-for="(attr, i) in player.attributes" :key="i">
+                <v-icon>{{ attr.attrIcon }}</v-icon>
+                <span>{{ attributes.indexOf(attr.attrRank) }}</span>
+              </v-btn>
+            </div>
+          </footer>
+        </section>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 export default {
-  layout: 'none',
-  auth: false,
+  props: {
+    players: Array,
+  },
 
   data() {
     return {
-      players: [],
+      attributes: ['D', 'C', 'B', 'A', 'S'],
     }
   },
 
@@ -24,21 +77,6 @@ export default {
         this.players.push(player)
       }
     })
-  },
-
-  computed: {
-    prepareValues() {
-      return this.players.map(player => {
-
-        if (!player.img) {
-          player.imgURL = 'https://i.imgur.com/wkP4s82.png'
-        } else {
-          player.imgURL = `${process.env.baseURL}/uploads/${player.img}`
-        }
-
-        return player
-      }).sort((a, b) => (a.username > b.username) ? 1 : -1)
-    }
   },
 }
 </script>
@@ -61,7 +99,6 @@ body {
   position: relative;
 }
 .overlay--container .overlay--col {
-  
 }
 .overlay--col .overlay--stats {
   width: 280px;
@@ -72,7 +109,6 @@ body {
   padding-bottom: 15px;
   padding-left: 30px;
   padding-right: 30px;
-  margin-bottom: 20px;
   border-radius: 7px;
   direction: ltr;
 }
@@ -102,9 +138,13 @@ body {
 .overlay--stats .overlay--bottom-infos {
   text-transform: uppercase;
 }
-.overlay--bottom-infos > .overlay--bottom--username {
+.overlay--bottom-infos > .overlay--bottom-infos--username {
+  margin-top: 20px;
+  margin-bottom: 20px;
   text-align: center;
   display: block;
+  background-color: #0c5d65;
+  padding: 8px;
 }
 .overlay--bar {
   height: 15px;

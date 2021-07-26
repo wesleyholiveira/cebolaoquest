@@ -93,14 +93,21 @@ app.use(function (req, res, next) {
 
 app.get('/api/user', async (req, res) => {
   const token = req.headers['authorization'].split(' ')[1]
-  const { userId, username, isAdmin, active } = decode(token)
+  const { userId, username, isAdmin, is_active, img, max_hp, max_sp, hp, sp, attributes } = decode(token)
 
   return res.json({
     user: {
       id: userId,
       username,
       token,
-      isAdmin
+      isAdmin,
+      is_active,
+      img,
+      max_hp,
+      max_sp,
+      hp,
+      sp,
+      attributes
     }
   })
 })
@@ -421,9 +428,9 @@ app.post('/api/login', async (req, res) => {
           userId: el.id,
           roleId: el.role_id
         }))[0]
-        const { userId, active } = result
 
-        const playerResult = await playerRepository.getEssentialInfos(userId)[0] || {}
+        const { userId } = result
+        const playerResult = await playerRepository.getEssentialInfos(userId)
 
         let isAdmin = false
         if (result.roleId && result.roleId == 2) {
@@ -434,12 +441,11 @@ app.post('/api/login', async (req, res) => {
           userId,
           username,
           isAdmin,
-          active,
           ...playerResult
         }
-        const token = sign(ret, SECRET, { expiresIn: '3h' })
 
-        return res.json({...ret, token})
+        const token = sign(ret, SECRET, { expiresIn: '3h' })
+        return res.json({ ...ret, token })
       }
     }
     return res.status(401).json({ message: 'Usuário e/ou senha inválidos', statusMessage: 'error' })
@@ -898,5 +904,38 @@ app.post('/api/upload/:playerId', async (req, res) => {
     }
   })
 })
+
+app.put('/api/player/:playerId', async (req, res) => {
+  const { player } = req.body
+
+  try {
+    if (player) {
+      await playerRepository.resetAllActivePlayer(player.user_id)
+      await playerRepository.activePlayer(player.id)
+
+      return res.status(202).json({
+        data: {
+          message: 'Dados do jogador atualizados com sucesso',
+          statusMessage: 'success'
+        }
+      })
+    }
+
+    return res.status(400).json({
+      data: {
+        message: 'Não foi possível atualizar os dados do jogador',
+        statusMessage: 'error'
+      }
+    })
+  } catch (err) {
+    return res.status(500).json({
+      data: {
+        message: err,
+        statusMessage: 'error'
+      }
+    })
+  }
+})
+
 
 export default app

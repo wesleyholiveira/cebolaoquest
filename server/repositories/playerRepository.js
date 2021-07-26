@@ -1,4 +1,5 @@
 const db = require('../config/mysql')
+const icons = require('../config/icons').default
 
 module.exports = {
     getById: async (id) => {
@@ -31,7 +32,7 @@ module.exports = {
     getNameByUserId: async (id) => {
         const query = `
         SELECT
-            players.id, players.name, players.active
+            players.id, players.name, players.is_active, players.user_id
         FROM
             players
         JOIN
@@ -58,7 +59,7 @@ module.exports = {
     getName: async () => {
         const query = `
         SELECT
-            players.id, players.name, players.active
+            players.id, players.name, players.is_active, players.user_id
         FROM
             players
         JOIN
@@ -83,7 +84,10 @@ module.exports = {
     getEssentialInfos: async (userId) => {
         const query = `
         SELECT
-            players.id, players.name, players.active, player_images.img
+            players.id, players.is_active, player_images.img,
+            players.max_hp, players.hp, players.max_sp, players.sp,
+            player_attributes.name as attr_name, player_attributes.rank as attr_rank,
+            player_attributes.value as attr_value
         FROM
             players
         JOIN
@@ -95,20 +99,36 @@ module.exports = {
         ON
             user_roles.role_id = roles.id
         JOIN
+            player_attributes
+        ON
+            players.id = player_attributes.player_id
+        LEFT JOIN
             player_images
         ON
             players.id = player_images.player_id
         WHERE
             players.user_id = ?
         AND
-            players.active = 1
-        ORDER BY id DESC LIMIT 1`;
+            players.is_active = 1
+        ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.query(query, [userId], (err, result) => {
-                
+                const firstResult = result[0]
+                const newResult = {
+                    ...firstResult,
+                    attributes: result.filter(r =>
+                        r.attr_name == 'MAN' ||
+                        r.attr_name == 'LUK' ||
+                        r.attr_name == 'AGI'
+                    ).map(r => ({
+                        attrIcon: icons[r.attr_name],
+                        attrRank: r.attr_rank,
+                        attrValue: r.attr_value
+                    }))
+                }
 
                 if (err) return reject(err)
-                return resolve(result)
+                return resolve(newResult)
             })
         })
     },
@@ -127,8 +147,8 @@ module.exports = {
     },
 
     resetAllActivePlayer: async(userId) => {
-        console.log(`Updating (IF EXISTS) all 'active' field to '0' with user_id = ${userId}`)
-        const query = `UPDATE players SET active = 0 WHERE user_id = ?`
+        console.log(`Updating (IF EXISTS) all 'is_active' field to '0' with user_id = ${userId}`)
+        const query = `UPDATE players SET is_active = 0 WHERE user_id = ?`
         return new Promise((resolve, reject) => {
             db.query(query, [userId], (err, results) => {
                 
@@ -140,8 +160,8 @@ module.exports = {
     },
 
     activePlayer: async(id) => {
-        console.log(`Updating (IF EXISTS) 'active' field with player_id = ${id}`)
-        const query = `UPDATE players SET active = 1 WHERE player_id = ?`
+        console.log(`Updating (IF EXISTS) 'is_active' field with player_id = ${id}`)
+        const query = `UPDATE players SET is_active = 1 WHERE id = ?`
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
                 
