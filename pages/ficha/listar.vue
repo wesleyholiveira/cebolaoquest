@@ -150,6 +150,12 @@ export default {
     panel: [],
   }),
 
+  mounted() {
+    this.socket = this.$nuxtSocket({
+      channel: '/overlay',
+    })
+  },
+
   async fetch() {
     const { id } = this.$auth.user
     const url = `/api/player/name/user/${id}`
@@ -187,18 +193,22 @@ export default {
 
       if (id && token) {
         const url = `/api/player/${playerId}`
-        const newPlayer = this.players.map(player => ({
+        const newPlayer = this.players.map((player) => ({
           ...player,
-          is_active: 0
+          is_active: 0,
         }))
 
-        await this.$axios.put(url, {player})
+        const { data } = await this.$axios.put(url, { player })
         newPlayer[index] = {
           ...player,
-          is_active: 1
+          is_active: 1,
         }
 
+        this.$auth.setUserToken(data.user.token)
         this.players = newPlayer
+        this.socket.emit('whenUserEnter', {
+          ...data.user,
+        })
       }
     },
 

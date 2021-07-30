@@ -812,9 +812,6 @@ app.post('/api/player', async (req, res) => {
     const ret = { ...user, ...essentialInfos }
     const newToken = sign(ret, SECRET, { expiresIn: '3h' })
 
-    console.log('TOKEN ATUAL: ', realToken)
-    console.log('NEW TOKEN', newToken)
-
     // tokenBlacklist.push(token)
     return res.json({
       statusMessage: 'success',
@@ -826,8 +823,8 @@ app.post('/api/player', async (req, res) => {
       }
     })
 
-  }).catch(error => {
-    console.log(error)
+  }).catch(err => {
+    console.log(err)
     return res.status(500).json({
       statusMessage: 'error',
       data: `Ocorreu um problema ao tentar cadastrar uma nova ficha: ${error}`
@@ -906,7 +903,7 @@ app.post('/api/upload/:playerId', async (req, res) => {
       return res.json({
         data: {
           message: 'Upload de imagens efetuado com sucesso',
-          statusMessage: 'success'
+          statusMessage: 'success',
         }
       })
     } catch (err) {
@@ -929,33 +926,44 @@ app.post('/api/upload/:playerId', async (req, res) => {
 })
 
 app.put('/api/player/:playerId', async (req, res) => {
+  const { SECRET } = process.env
   const { player } = req.body
 
   try {
     if (player) {
+      const token = req.headers['authorization']
       await playerRepository.resetAllActivePlayer(player.user_id)
       await playerRepository.activePlayer(player.id)
 
+      const essentialInfos = await playerRepository.getEssentialInfos(player.user_id)
+      const realToken = token.split(' ')[1]
+      const user = decode(realToken)
+      delete user['iat']
+      delete user['exp']
+
+      const ret = { ...user, ...essentialInfos }
+      const newToken = sign(ret, SECRET, { expiresIn: '3h' })
+
+      tokenBlacklist.push(token)
       return res.status(202).json({
-        data: {
-          message: 'Dados do jogador atualizados com sucesso',
-          statusMessage: 'success'
+        message: 'Dados do jogador atualizados com sucesso',
+        statusMessage: 'success',
+        user: {
+          ...ret,
+          token: newToken
         }
       })
     }
 
     return res.status(400).json({
-      data: {
-        message: 'Não foi possível atualizar os dados do jogador',
-        statusMessage: 'error'
-      }
+      message: 'Não foi possível atualizar os dados do jogador',
+      statusMessage: 'error'
     })
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
-      data: {
-        message: err,
-        statusMessage: 'error'
-      }
+      message: 'Ocorreu um erro ao atualizar as informações do jogador',
+      statusMessage: 'error'
     })
   }
 })

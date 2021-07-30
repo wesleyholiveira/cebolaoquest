@@ -91,6 +91,7 @@ body {
 .overlay .overlay--container {
   font-family: 'Roboto', sans-serif;
   font-size: 0.95rem;
+  margin-bottom: 5px;
   position: relative;
 }
 .overlay--container .overlay--col {

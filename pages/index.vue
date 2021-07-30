@@ -39,6 +39,13 @@ export default {
   auth: true,
   data: () => ({
     items: [
+      'Adicionado novo componente e página para exibir informações do jogador no OBS (overlay)',
+      'Renomeado campo "active" na tabela de players para "is_active"',
+      'Adicionado foto padrão para quando uma foto não for identificada (overlay)',
+      'Corrigido bug no cadastro que possuía um campo errado no modelo de User (core)',
+      'Adicionado funcionalidade de definir ficha primária (ficha/listar)',
+      'Adicionado atualização de informações real time via socket.io no overlay (overlay)',
+      'Arrumado fechamento de tag na estratágema de "Soberano das Varinhas"',
       'Adicionado um NP padrão como visivel para facilitar identificação de onde está o módulo de NP',
       'Adicionado feature para conseguir subir/descer o atributo sem perder a "proficiência"',
       'Removido flag que previne reconexões no socket.io',
