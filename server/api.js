@@ -355,11 +355,14 @@ app.post('/api/register', async (req, res) => {
     })
 
     return res.json({
-      message: 'Usuário criado com sucesso'
+      message: 'Usuário criado com sucesso',
+      statusMessage: 'success'
     })
   } catch (err) {
+    console.log(err)
     return res.status(400).json({
-      message: err
+      message: err,
+      statusMessage: 'error'
     })
   }
 })

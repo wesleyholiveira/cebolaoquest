@@ -1,6 +1,6 @@
 module.exports = (user) => ({
     id: user.id,
-    username: username,
+    username: user.username,
     email: user.email,
     password: user.password
 })
