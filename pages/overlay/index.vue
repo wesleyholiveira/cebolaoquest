@@ -1,7 +1,7 @@
 <template>
   <div>
-    <overlay-component :players="prepareValues.slice(0, 3)" left />
-    <overlay-component :players="prepareValues.slice(3, prepareValues.length)" right />
+    <overlay-component :players="prepareValues.slice(0, 4)" left />
+    <overlay-component :players="prepareValues.slice(4, prepareValues.length)" right />
   </div>
 </template>
 
