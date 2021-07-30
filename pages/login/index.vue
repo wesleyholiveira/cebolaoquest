@@ -246,6 +246,7 @@ export default {
           },
         })
 
+        this.$auth.setUser(response.data)
         this.$refs.formLogin.reset()
       } catch (err) {
         console.log(err)

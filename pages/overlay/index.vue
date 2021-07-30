@@ -1,5 +1,8 @@
 <template>
-  <overlay-component :players="prepareValues" />
+  <div>
+    <overlay-component :players="prepareValues.slice(0, 3)" left />
+    <overlay-component :players="prepareValues.slice(3, prepareValues.length)" right />
+  </div>
 </template>
 
 <script>
@@ -19,9 +22,10 @@ export default {
     })
 
     this.socket.on('data', (player) => {
-      const { id } = player
-      if (this.players.filter((player) => player.id == id).length < 1) {
-        this.players.push(player)
+      const p = this.players.filter(preiyar => preiyar.name != player.name)
+      if (p.length >= 0) {
+        p.push(player)
+        this.players = p
       }
     })
   },
@@ -48,91 +52,6 @@ html,
 body {
   overflow: hidden;
   background: transparent;
-}
-</style>
-
-<style scoped>
-.overlay {
-  direction: rtl;
-}
-.overlay .overlay--container {
   font-family: 'Roboto', sans-serif;
-  font-size: 0.95rem;
-  position: relative;
-}
-.overlay--container .overlay--col {
-  
-}
-.overlay--col .overlay--stats {
-  width: 280px;
-  color: #fff;
-  border: 5px solid #f8df00;
-  background-color: #15a7b4;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-bottom: 20px;
-  border-radius: 7px;
-  direction: ltr;
-}
-.overlay--stats .overlay--stats-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-.overlay--stats-group .overlay--stats-figure {
-  width: 80px;
-  height: 80px;
-  margin-right: 20px;
-  border: 5px solid #f8df00;
-  border-radius: 50px;
-}
-.overlay--stats-figure .overlay--stats-img {
-  border-radius: 50px;
-  border: 3px solid #07eaff;
-  width: 70px;
-  height: 70px;
-}
-.overlay--stats-aside {
-  top: -5px;
-  position: relative;
-}
-.overlay--stats .overlay--bottom-infos {
-  text-transform: uppercase;
-}
-.overlay--bottom-infos > .overlay--bottom--username {
-  text-align: center;
-  display: block;
-}
-.overlay--bar {
-  height: 15px;
-  appearance: none;
-  -webkit-appearance: none;
-}
-.overlay--bar.overlay--hp-bar::-webkit-progress-bar {
-  background-color: #e2e2e2;
-  border-radius: 10px;
-}
-.overlay--bar.overlay--hp-bar::-webkit-progress-value {
-  background-color: #209f5a;
-  /* box-shadow: 0px -2px 0px #076833; */
-  border-radius: 10px;
-}
-.overlay--bar.overlay--sp-bar::-webkit-progress-bar {
-  background-color: #e2e2e2;
-  /* box-shadow: 1px 0px 5px #999; */
-  border-radius: 10px;
-}
-.overlay--bar.overlay--sp-bar::-webkit-progress-value {
-  background-color: #204c9f;
-  /* box-shadow: 0px -2px 0px #0a2c6b; */
-  border-radius: 10px;
-}
-.headline {
-  font-size: 14px;
-  text-shadow: 1px 1px 1px #000;
-  font-weight: bold;
 }
 </style>

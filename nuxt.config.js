@@ -141,6 +141,7 @@ export default {
           required: true,
           type: 'Bearer'
         },
+        user: false,
         endpoints: {
           user: { url: '/api/user' },
           login: { url: '/api/login', method: 'post' },

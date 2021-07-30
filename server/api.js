@@ -73,8 +73,8 @@ app.use(function (req, res, next) {
     }
 
     try {
-      token = token.split(' ')[1]
-      const jwtDecoded = verify(token, process.env.SECRET)
+      const t = token.split(' ')[1]
+      const jwtDecoded = verify(t, process.env.SECRET)
       console.log(req.path, jwtDecoded)
     } catch (err) {
       console.log(err)
@@ -96,20 +96,18 @@ app.get('/api/user', async (req, res) => {
   const { userId, username, isAdmin, is_active, img, name, max_hp, max_sp, hp, sp, attributes } = decode(token)
 
   return res.json({
-    user: {
-      id: userId,
-      username,
-      token,
-      isAdmin,
-      is_active,
-      img,
-      max_hp,
-      max_sp,
-      hp,
-      sp,
-      name,
-      attributes
-    }
+    id: userId,
+    username,
+    token,
+    isAdmin,
+    is_active,
+    img,
+    max_hp,
+    max_sp,
+    hp,
+    sp,
+    name,
+    attributes
   })
 })
 
@@ -375,8 +373,8 @@ app.post('/api/logout', async (req, res) => {
   }
 
   try {
-    token = token.split(' ')[1]
-    const jwtDecoded = verify(token, process.env.SECRET)
+    const t = token.split(' ')[1]
+    const jwtDecoded = verify(t, process.env.SECRET)
     if (jwtDecoded) {
       tokenBlacklist.push(token)
       return res.json({
@@ -593,6 +591,7 @@ app.get('/api/player/:id', async (req, res) => {
 })
 
 app.post('/api/player', async (req, res) => {
+  const { SECRET } = process.env
   const {
     id,
     name,
@@ -621,6 +620,7 @@ app.post('/api/player', async (req, res) => {
     secretOrigins
   } = req.body
 
+  const token = req.headers['authorization']
   const playerRepo = playerRepository
   const player = playerModel({
     id,
@@ -800,10 +800,27 @@ app.post('/api/player', async (req, res) => {
       }
     })
 
+    const essentialInfos = await playerRepository.getEssentialInfos(userId)
+    const realToken = token.split(' ')[1]
+    const user = decode(realToken)
+    delete user['iat']
+    delete user['exp']
+
+    const ret = { ...user, ...essentialInfos }
+    const newToken = sign(ret, SECRET, { expiresIn: '3h' })
+
+    console.log('TOKEN ATUAL: ', realToken)
+    console.log('NEW TOKEN', newToken)
+
+    // tokenBlacklist.push(token)
     return res.json({
       statusMessage: 'success',
       data: 'Uma nova ficha foi cadastrada com sucesso',
-      playerId
+      playerId,
+      user: {
+        ...ret,
+        token: newToken
+      }
     })
 
   }).catch(error => {
@@ -817,6 +834,7 @@ app.post('/api/player', async (req, res) => {
 
 app.post('/api/upload/:playerId', async (req, res) => {
   let playerId = null
+  const token = req.headers['authorization']
   const form = new IncomingForm({ multiples: true })
   const imageRepo = imageRepository
 
@@ -881,6 +899,7 @@ app.post('/api/upload/:playerId', async (req, res) => {
       const imgModels = await uploadPromise()
       await imageRepo.insertAll(imgModels)
 
+      tokenBlacklist.push(token)
       return res.json({
         data: {
           message: 'Upload de imagens efetuado com sucesso',

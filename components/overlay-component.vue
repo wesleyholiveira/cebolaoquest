@@ -1,9 +1,9 @@
 <template>
-  <v-container class="overlay">
+  <v-container :class="{'overlay right': right, 'overlay left': left}">
     <v-row
       class="overlay--container"
-      v-for="player in players"
-      :key="player.id"
+      v-for="(player, i) in players"
+      :key="i"
     >
       <v-col class="overlay--col">
         <section class="overlay--stats">
@@ -58,26 +58,15 @@
 export default {
   props: {
     players: Array,
+    left: Boolean,
+    right: Boolean
   },
 
   data() {
     return {
       attributes: ['D', 'C', 'B', 'A', 'S'],
     }
-  },
-
-  mounted() {
-    this.socket = this.$nuxtSocket({
-      channel: '/overlay',
-    })
-
-    this.socket.on('data', (player) => {
-      const { id } = player
-      if (this.players.filter((player) => player.id == id).length < 1) {
-        this.players.push(player)
-      }
-    })
-  },
+  }
 }
 </script>
 
@@ -91,7 +80,13 @@ body {
 
 <style scoped>
 .overlay {
-  direction: rtl;
+  width: 305px;
+}
+.overlay.left {
+  float: left;
+}
+.overlay.right {
+  float: right;
 }
 .overlay .overlay--container {
   font-family: 'Roboto', sans-serif;
@@ -110,7 +105,6 @@ body {
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 7px;
-  direction: ltr;
 }
 .overlay--stats .overlay--stats-group {
   display: flex;

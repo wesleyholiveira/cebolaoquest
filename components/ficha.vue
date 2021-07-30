@@ -650,6 +650,9 @@ export default {
 
   mounted() {
     this.body = document.body.getBoundingClientRect()
+    this.socket = this.$nuxtSocket({
+      channel: '/overlay'
+    })
   },
 
   computed: {
@@ -1111,6 +1114,11 @@ export default {
                 status: data.statusMessage,
                 text: data.data,
               }
+
+              this.$auth.setUserToken(data.user.token)
+              this.socket.emit('whenUserEnter', {
+                ...data.user
+              })
             }
           }
 

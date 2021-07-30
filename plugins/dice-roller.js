@@ -167,7 +167,6 @@ class DiceRoller {
   resetRoll() {
     while(this.animationID){
       cancelAnimationFrame(this.animationID);
-      cancelAnimationFrame(this.animationID - 1);
       this.animationID--;
     }
 
