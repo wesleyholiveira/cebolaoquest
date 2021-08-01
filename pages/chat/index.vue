@@ -189,7 +189,7 @@
                               icon
                               v-on="on"
                               v-bind="attrs"
-                              @click="reduceBurst(attribute.attrRank, i)"
+                              @click="reduceBurst(attribute, attribute.attrRank, i)"
                             >
                               <v-icon>{{attribute.attrIcon}}</v-icon>
                             </v-btn>
@@ -211,7 +211,6 @@
 
 <script>
 import { NumberGenerator } from 'rpg-dice-roller'
-import attribute from '~/server/models/attribute'
 let timeout
 export default {
   data() {
@@ -474,11 +473,12 @@ export default {
       }
     },
 
-    reduceBurst(rank, index) {
+    reduceBurst(attribute, rank, index) {
       const { username, attributes } = this.$auth.user
       const { attrLabel } = attributes[index]
 
       const attrIndexArray = this.attributesArray.indexOf(rank.replace(/\+/g, ''))
+      console.log(attribute)
       if (attrIndexArray > 0) {
         const attrRank = this.attributesArray[attrIndexArray - 1]
         const newUser = {
@@ -492,12 +492,12 @@ export default {
           }
         }
     
-        // this.$auth.setUser(newUser)
+        this.$auth.setUser(newUser)
+        this.socketOverlay.emit('whenUserEnter', newUser)
         this.socket.emit('useBurst', {
           username,
           burst: attrLabel
         })
-        this.socketOverlay.emit('whenUserEnter', newUser)
       }
       this.burstDialog = false
     }
