@@ -1,5 +1,5 @@
 const db = require('../config/mysql')
-const icons = require('../config/icons').default
+const bursts = require('../config/bursts').default
 
 module.exports = {
     getById: async (id) => {
@@ -21,7 +21,7 @@ module.exports = {
             ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
-                
+
 
                 if (err) return reject(err)
                 return resolve(result)
@@ -48,7 +48,7 @@ module.exports = {
         ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
-                
+
 
                 if (err) return reject(err)
                 return resolve(result)
@@ -73,7 +73,7 @@ module.exports = {
         ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.query(query, (err, result) => {
-                
+
 
                 if (err) return reject(err)
                 return resolve(result)
@@ -117,14 +117,20 @@ module.exports = {
                 const newResult = {
                     ...firstResult,
                     attributes: result.filter(r =>
-                        r.attr_name == 'MAN' ||
+                        r.attr_name == 'NP' ||
                         r.attr_name == 'LUK' ||
                         r.attr_name == 'AGI'
-                    ).map(r => ({
-                        attrIcon: icons[r.attr_name],
-                        attrRank: r.attr_rank,
-                        attrValue: r.attr_value
-                    }))
+                    ).slice(0, 3).map(r => {
+                        const burst = bursts[r.attr_name]
+                        if (burst && burst.icon) {
+                            return {
+                                attrIcon: burst.icon,
+                                attrRank: r.attr_rank,
+                                attrValue: r.attr_value,
+                                attrLabel: burst.label
+                            }
+                        }
+                    }).filter(r => r != null)
                 }
 
                 if (err) return reject(err)
@@ -138,7 +144,7 @@ module.exports = {
         const query = 'DELETE FROM players WHERE id = ?'
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
-                
+
 
                 if (err) return reject(err)
                 return resolve(results)
@@ -146,12 +152,12 @@ module.exports = {
         })
     },
 
-    resetAllActivePlayer: async(userId) => {
+    resetAllActivePlayer: async (userId) => {
         console.log(`Updating (IF EXISTS) all 'is_active' field to '0' with user_id = ${userId}`)
         const query = `UPDATE players SET is_active = 0 WHERE user_id = ?`
         return new Promise((resolve, reject) => {
             db.query(query, [userId], (err, results) => {
-                
+
 
                 if (err) return reject(err)
                 return resolve(results)
@@ -159,12 +165,12 @@ module.exports = {
         })
     },
 
-    activePlayer: async(id) => {
+    activePlayer: async (id) => {
         console.log(`Updating (IF EXISTS) 'is_active' field with player_id = ${id}`)
         const query = `UPDATE players SET is_active = 1 WHERE id = ?`
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
-                
+
 
                 if (err) return reject(err)
                 return resolve(results)
@@ -192,7 +198,7 @@ module.exports = {
             LIMIT 1`;
         return new Promise((resolve, reject) => {
             db.query(query, [playerId], (err, results) => {
-                
+
 
                 if (err) return reject(err)
                 return resolve(results)
@@ -223,7 +229,7 @@ module.exports = {
             LIMIT 1`;
         return new Promise((resolve, reject) => {
             db.query(query, [playerId, userId], (err, results) => {
-                
+
 
                 if (err) return reject(err)
                 return resolve(results)
@@ -364,7 +370,7 @@ module.exports = {
                 playerModel.maxHp,
                 playerModel.maxSp
             ], (err, result) => {
-                
+
                 if (err) return reject(err)
 
                 console.log('A new player was inserted successfully')

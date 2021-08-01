@@ -1116,9 +1116,7 @@ export default {
               }
 
               this.$auth.setUserToken(data.user.token)
-              this.socket.emit('whenUserEnter', {
-                ...data.user
-              })
+              this.socket.emit('whenUserEnter', data.user)
             }
           }
 

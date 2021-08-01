@@ -21,8 +21,7 @@
                     visibleRoller = false
                     backupDices = null
                   "
-                  >Voltar ao chat!</v-btn
-                >
+                  >Voltar ao chat!</v-btn>
               </v-col>
             </v-row>
             <v-row v-if="nextRoll">
@@ -164,6 +163,40 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
+                <div v-if="attributes.length > 0">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        icon
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="burstDialog = true"
+                      >
+                        <v-icon>mdi-sword-cross</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Usar Burst</span>
+                  </v-tooltip>
+                  <div class="chat--buttons">
+                    <v-dialog v-model="burstDialog" max-width="150">
+                      <v-card class="chat--buttons--card" style="display: flex;justify-content: center;align-items: center">
+                        <v-tooltip bottom v-for="(attribute, i) in attributes" :key="i">
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                              icon
+                              v-on="on"
+                              v-bind="attrs"
+                              @click="reduceBurst(attribute.attrRank, i)"
+                            >
+                              <v-icon>{{attribute.attrIcon}}</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>{{attribute.attrLabel}}</span>
+                        </v-tooltip>
+                      </v-card>
+                    </v-dialog>
+                  </div>
+                </div>
               </div>
             </v-form>
           </div>
@@ -175,6 +208,7 @@
 
 <script>
 import { NumberGenerator } from 'rpg-dice-roller'
+import attribute from '~/server/models/attribute'
 let timeout
 export default {
   data() {
@@ -190,6 +224,8 @@ export default {
       nextRoll: null,
       diceRoller: null,
       dialog: false,
+      burstDialog: false,
+      attributesArray: ['D', 'C', 'B', 'A', 'S'],
       dices: {
         d6: [],
         d8: [],
@@ -214,6 +250,10 @@ export default {
         }
       }
     },
+
+    attributes() {
+      return this.$auth.user.attributes
+    }
   },
 
   mounted() {
@@ -264,21 +304,21 @@ export default {
                   d20: [],
                 },
               }
-  
+
               Object.keys(bDices).forEach((k) => {
                 bDices[k].forEach((d) =>
                   this.nextRoll.dices[k].push(this.generateRNG(1, 6))
                 )
               })
             }
-  
+
             const dicesThrower = Object.keys(dices).flatMap((k) =>
               dices[k].flatMap((value) => ({
                 value,
                 type: k,
               }))
             )
-  
+
             this.diceRoller.randomDiceThrow(dicesThrower)
             this.visibleRoller = true
             this.socket.emit('visualRoll', this.backupDices)
@@ -367,14 +407,14 @@ export default {
       if (dices) {
         for (const k of Object.keys(dices)) {
           const values = dices[k]
-  
+
           if (values.length > 0) {
             msg = `${msg}<strong>${
               values.length
             }x${k.toUpperCase()}</strong> (${values}), `
           }
         }
-  
+
         return msg.substring(0, msg.lastIndexOf(','))
       }
 
@@ -430,6 +470,28 @@ export default {
         }
       }
     },
+
+    reduceBurst(rank, index) {
+      const { attributes } = this.$auth.user
+
+      const attrIndexArray = this.attributesArray.indexOf(rank)
+      if (attrIndexArray > 0) {
+        const newUser = {
+          ...this.$auth.user,
+          attributes: {
+            ...attributes,
+            [index]: {
+              ...attributes[index],
+              attrRank: this.attributesArray[attrIndexArray - 1]
+            }
+          }
+        }
+    
+        // this.$auth.setUser(newUser)
+        this.socketOverlay.emit('whenUserEnter', newUser)
+      }
+      this.burstDialog = false
+    }
   },
 }
 </script>
