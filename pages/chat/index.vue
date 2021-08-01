@@ -166,7 +166,7 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-                <div v-if="attributes.length > 0">
+                <div v-show="updatedAttributes.filter(attr => attr.attrRank != 'D').length > 0">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -183,13 +183,13 @@
                   <div class="chat--buttons">
                     <v-dialog v-model="burstDialog" max-width="150">
                       <v-card class="chat--buttons--card" style="display: flex;justify-content: center;align-items: center">
-                        <v-tooltip bottom v-for="(attribute, i) in attributes" :key="i">
+                        <v-tooltip bottom v-for="(attribute, i) in updatedAttributes" :key="i">
                           <template v-slot:activator="{ on, attrs }">
                             <v-btn
                               icon
                               v-on="on"
                               v-bind="attrs"
-                              @click="reduceBurst(attribute, attribute.attrRank, i)"
+                              @click="reduceBurst(attribute.attrRank, i)"
                             >
                               <v-icon>{{attribute.attrIcon}}</v-icon>
                             </v-btn>
@@ -211,6 +211,7 @@
 
 <script>
 import { NumberGenerator } from 'rpg-dice-roller'
+import attribute from '~/server/models/attribute'
 let timeout
 export default {
   data() {
@@ -228,6 +229,7 @@ export default {
       dialog: false,
       burstDialog: false,
       attributesArray: ['D', 'C', 'B', 'A', 'S'],
+      updatedAttributes: [],
       dices: {
         d6: [],
         d8: [],
@@ -267,6 +269,10 @@ export default {
     this.socketOverlay = this.$nuxtSocket({
       channel: '/overlay',
     })
+
+    if (this.updatedAttributes.length < 1) {
+      this.updatedAttributes = this.attributes
+    }
 
     const engines = NumberGenerator.engines
     const generator = NumberGenerator.generator
@@ -473,26 +479,34 @@ export default {
       }
     },
 
-    reduceBurst(attribute, rank, index) {
-      const { username, attributes } = this.$auth.user
+    reduceBurst(rank, index) {
+      const { username } = this.$auth.user
+      const attributes = this.updatedAttributes
       const { attrLabel } = attributes[index]
 
       const attrIndexArray = this.attributesArray.indexOf(rank.replace(/\+/g, ''))
-      console.log(attribute)
       if (attrIndexArray > 0) {
         const attrRank = this.attributesArray[attrIndexArray - 1]
-        const newUser = {
-          ...this.$auth.user,
-          attributes: {
-            ...attributes,
-            [index]: {
-              ...attributes[index],
+        const newAttributes = attributes.map((attr, i) => {
+          let result = {
+            ...attr
+          }
+          if (i == index) {
+            result = {
+              ...result,
               attrRank
             }
           }
+
+          return result
+        })
+        const newUser = {
+          ...this.$auth.user,
+          attributes: newAttributes
         }
     
-        this.$auth.setUser(newUser)
+        this.updatedAttributes = newUser.attributes
+        this.$auth.setUserToken(newUser.token)
         this.socketOverlay.emit('whenUserEnter', newUser)
         this.socket.emit('useBurst', {
           username,

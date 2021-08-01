@@ -1115,9 +1115,7 @@ export default {
                 text: data.data,
               }
 
-              console.log('NEW USER FICHA', data.user)
-
-              this.$auth.setUser(data.user)
+              this.$auth.setUserToken(data.user.token)
               this.socket.emit('whenUserEnter', data.user)
             }
           }

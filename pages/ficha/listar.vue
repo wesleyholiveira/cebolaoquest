@@ -204,11 +204,11 @@ export default {
           is_active: 1,
         }
 
-        this.$auth.setUser(data.user)
+        this.$auth.setUserToken(data.user.token)
         this.players = newPlayer
         this.socket.emit('whenUserEnter', {
           ...data.user,
-          attributes: data.user
+          attributes: data.user.attributes
         })
       }
     },
