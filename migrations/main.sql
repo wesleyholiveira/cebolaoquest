@@ -172,8 +172,8 @@ UPDATE players SET max_hp = 90, max_sp = 90 WHERE id > 0;
 
 ALTER TABLE player_special_techniques ADD rarity CHAR(20) NOT NULL;
 DROP TABLE player_noble_phantasm_special_strikes;
-UPDATE players SET hp = 90 where hp >= 100;
-UPDATE players SET sp = 90 where sp >= 100;
+UPDATE players SET hp = 90 where hp >= 100 and id > 0;
+UPDATE players SET sp = 90 where sp >= 100 and id > 0;
 
 CREATE TABLE IF NOT EXISTS player_secret_origins (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -198,5 +198,3 @@ MODIFY COLUMN
     'Saber',
     'Shielder'
 );
-
-ALTER TABLE players RENAME COLUMN active TO is_active;

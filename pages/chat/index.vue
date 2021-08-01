@@ -38,6 +38,9 @@
             <pre v-if="msg.type && msg.type == 'system'" class="chat--pre">
               <strong>{{msg.username}}</strong> entrou na sessão.
             </pre>
+            <pre v-if="msg.type && msg.type == 'burst'" class="chat--pre">
+              <strong>{{msg.username}}</strong> usou {{msg.burst}}.
+            </pre>
             <span
               v-if="msg.type && msg.type == 'roll'"
               class="chat--roll"
@@ -472,22 +475,28 @@ export default {
     },
 
     reduceBurst(rank, index) {
-      const { attributes } = this.$auth.user
+      const { username, attributes } = this.$auth.user
+      const { attrLabel } = attributes[index]
 
       const attrIndexArray = this.attributesArray.indexOf(rank.replace(/\+/g, ''))
       if (attrIndexArray > 0) {
+        const attrRank = this.attributesArray[attrIndexArray - 1]
         const newUser = {
           ...this.$auth.user,
           attributes: {
             ...attributes,
             [index]: {
               ...attributes[index],
-              attrRank: this.attributesArray[attrIndexArray - 1]
+              attrRank
             }
           }
         }
     
         // this.$auth.setUser(newUser)
+        this.socket.emit('useBurst', {
+          username,
+          burst: attrLabel
+        })
         this.socketOverlay.emit('whenUserEnter', newUser)
       }
       this.burstDialog = false

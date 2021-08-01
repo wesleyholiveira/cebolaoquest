@@ -204,7 +204,7 @@ export default {
           is_active: 1,
         }
 
-        this.$auth.setUserToken(data.user.token)
+        this.$auth.setUser(data.user)
         this.players = newPlayer
         this.socket.emit('whenUserEnter', {
           ...data.user,

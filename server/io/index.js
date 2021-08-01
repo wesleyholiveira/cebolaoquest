@@ -8,6 +8,14 @@ export default function (socket, io) {
       })
     },
 
+    useBurst({username, burst}) {
+      io.of('index').emit('data', {
+        username,
+        burst,
+        type: 'burst'
+      })
+    },
+
     send({ username, message }) {
       io.of('index').emit('data', {
         username,

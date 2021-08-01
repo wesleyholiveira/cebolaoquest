@@ -681,7 +681,7 @@ app.post('/api/player', async (req, res) => {
       const attributeModels = map(attributes, createModel(attributeModel))
 
       if (attributeModels.length > 0) {
-        attributeRepo.insertAll(attributeModels)
+        await attributeRepo.insertAll(attributeModels)
       }
     }
 
@@ -796,7 +796,6 @@ app.post('/api/player', async (req, res) => {
       categoriesLength = categoryModels.length
     }
 
-
     categoriesRepo.deleteAllByPlayerId(playerId).then(() => {
       if (categoriesLength > 0) {
         return categoriesRepo.insertAll(categoryModels)
@@ -812,7 +811,6 @@ app.post('/api/player', async (req, res) => {
     const ret = { ...user, ...essentialInfos }
     const newToken = sign(ret, SECRET, { expiresIn: '3h' })
 
-    // tokenBlacklist.push(token)
     return res.json({
       statusMessage: 'success',
       data: 'Uma nova ficha foi cadastrada com sucesso',

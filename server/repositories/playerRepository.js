@@ -114,12 +114,13 @@ module.exports = {
         return new Promise((resolve, reject) => {
             db.query(query, [userId], (err, result) => {
                 const firstResult = result[0]
+
                 const newResult = {
                     ...firstResult,
                     attributes: result.filter(r =>
-                        r.attr_name == 'NP' ||
+                        r.attr_name == 'AGI' ||
                         r.attr_name == 'LUK' ||
-                        r.attr_name == 'AGI'
+                        r.attr_name == 'NP'
                     ).slice(0, 3).map(r => {
                         const burst = bursts[r.attr_name]
                         if (burst && burst.icon) {
