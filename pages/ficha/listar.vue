@@ -208,7 +208,7 @@ export default {
         this.players = newPlayer
         this.socket.emit('whenUserEnter', {
           ...data.user,
-          attributes: data.user.filter(attr => attr != null)
+          attributes: data.user
         })
       }
     },
