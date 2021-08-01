@@ -474,7 +474,7 @@ export default {
     reduceBurst(rank, index) {
       const { attributes } = this.$auth.user
 
-      const attrIndexArray = this.attributesArray.indexOf(rank)
+      const attrIndexArray = this.attributesArray.indexOf(rank.replace(/\+/g, ''))
       if (attrIndexArray > 0) {
         const newUser = {
           ...this.$auth.user,
