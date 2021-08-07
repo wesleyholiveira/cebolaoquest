@@ -196,5 +196,6 @@ MODIFY COLUMN
     'Lancer',
     'Avenger',
     'Saber',
-    'Shielder'
+    'Shielder',
+    'Rider'
 );

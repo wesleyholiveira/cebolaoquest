@@ -748,6 +748,7 @@ export default {
       'Avenger',
       'Saber',
       'Shielder',
+      'Rider'
     ].sort(),
     secretOrigins: {
       'Coração de Dragão': [
