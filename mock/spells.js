@@ -735,7 +735,7 @@ export default [
     os materiais que o compõem e se foi recentemente usado para um combate.<br />
     Tocar a peça permitirá que ele veja além, ganhando conhecimento sobre encantamentos com exatidão, 
     a quantidade de dano que eles podem causar e, se a peça for um 
-    <strong>Fantasma Nobre Armamento Lendário</strong<, ele pode saber <strong>todas</strong> as suas Habilidades de Valor.<br /><br />
+    <strong>Fantasma Nobre Armamento Lendário</strong>, ele pode saber <strong>todas</strong> as suas Habilidades de Valor.<br /><br />
     
     Realizando um teste do Parâmetro <strong>Fantasma Nobre</strong>, ele pode adquirir essa 
     <i>"insight"</i> apenas por olhar após o Armamento tenha sido brandido pelo 
