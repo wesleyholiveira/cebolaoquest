@@ -183,6 +183,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       name,
       principle,
       alignment,
+      meritPoints,
       statusPoints,
       proficiencyPoints,
       level,
@@ -206,7 +207,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       hp,
       sp,
       maxHp,
-      maxSp,
+      maxSp
     } = player
 
     const parameters = await attributeRepository.getParametersByPlayerId(id)
@@ -253,6 +254,7 @@ app.get('/api/player/:playerId/user/:userId', async (req, res) => {
       id,
       userRoleId,
       name,
+      meritPoints,
       statusPoints,
       proficiencyPoints,
       principle,
